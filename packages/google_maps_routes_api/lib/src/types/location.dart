@@ -7,6 +7,7 @@
 import 'package:flutter/foundation.dart'
     show immutable, objectRuntimeType, visibleForTesting;
 
+/// Encapsulates a location (a geographic point [LatLng], and an optional [heading]).
 @immutable
 class Location {
   const Location(this.latLng, this.heading);
