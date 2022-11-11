@@ -1,6 +1,7 @@
 import 'package:google_maps_routes_api/src/types/location.dart';
 import 'package:google_maps_routes_api/src/types/route_leg.dart';
 import 'package:google_maps_routes_api/src/types/toll_info.dart';
+import 'package:google_maps_routes_api/src/types/enums.dart';
 
 class Route {
   const Route({
@@ -59,10 +60,10 @@ class Route {
 
 
 class Polyline {
-  const Polyline({required this.encodedPolyLine});
+  const Polyline({required this.encodedPolyline});
 
-  final String encodedPolyLine;
-
+  final String encodedPolyline;
+  // TODO: Support for GeoJsonLinestring 
   static Polyline? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -70,7 +71,7 @@ class Polyline {
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
 
-    return Polyline(encodedPolyLine: data['encodedPolyline']);
+    return Polyline(encodedPolyline: data['encodedPolyline']);
   }
 }
 
@@ -134,31 +135,3 @@ class Viewport {
   }
 }
 
-enum Maneuver {
-  MANEUVER_UNSPECIFIED,
-  TURN_SLIGHT_LEFT,
-  TURN_SHARP_LEFT,
-  UTURN_LEFT,
-  TURN_LEFT,
-  TURN_SLIGHT_RIGHT,
-  TURN_SHARP_RIGHT,
-  UTURN_RIGHT,
-  TURN_RIGHT,
-  STRAIGHT,
-  RAMP_LEFT,
-  RAMP_RIGHT,
-  MERGE,
-  FORK_LEFT,
-  FORK_RIGHT,
-  FERRY,
-  FERRY_TRAIN,
-  ROUNDABOUT_LEFT,
-  ROUNDABOUT_RIGHT,
-}
-
-enum RouteLabel {
-  ROUTE_LABEL_UNSPECIFIED,
-  DEFAULT_ROUTE,
-  DEFAULT_ROUTE_ALTERNATE,
-  FUEL_EFFICIENT,
-}

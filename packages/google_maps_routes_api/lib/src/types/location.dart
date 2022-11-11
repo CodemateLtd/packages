@@ -24,6 +24,13 @@ class Location {
 
     return Location(LatLng.fromJson(map['latLng']), map['heading']);
   }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'latLng': latLng?.toJson(),
+      'heading': heading,
+    };
+  }
 }
 
 /// A pair of latitude and longitude coordinates, stored as degrees.
