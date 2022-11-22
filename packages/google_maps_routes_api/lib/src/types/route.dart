@@ -1,7 +1,7 @@
 import 'package:google_maps_routes_api/src/types/location.dart';
 import 'package:google_maps_routes_api/src/types/route_leg.dart';
-import 'package:google_maps_routes_api/src/types/toll_info.dart';
 import 'package:google_maps_routes_api/src/types/enums.dart';
+import 'package:google_maps_routes_api/src/types/travel_advisory.dart';
 
 class Route {
   const Route({
@@ -27,7 +27,7 @@ class Route {
   final String? description;
   final List<String>? warnings;
   final Viewport? viewport;
-  final RouteLegTravelAdvisory? travelAdvisory;
+  final RouteTravelAdvisory? travelAdvisory;
   final String? routeToken;
 
   static Route? fromJson(Object? json) {
@@ -36,34 +36,59 @@ class Route {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    List<RouteLabel> routeLabels = List<RouteLabel>.from(
-        data['routeLabels'].map((label) => RouteLabel.values.byName(label)));
+    List<RouteLabel>? routeLabels = data['routeLabels'] != null
+        ? List<RouteLabel>.from(
+            data['routeLabels'].map((label) => RouteLabel.values.byName(label)))
+        : null;
 
     List<RouteLeg> legs = List<RouteLeg>.from(
         data['legs'].map((model) => RouteLeg.fromJson(model)));
-
     return Route(
       routeLabels: routeLabels,
       legs: legs,
       distanceMeters: data['distanceMeters'],
       duration: data['duration'],
       staticDuration: data['staticDuration'],
-      polyline: Polyline.fromJson(data['polyline']),
+      polyline:
+          data['polyline'] != null ? Polyline.fromJson(data['polyline']) : null,
       description: data['description'],
-      warnings: (data['warnings'] as List<dynamic>).cast<String>(),
-      viewport: Viewport.fromJson(data['viewport']),
-      travelAdvisory: RouteLegTravelAdvisory.fromJson(data['travelAdvisory']),
+      warnings: data['warnings'] == null
+          ? []
+          : (data['warnings'] as List<dynamic>).cast<String>(),
+      viewport:
+          data['viewport'] != null ? Viewport.fromJson(data['viewport']) : null,
+      travelAdvisory: data['travelAdvisory'] == null
+          ? null
+          : RouteTravelAdvisory.fromJson(data['travelAdvisory']),
       routeToken: data['routeToken'],
     );
   }
-}
 
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = <String, dynamic>{
+      'routeLabels': routeLabels?.map((label) => label.name).toList(),
+      'legs': legs?.map((leg) => leg.toJson()).toList(),
+      'distanceMeters': distanceMeters,
+      'duration': duration,
+      'staticDuration': staticDuration,
+      'polyline': polyline?.toJson(),
+      'description': description,
+      'warnings': warnings,
+      'viewport': viewport?.toJson(),
+      'travelAdvisory': travelAdvisory?.toJson(),
+      'routeToken': routeToken,
+    };
+
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
 
 class Polyline {
   const Polyline({required this.encodedPolyline});
 
   final String encodedPolyline;
-  // TODO: Support for GeoJsonLinestring 
+  // TODO: Support for GeoJsonLinestring
   static Polyline? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -73,27 +98,14 @@ class Polyline {
 
     return Polyline(encodedPolyline: data['encodedPolyline']);
   }
-}
 
-class RouteLegTravelAdvisory {
-  const RouteLegTravelAdvisory({this.tollInfo, this.speedReadingIntervals});
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = <String, dynamic>{
+      'encodedPolyline': encodedPolyline,
+    };
 
-  final TollInfo? tollInfo;
-  final List<SpeedReadingInterval>? speedReadingIntervals;
-
-  static RouteLegTravelAdvisory? fromJson(Object? json) {
-    if (json == null) {
-      return null;
-    }
-    assert(json is Map<String, dynamic>);
-    final Map<String, dynamic> data = json as Map<String, dynamic>;
-    List<SpeedReadingInterval> speedReadingIntervals =
-        List<SpeedReadingInterval>.from(data['speedReadingIntervals']
-            .map((model) => SpeedReadingInterval.fromJson(model)));
-
-    return RouteLegTravelAdvisory(
-        tollInfo: data['tollInfo'],
-        speedReadingIntervals: speedReadingIntervals);
+    json.removeWhere((key, value) => value == null);
+    return json;
   }
 }
 
@@ -111,8 +123,20 @@ class NavigationInstruction {
     final Map<String, dynamic> data = json as Map<String, dynamic>;
 
     return NavigationInstruction(
-        maneuver: Maneuver.values.byName(data['maneuver']),
+        maneuver: data['maneuver'] != null
+            ? Maneuver.values.byName(data['maneuver'])
+            : null,
         instructions: data['instructions']);
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = <String, dynamic>{
+      'maneuver': maneuver?.name,
+      'instructions': instructions,
+    };
+
+    json.removeWhere((key, value) => value == null);
+    return json;
   }
 }
 
@@ -130,8 +154,18 @@ class Viewport {
     final Map<String, dynamic> data = json as Map<String, dynamic>;
 
     return Viewport(
-        low: LatLng.fromJson(data['low']),
-        high: LatLng.fromJson(data['high']));
+      low: LatLng.fromJson(data['low']),
+      high: LatLng.fromJson(data['high']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = <String, dynamic>{
+      'low': low?.toMap(),
+      'high': high?.toMap(),
+    };
+
+    json.removeWhere((key, value) => value == null);
+    return json;
   }
 }
-

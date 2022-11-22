@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:google_maps_routes_api/src/types/enums.dart';
-import 'package:google_maps_routes_api/src/types/waypoint.dart';
+import 'package:google_maps_routes_api/src/types/location.dart';
 
 class RoutesRequest {
-  const RoutesRequest({
+  RoutesRequest({
     required this.origin,
     required this.destination,
     this.intermediates,
@@ -22,34 +20,37 @@ class RoutesRequest {
 
   final Waypoint origin;
   final Waypoint destination;
-  final List<Waypoint>? intermediates;
-  final RouteTravelMode? travelMode;
-  final RoutingPreference? routingPreference;
-  final PolylineQuality? polylineQuality;
-  final PolylineEncoding? polylineEncoding;
-  final String? departureTime;
-  final bool? computeAlternativeRoutes;
-  final RouteModifiers? routeModifiers;
-  final String? languageCode;
-  final Units? units;
-  final ReferenceRoute? requestedReferenceRoutes;
+  List<Waypoint>? intermediates;
+  RouteTravelMode? travelMode;
+  RoutingPreference? routingPreference;
+  PolylineQuality? polylineQuality;
+  PolylineEncoding? polylineEncoding;
+  String? departureTime;
+  bool? computeAlternativeRoutes;
+  RouteModifiers? routeModifiers;
+  String? languageCode;
+  Units? units;
+  ReferenceRoute? requestedReferenceRoutes;
 
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'origin': jsonEncode(origin),
-      'destination': jsonEncode(destination),
-      'intermediates': jsonEncode(intermediates),
-      'travelMode':  travelMode?.toString(),
-      'routingPreference': routingPreference?.toString(),
-      'polylineQuality': polylineQuality?.toString(),
-      'polylineEncoding': polylineEncoding?.toString(),
+    Map<String, dynamic> json = <String, dynamic>{
+      'origin': origin.toJson(),
+      'destination': destination.toJson(),
+      'intermediates': intermediates?.map((waypoint) => waypoint.toJson()).toList(),
+      'travelMode': travelMode?.name,
+      'routingPreference': routingPreference?.name,
+      'polylineQuality': polylineQuality?.name,
+      'polylineEncoding': polylineEncoding?.name,
       'departureTime': departureTime,
       'computeAlternativeRoutes': computeAlternativeRoutes,
-      'routeModifiers': jsonEncode(routeModifiers),
+      'routeModifiers': routeModifiers?.toJson(),
       'languageCode': languageCode,
-      'units': units?.toString(),
-      'requestedReferenceRoutes': requestedReferenceRoutes?.toString()
+      'units': units?.name,
+      'requestedReferenceRoutes': requestedReferenceRoutes?.name
     };
+
+    json.removeWhere((key, value) => value == null);
+    return json;
   }
 }
 
@@ -71,7 +72,7 @@ class RouteModifiers {
   final List<TollPass>? tollPasses;
 
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{
+    Map<String, dynamic> json = <String, dynamic>{
       'avoidTolls': avoidTolls,
       'avoidHighways': avoidHighways,
       'avoidFerries': avoidFerries,
@@ -79,7 +80,8 @@ class RouteModifiers {
       'vehicleInfo': vehicleInfo?.toJson(),
       'tollPasses': tollPasses as List<String>,
     };
-
+    json.removeWhere((key, value) => value == null);
+    return json;
   }
 }
 
@@ -89,8 +91,34 @@ class VehicleInfo {
   final VehicleEmissionType emissionType;
 
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'emissionType': emissionType.toString()
+    return <String, dynamic>{'emissionType': emissionType.name};
+  }
+}
+
+class Waypoint {
+  const Waypoint({
+    this.via,
+    this.vehicleStopover,
+    this.sideOfRoad,
+    this.location,
+    this.placeId,
+  });
+
+  final bool? via;
+  final bool? vehicleStopover;
+  final bool? sideOfRoad;
+  final Location? location;
+  final String? placeId;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = <String, dynamic>{
+      'via': via,
+      'vehicleStopover': vehicleStopover,
+      'sideOfRoad': sideOfRoad,
+      'location': location?.toJson(),
+      'placeId': placeId,
     };
+    json.removeWhere((key, value) => value == null);
+    return json;
   }
 }

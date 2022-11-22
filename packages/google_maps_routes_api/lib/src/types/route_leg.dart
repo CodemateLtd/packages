@@ -1,6 +1,6 @@
-
 import 'package:google_maps_routes_api/src/types/location.dart';
 import 'package:google_maps_routes_api/src/types/route.dart';
+import 'package:google_maps_routes_api/src/types/travel_advisory.dart';
 
 class RouteLeg {
   const RouteLeg({
@@ -42,6 +42,22 @@ class RouteLeg {
       travelAdvisory: RouteLegTravelAdvisory.fromJson(data['travelAdvisory']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = <String, dynamic>{
+      'distanceMeters': distanceMeters,
+      'duration': duration,
+      'staticDuration': staticDuration,
+      'polyline': polyline?.toJson(),
+      'startLocation': startLocation?.toJson(),
+      'endLocation': endLocation?.toJson(),
+      'steps': steps?.map((step) => step.toJson()).toList(),
+      'travelAdvisory': travelAdvisory?.toJson(),
+    };
+
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
 }
 
 class RouteLegStep {
@@ -52,6 +68,7 @@ class RouteLegStep {
     this.endLocation,
     this.startLocation,
     this.navigationInstruction,
+    this.travelAdvisory,
   });
 
   final int? distanceMeters;
@@ -60,6 +77,7 @@ class RouteLegStep {
   final Location? endLocation;
   final Location? startLocation;
   final NavigationInstruction? navigationInstruction;
+  final RouteLegStepTravelAdvisory? travelAdvisory;
 
   static RouteLegStep? fromJson(Object? json) {
     if (json == null) {
@@ -76,6 +94,23 @@ class RouteLegStep {
       startLocation: Location.fromJson(data['startLocation']),
       navigationInstruction:
           NavigationInstruction.fromJson(data['navigationInstruction']),
+      travelAdvisory:
+          RouteLegStepTravelAdvisory.fromJson(data['travelAdvisory']),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = <String, dynamic>{
+      'distanceMeters': distanceMeters,
+      'staticDuration': staticDuration,
+      'polyline': polyline?.toJson(),
+      'endLocation': endLocation?.toJson(),
+      'startLocation': startLocation?.toJson(),
+      'navigationInstruction': navigationInstruction?.toJson(),
+      'travelAdvisory': travelAdvisory?.toJson(),
+    };
+
+    json.removeWhere((key, value) => value == null);
+    return json;
   }
 }

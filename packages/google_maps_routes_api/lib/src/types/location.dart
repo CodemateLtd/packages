@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart'
 /// Encapsulates a location (a geographic point [LatLng], and an optional [heading]).
 @immutable
 class Location {
-  const Location(this.latLng, this.heading);
+  const Location({this.latLng, this.heading});
 
   final LatLng? latLng;
   final int? heading;
@@ -22,14 +22,17 @@ class Location {
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> map = json as Map<String, dynamic>;
 
-    return Location(LatLng.fromJson(map['latLng']), map['heading']);
+    return Location(latLng: LatLng.fromMap(map['latLng']), heading: map['heading']);
   }
 
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'latLng': latLng?.toJson(),
+    Map<String, dynamic> json = <String, dynamic>{
+      'latLng': latLng?.toMap(),
       'heading': heading,
     };
+
+    json.removeWhere((key, value) => value == null);
+    return json;
   }
 }
 
@@ -62,6 +65,18 @@ class LatLng {
   /// Converts this object to something serializable in JSON.
   Object toJson() {
     return <double>[latitude, longitude];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {'latitude': latitude, 'longitude': longitude};
+  }
+
+  static LatLng? fromMap(Map<String, dynamic> map) {
+    if (map == null) {
+      return null;
+    }
+
+    return LatLng(map['latitude'], map['longitude']);
   }
 
   /// Initialize a LatLng from an \[lat, lng\] array.

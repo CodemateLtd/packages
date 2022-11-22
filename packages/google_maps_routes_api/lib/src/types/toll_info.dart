@@ -1,3 +1,5 @@
+import 'package:google_maps_routes_api/src/types/enums.dart';
+
 class TollInfo {
   const TollInfo({required this.estimatedPrice});
   final List<Money> estimatedPrice;
@@ -12,6 +14,15 @@ class TollInfo {
         data['estimatedPrice'].map((model) => Money.fromJson(model)));
 
     return TollInfo(estimatedPrice: estimatedPrice);
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = <String, dynamic>{
+      'estimatedPrice': estimatedPrice.map((price) => price.toJson()).toList(),
+    };
+
+    json.removeWhere((key, value) => value == null);
+    return json;
   }
 }
 
@@ -36,6 +47,17 @@ class Money {
       nanos: data['nanos'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = <String, dynamic>{
+      'estimatedPrice': currencyCode,
+      'units': units,
+      'nanos': nanos,
+    };
+
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
 }
 
 class SpeedReadingInterval {
@@ -57,16 +79,20 @@ class SpeedReadingInterval {
     final Map<String, dynamic> data = json as Map<String, dynamic>;
 
     return SpeedReadingInterval(
-      speed: Speed.values.byName(data['speed']),
+      speed: data['speed'] != null ? Speed.values.byName(data['speed']) : null,
       startPolylinePointIndex: data['startPolylinePointIndex'],
       endPolylinePointIndex: data['endPolylinePointIndex'],
     );
   }
-}
 
-enum Speed {
-  SPEED_UNSPECIFIED,
-  NORMAL,
-  SLOW,
-  TRAFFIC_JAM,
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = <String, dynamic>{
+      'speed': speed?.name,
+      'startPolylinePointIndex': startPolylinePointIndex,
+      'endPolylinePointIndex': endPolylinePointIndex,
+    };
+
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
 }
