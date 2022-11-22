@@ -1,13 +1,8 @@
 library google_maps_routes_api;
 
 import 'dart:convert';
-
-import 'package:google_maps_routes_api/src/types/route_matrix_request.dart';
-import 'package:google_maps_routes_api/src/types/route_matrix.dart';
+import 'package:google_maps_routes_api/src/types/index.dart';
 import 'package:http/http.dart' as http;
-
-import 'package:google_maps_routes_api/src/types/routes_request.dart';
-import 'package:google_maps_routes_api/src/types/routes_response.dart';
 
 /// A service used to calculate a route between two points
 class RoutesService {
