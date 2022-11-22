@@ -4,7 +4,6 @@
 
 // Types copied from https://github.com/flutter/plugins/tree/main/packages/google_maps_flutter/google_maps_flutter_platform_interface
 
-
 /// Encapsulates a location (a geographic point [LatLng], and an optional [heading]).
 class Location {
   const Location({this.latLng, this.heading});
@@ -19,7 +18,8 @@ class Location {
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> map = json as Map<String, dynamic>;
 
-    return Location(latLng: LatLng.fromMap(map['latLng']), heading: map['heading']);
+    return Location(
+        latLng: LatLng.fromMap(map['latLng']), heading: map['heading']);
   }
 
   Map<String, dynamic> toJson() {

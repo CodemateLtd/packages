@@ -36,7 +36,8 @@ class RoutesRequest {
     Map<String, dynamic> json = <String, dynamic>{
       'origin': origin.toJson(),
       'destination': destination.toJson(),
-      'intermediates': intermediates?.map((waypoint) => waypoint.toJson()).toList(),
+      'intermediates':
+          intermediates?.map((waypoint) => waypoint.toJson()).toList(),
       'travelMode': travelMode?.name,
       'routingPreference': routingPreference?.name,
       'polylineQuality': polylineQuality?.name,

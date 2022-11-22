@@ -19,7 +19,8 @@ class RouteMatrixRequest {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = <String, dynamic>{
       'origins': origins.map((origin) => origin.toJson()).toList(),
-      'destinations': destinations.map((destination) => destination.toJson()).toList(),
+      'destinations':
+          destinations.map((destination) => destination.toJson()).toList(),
       'travelMode': travelMode?.name,
       'routingPreference': routingPreference?.name,
       'departureTime': departureTime,

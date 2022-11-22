@@ -10,4 +10,3 @@ export 'package:google_maps_routes_api/src/types/routes_request.dart';
 export 'package:google_maps_routes_api/src/types/routes_response.dart';
 export 'package:google_maps_routes_api/src/types/toll_info.dart';
 export 'package:google_maps_routes_api/src/types/travel_advisory.dart';
- 
