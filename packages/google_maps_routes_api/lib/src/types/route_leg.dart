@@ -1,5 +1,6 @@
 import 'package:google_maps_routes_api/src/types/location.dart';
-import 'package:google_maps_routes_api/src/types/route.dart';
+import 'package:google_maps_routes_api/src/types/navigation_instruction.dart';
+import 'package:google_maps_routes_api/src/types/polyline.dart';
 import 'package:google_maps_routes_api/src/types/travel_advisory.dart';
 
 class RouteLeg {

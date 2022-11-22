@@ -1,5 +1,4 @@
 import 'package:google_maps_routes_api/src/types/enums.dart';
-import 'package:google_maps_routes_api/src/types/location.dart';
 import 'package:google_maps_routes_api/src/types/routes_request.dart';
 
 class RouteMatrixRequest {
