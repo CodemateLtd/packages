@@ -4,11 +4,8 @@
 
 // Types copied from https://github.com/flutter/plugins/tree/main/packages/google_maps_flutter/google_maps_flutter_platform_interface
 
-import 'package:flutter/foundation.dart'
-    show immutable, objectRuntimeType, visibleForTesting;
 
 /// Encapsulates a location (a geographic point [LatLng], and an optional [heading]).
-@immutable
 class Location {
   const Location({this.latLng, this.heading});
 
@@ -37,7 +34,6 @@ class Location {
 }
 
 /// A pair of latitude and longitude coordinates, stored as degrees.
-@immutable
 class LatLng {
   /// Creates a geographical location specified in degrees [latitude] and
   /// [longitude].
@@ -90,10 +86,6 @@ class LatLng {
   }
 
   @override
-  String toString() =>
-      '${objectRuntimeType(this, 'LatLng')}($latitude, $longitude)';
-
-  @override
   bool operator ==(Object other) {
     return other is LatLng &&
         other.latitude == latitude &&
@@ -112,7 +104,6 @@ class LatLng {
 ///   if `southwest.longitude` ≤ `northeast.longitude`,
 /// * lng ∈ [-180, `northeast.longitude`] ∪ [`southwest.longitude`, 180],
 ///   if `northeast.longitude` < `southwest.longitude`
-@immutable
 class LatLngBounds {
   /// Creates geographical bounding box with the specified corners.
   ///
@@ -153,7 +144,6 @@ class LatLngBounds {
   }
 
   /// Converts a list to [LatLngBounds].
-  @visibleForTesting
   static LatLngBounds? fromList(Object? json) {
     if (json == null) {
       return null;
@@ -164,11 +154,6 @@ class LatLngBounds {
       southwest: LatLng.fromJson(list[0])!,
       northeast: LatLng.fromJson(list[1])!,
     );
-  }
-
-  @override
-  String toString() {
-    return '${objectRuntimeType(this, 'LatLngBounds')}($southwest, $northeast)';
   }
 
   @override
