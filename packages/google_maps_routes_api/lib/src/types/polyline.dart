@@ -1,7 +1,7 @@
 class Polyline {
   const Polyline({required this.encodedPolyline});
 
-  final String encodedPolyline;
+  final String? encodedPolyline;
   // TODO: Support for GeoJsonLinestring
   static Polyline? fromJson(Object? json) {
     if (json == null) {
