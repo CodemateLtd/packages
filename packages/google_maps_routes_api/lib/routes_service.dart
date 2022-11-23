@@ -25,7 +25,7 @@ class RoutesService {
     };
 
     final response = await http.post(Uri.parse(url),
-        body: jsonEncode(body.toJson()),
+        body: jsonEncode(body),
         headers: {...defaultHeaders, ...?headers});
 
     if (response.statusCode != 200) {
@@ -46,7 +46,7 @@ class RoutesService {
     };
 
     final response = await http.post(Uri.parse(url),
-        body: jsonEncode(body.toJson()),
+        body: jsonEncode(body),
         headers: {...defaultHeaders, ...?headers});
 
     if (response.statusCode != 200) {
