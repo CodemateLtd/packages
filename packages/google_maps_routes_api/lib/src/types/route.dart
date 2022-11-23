@@ -99,8 +99,8 @@ class Viewport {
     final Map<String, dynamic> data = json as Map<String, dynamic>;
 
     return Viewport(
-      low: LatLng.fromJson(data['low']),
-      high: LatLng.fromJson(data['high']),
+      low: data['low'] ? LatLng.fromMap(data['low']) : null,
+      high: data['high'] ? LatLng.fromMap(data['high']) : null,
     );
   }
 

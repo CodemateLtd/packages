@@ -16,12 +16,15 @@ class RouteTravelAdvisory {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    List<SpeedReadingInterval> speedReadingIntervals =
-        List<SpeedReadingInterval>.from(data['speedReadingIntervals']
-            .map((model) => SpeedReadingInterval.fromJson(model)));
+    List<SpeedReadingInterval>? speedReadingIntervals =
+        data['speedReadingIntervals'] != null
+            ? List<SpeedReadingInterval>.from(data['speedReadingIntervals']
+                .map((model) => SpeedReadingInterval.fromJson(model)))
+            : null;
 
     return RouteTravelAdvisory(
-      tollInfo: data['tollInfo'],
+      tollInfo:
+          data['tollInfo'] != null ? TollInfo.fromJson(data['tollInfo']) : null,
       speedReadingIntervals: speedReadingIntervals,
       fuelConsumptionMicroliters: data['fuelConsumptionMicroliters'],
     );
@@ -52,12 +55,16 @@ class RouteLegTravelAdvisory {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    List<SpeedReadingInterval> speedReadingIntervals =
-        List<SpeedReadingInterval>.from(data['speedReadingIntervals']
-            .map((model) => SpeedReadingInterval.fromJson(model)));
+    List<SpeedReadingInterval>? speedReadingIntervals =
+        data['speedReadingIntervals'] != null
+            ? List<SpeedReadingInterval>.from(data['speedReadingIntervals']
+                .map((model) => SpeedReadingInterval.fromJson(model)))
+            : null;
 
     return RouteLegTravelAdvisory(
-        tollInfo: data['tollInfo'],
+        tollInfo: data['tollInfo'] != null
+            ? TollInfo.fromJson(data['tollInfo'])
+            : null,
         speedReadingIntervals: speedReadingIntervals);
   }
 

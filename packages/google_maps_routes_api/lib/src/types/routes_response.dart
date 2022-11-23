@@ -16,8 +16,9 @@ class RoutesResponse {
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
 
-    List<Route> routes =
-        List<Route>.from(data['routes'].map((model) => Route.fromJson(model)));
+    List<Route>? routes = data['routes'] != null
+        ? List<Route>.from(data['routes'].map((model) => Route.fromJson(model)))
+        : null;
 
     return RoutesResponse(
       routes: routes,
