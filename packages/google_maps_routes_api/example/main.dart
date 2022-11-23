@@ -2,12 +2,16 @@ import 'package:google_maps_routes_api/routes_service.dart';
 import 'package:google_maps_routes_api/src/types/index.dart';
 
 void main() async {
-  await _computeRoutes();
+  RoutesResponse routes = await _computeRoutes();
+  print('ROUTES FETCHED:');
+  print(routes.toJson());
   print('\n\n');
-  await _computeRouteMatrix();
+  List<RouteMatrix> matrixes = await _computeRouteMatrix();
+  print('ROUTE MATRIX FETCHED:');
+  print(matrixes.map((matrix) => matrix.toJson()));
 }
 
-_computeRoutes() async {
+Future<RoutesResponse> _computeRoutes() async {
   const API_KEY =
       String.fromEnvironment('GOOGLE_API_KEY', defaultValue: 'GOOGLE_API_KEY');
 
@@ -23,19 +27,19 @@ _computeRoutes() async {
     ),
   );
   RoutesRequest body = RoutesRequest(
-      origin: origin,
-      destination: destination,
-      travelMode: RouteTravelMode.DRIVE);
+    origin: origin,
+    destination: destination,
+    travelMode: RouteTravelMode.DRIVE,
+  );
 
   const fields =
       'routes.legs,routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline,routes.warnings,routes.description';
   RoutesResponse response =
       await routesService.computeRoute(body, fields: fields);
-  print('ROUTE FETCHED:');
-  print(response.toJson());
+  return response;
 }
 
-_computeRouteMatrix() async {
+Future<List<RouteMatrix>> _computeRouteMatrix() async {
   const API_KEY =
       String.fromEnvironment('GOOGLE_API_KEY', defaultValue: 'GOOGLE_API_KEY');
 
@@ -84,6 +88,6 @@ _computeRouteMatrix() async {
   );
   List<RouteMatrix> response =
       await routesService.computeRouteMatrix(body, fields: fields);
-  print('ROUTE MATRIX FETCHED:');
-  print(response.map((matrix) => matrix.toJson()));
+
+  return response;
 }
