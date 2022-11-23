@@ -36,11 +36,18 @@ class RouteLeg {
     return RouteLeg(
       distanceMeters: data['distanceMeters'],
       staticDuration: data['staticDuration'],
-      polyline: Polyline.fromJson(data['polyline']),
-      startLocation: Location.fromJson(data['startLocation']),
-      endLocation: Location.fromJson(data['endLocation']),
+      polyline:
+          data['polyline'] != null ? Polyline.fromJson(data['polyline']) : null,
+      startLocation: data['startLocation'] != null
+          ? Location.fromJson(data['startLocation'])
+          : null,
+      endLocation: data['endLocation'] != null
+          ? Location.fromJson(data['endLocation'])
+          : null,
       steps: steps,
-      travelAdvisory: RouteLegTravelAdvisory.fromJson(data['travelAdvisory']),
+      travelAdvisory: data['travelAdvisory'] != null
+          ? RouteLegTravelAdvisory.fromJson(data['travelAdvisory'])
+          : null,
     );
   }
 
@@ -90,13 +97,20 @@ class RouteLegStep {
     return RouteLegStep(
       distanceMeters: data['distanceMeters'],
       staticDuration: data['staticDuration'],
-      polyline: Polyline.fromJson(data['polyline']),
-      endLocation: Location.fromJson(data['endLocation']),
-      startLocation: Location.fromJson(data['startLocation']),
-      navigationInstruction:
-          NavigationInstruction.fromJson(data['navigationInstruction']),
-      travelAdvisory:
-          RouteLegStepTravelAdvisory.fromJson(data['travelAdvisory']),
+      polyline:
+          data['polyline'] != null ? Polyline.fromJson(data['polyline']) : null,
+      startLocation: data['startLocation'] != null
+          ? Location.fromJson(data['startLocation'])
+          : null,
+      endLocation: data['endLocation'] != null
+          ? Location.fromJson(data['endLocation'])
+          : null,
+      navigationInstruction: data['navigationInstruction'] != null
+          ? NavigationInstruction.fromJson(data['navigationInstruction'])
+          : null,
+      travelAdvisory: data['travelAdvisory']
+          ? RouteLegStepTravelAdvisory.fromJson(data['travelAdvisory'])
+          : null,
     );
   }
 
