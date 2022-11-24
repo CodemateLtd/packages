@@ -35,7 +35,7 @@ class RouteMatrix {
     return RouteMatrix(
       status: Status.fromJson(data['status']),
       condition: data['condition'] != null
-          ? RouteMatrixElementCondition.values.byName(data['message'])
+          ? RouteMatrixElementCondition.values.byName(data['condition'])
           : null,
       distanceMeters: data['distanceMeters'],
       duration: data['duration'],

@@ -108,7 +108,7 @@ class RouteLegStep {
       navigationInstruction: data['navigationInstruction'] != null
           ? NavigationInstruction.fromJson(data['navigationInstruction'])
           : null,
-      travelAdvisory: data['travelAdvisory']
+      travelAdvisory: data['travelAdvisory'] != null
           ? RouteLegStepTravelAdvisory.fromJson(data['travelAdvisory'])
           : null,
     );
