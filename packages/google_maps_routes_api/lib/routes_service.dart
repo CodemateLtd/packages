@@ -24,14 +24,16 @@ class RoutesService {
       "Content-Type": "application/json",
     };
 
-    final response = await http.post(Uri.parse(url),
-        body: jsonEncode(body),
-        headers: {...defaultHeaders, ...?headers});
+    final response = await http.post(
+      Uri.parse(url),
+      body: jsonEncode(body),
+      headers: {...defaultHeaders, ...?headers},
+    );
 
     if (response.statusCode != 200) {
       throw Exception(response.body);
     }
-    
+
     final result = RoutesResponse.fromJson(json.decode(response.body));
     return Future<RoutesResponse>.value(result);
   }
@@ -45,9 +47,11 @@ class RoutesService {
       "Content-Type": "application/json",
     };
 
-    final response = await http.post(Uri.parse(url),
-        body: jsonEncode(body),
-        headers: {...defaultHeaders, ...?headers});
+    final response = await http.post(
+      Uri.parse(url),
+      body: jsonEncode(body),
+      headers: {...defaultHeaders, ...?headers},
+    );
 
     if (response.statusCode != 200) {
       throw Exception(response.body);
