@@ -31,7 +31,7 @@ class RoutesService {
     if (response.statusCode != 200) {
       throw Exception(response.body);
     }
-
+    
     final result = RoutesResponse.fromJson(json.decode(response.body));
     return Future<RoutesResponse>.value(result);
   }
@@ -41,7 +41,7 @@ class RoutesService {
     const url = '$_routesApiUrl/distanceMatrix/v2:computeRouteMatrix';
     Map<String, String> defaultHeaders = {
       'X-Goog-Api-Key': apiKey,
-      'X-Goog-Fieldmask': fields ?? 'routes.duration, routes.distanceMeters',
+      'X-Goog-Fieldmask': fields ?? 'duration, distanceMeters',
       "Content-Type": "application/json",
     };
 
