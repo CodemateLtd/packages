@@ -1,7 +1,7 @@
-import 'package:google_maps_routes_api/src/types/location.dart';
-import 'package:google_maps_routes_api/src/types/navigation_instruction.dart';
-import 'package:google_maps_routes_api/src/types/polyline.dart';
-import 'package:google_maps_routes_api/src/types/travel_advisory.dart';
+import 'location.dart';
+import 'navigation_instruction.dart';
+import 'polyline.dart';
+import 'travel_advisory.dart';
 
 class RouteLeg {
   const RouteLeg({
@@ -30,7 +30,7 @@ class RouteLeg {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    List<RouteLegStep> steps = List<RouteLegStep>.from(
+    final List<RouteLegStep> steps = List<RouteLegStep>.from(
         data['steps'].map((model) => RouteLegStep.fromJson(model)));
 
     return RouteLeg(
@@ -52,18 +52,18 @@ class RouteLeg {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'distanceMeters': distanceMeters,
       'duration': duration,
       'staticDuration': staticDuration,
       'polyline': polyline?.toJson(),
       'startLocation': startLocation?.toJson(),
       'endLocation': endLocation?.toJson(),
-      'steps': steps?.map((step) => step.toJson()).toList(),
+      'steps': steps?.map((RouteLegStep step) => step.toJson()).toList(),
       'travelAdvisory': travelAdvisory?.toJson(),
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -115,7 +115,7 @@ class RouteLegStep {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'distanceMeters': distanceMeters,
       'staticDuration': staticDuration,
       'polyline': polyline?.toJson(),
@@ -125,7 +125,7 @@ class RouteLegStep {
       'travelAdvisory': travelAdvisory?.toJson(),
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }

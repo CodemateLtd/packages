@@ -1,4 +1,4 @@
-import 'package:google_maps_routes_api/src/types/toll_info.dart';
+import 'toll_info.dart';
 
 class RouteTravelAdvisory {
   const RouteTravelAdvisory(
@@ -16,7 +16,7 @@ class RouteTravelAdvisory {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    List<SpeedReadingInterval>? speedReadingIntervals =
+    final List<SpeedReadingInterval>? speedReadingIntervals =
         data['speedReadingIntervals'] != null
             ? List<SpeedReadingInterval>.from(data['speedReadingIntervals']
                 .map((model) => SpeedReadingInterval.fromJson(model)))
@@ -31,14 +31,15 @@ class RouteTravelAdvisory {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'tollInfo': tollInfo?.toJson(),
-      'speedReadingIntervals':
-          speedReadingIntervals?.map((interval) => interval.toJson()).toList(),
+      'speedReadingIntervals': speedReadingIntervals
+          ?.map((SpeedReadingInterval interval) => interval.toJson())
+          .toList(),
       'fuelConsumptionMicroliters': fuelConsumptionMicroliters,
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -55,7 +56,7 @@ class RouteLegTravelAdvisory {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    List<SpeedReadingInterval>? speedReadingIntervals =
+    final List<SpeedReadingInterval>? speedReadingIntervals =
         data['speedReadingIntervals'] != null
             ? List<SpeedReadingInterval>.from(data['speedReadingIntervals']
                 .map((model) => SpeedReadingInterval.fromJson(model)))
@@ -69,13 +70,14 @@ class RouteLegTravelAdvisory {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'tollInfo': tollInfo?.toJson(),
-      'speedReadingIntervals':
-          speedReadingIntervals?.map((interval) => interval.toJson()).toList(),
+      'speedReadingIntervals': speedReadingIntervals
+          ?.map((SpeedReadingInterval interval) => interval.toJson())
+          .toList(),
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -91,7 +93,7 @@ class RouteLegStepTravelAdvisory {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    List<SpeedReadingInterval> speedReadingIntervals =
+    final List<SpeedReadingInterval> speedReadingIntervals =
         List<SpeedReadingInterval>.from(data['speedReadingIntervals']
             .map((model) => SpeedReadingInterval.fromJson(model)));
 
@@ -101,8 +103,9 @@ class RouteLegStepTravelAdvisory {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'speedReadingIntervals':
-          speedReadingIntervals.map((interval) => interval.toJson()).toList(),
+      'speedReadingIntervals': speedReadingIntervals
+          .map((SpeedReadingInterval interval) => interval.toJson())
+          .toList(),
     };
   }
 }

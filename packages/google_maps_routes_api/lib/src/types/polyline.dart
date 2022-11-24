@@ -1,4 +1,4 @@
-import 'package:google_maps_routes_api/src/types/location.dart';
+import 'location.dart';
 
 class Polyline {
   const Polyline({this.encodedPolyline, this.geoJsonLinestring});
@@ -21,12 +21,12 @@ class Polyline {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'encodedPolyline': encodedPolyline,
       'geoJsonLinestring': geoJsonLinestring?.toJson(),
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -53,13 +53,13 @@ class GeoJsonLinestring {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'type': type,
       'coordinates':
-          coordinates.map((coordinate) => coordinate.toJson()).toList(),
+          coordinates.map((LatLng coordinate) => coordinate.toJson()).toList(),
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }

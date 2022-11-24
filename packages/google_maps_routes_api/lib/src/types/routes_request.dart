@@ -1,5 +1,5 @@
-import 'package:google_maps_routes_api/src/types/enums.dart';
-import 'package:google_maps_routes_api/src/types/location.dart';
+import 'enums.dart';
+import 'location.dart';
 
 class RoutesRequest {
   RoutesRequest({
@@ -33,11 +33,11 @@ class RoutesRequest {
   ReferenceRoute? requestedReferenceRoutes;
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'origin': origin.toJson(),
       'destination': destination.toJson(),
       'intermediates':
-          intermediates?.map((waypoint) => waypoint.toJson()).toList(),
+          intermediates?.map((Waypoint waypoint) => waypoint.toJson()).toList(),
       'travelMode': travelMode?.name,
       'routingPreference': routingPreference?.name,
       'polylineQuality': polylineQuality?.name,
@@ -50,7 +50,7 @@ class RoutesRequest {
       'requestedReferenceRoutes': requestedReferenceRoutes?.name
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -73,7 +73,7 @@ class RouteModifiers {
   final List<TollPass>? tollPasses;
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'avoidTolls': avoidTolls,
       'avoidHighways': avoidHighways,
       'avoidFerries': avoidFerries,
@@ -81,7 +81,7 @@ class RouteModifiers {
       'vehicleInfo': vehicleInfo?.toJson(),
       'tollPasses': tollPasses as List<String>,
     };
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -112,14 +112,14 @@ class Waypoint {
   final String? placeId;
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'via': via,
       'vehicleStopover': vehicleStopover,
       'sideOfRoad': sideOfRoad,
       'location': location?.toJson(),
       'placeId': placeId,
     };
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }

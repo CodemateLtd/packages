@@ -1,4 +1,4 @@
-import 'package:google_maps_routes_api/src/types/enums.dart';
+import 'enums.dart';
 
 class TollInfo {
   const TollInfo({required this.estimatedPrice});
@@ -10,18 +10,19 @@ class TollInfo {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    List<Money> estimatedPrice = List<Money>.from(
+    final List<Money> estimatedPrice = List<Money>.from(
         data['estimatedPrice'].map((model) => Money.fromJson(model)));
 
     return TollInfo(estimatedPrice: estimatedPrice);
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
-      'estimatedPrice': estimatedPrice.map((price) => price.toJson()).toList(),
+    final Map<String, dynamic> json = <String, dynamic>{
+      'estimatedPrice':
+          estimatedPrice.map((Money price) => price.toJson()).toList(),
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -49,13 +50,13 @@ class Money {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'estimatedPrice': currencyCode,
       'units': units,
       'nanos': nanos,
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -86,13 +87,13 @@ class SpeedReadingInterval {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'speed': speed?.name,
       'startPolylinePointIndex': startPolylinePointIndex,
       'endPolylinePointIndex': endPolylinePointIndex,
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }

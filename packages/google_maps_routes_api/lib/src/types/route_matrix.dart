@@ -1,6 +1,6 @@
-import 'package:google_maps_routes_api/src/types/enums.dart';
-import 'package:google_maps_routes_api/src/types/routes_response.dart';
-import 'package:google_maps_routes_api/src/types/travel_advisory.dart';
+import 'enums.dart';
+import 'routes_response.dart';
+import 'travel_advisory.dart';
 
 class RouteMatrix {
   const RouteMatrix({
@@ -48,7 +48,7 @@ class RouteMatrix {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'status': status?.toJson(),
       'condition': condition?.name,
       'distanceMeters': distanceMeters,
@@ -60,7 +60,7 @@ class RouteMatrix {
       'destinationIndex': destinationIndex,
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -84,13 +84,13 @@ class Status {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'code': code,
       'message': message,
       'details': details,
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }

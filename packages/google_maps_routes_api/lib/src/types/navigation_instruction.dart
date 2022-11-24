@@ -1,4 +1,4 @@
-import 'package:google_maps_routes_api/src/types/enums.dart';
+import 'enums.dart';
 
 class NavigationInstruction {
   const NavigationInstruction({this.maneuver, this.instructions});
@@ -21,12 +21,12 @@ class NavigationInstruction {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'maneuver': maneuver?.name,
       'instructions': instructions,
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }

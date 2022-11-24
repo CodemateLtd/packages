@@ -23,12 +23,12 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'latLng': latLng?.toMap(),
       'heading': heading,
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
@@ -84,16 +84,6 @@ class LatLng {
     final List<Object?> list = json as List<Object?>;
     return LatLng(list[0]! as double, list[1]! as double);
   }
-
-  @override
-  bool operator ==(Object other) {
-    return other is LatLng &&
-        other.latitude == latitude &&
-        other.longitude == longitude;
-  }
-
-  @override
-  int get hashCode => Object.hash(latitude, longitude);
 }
 
 /// A latitude/longitude aligned rectangle.
@@ -155,14 +145,4 @@ class LatLngBounds {
       northeast: LatLng.fromJson(list[1])!,
     );
   }
-
-  @override
-  bool operator ==(Object other) {
-    return other is LatLngBounds &&
-        other.southwest == southwest &&
-        other.northeast == northeast;
-  }
-
-  @override
-  int get hashCode => Object.hash(southwest, northeast);
 }

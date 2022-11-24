@@ -1,7 +1,8 @@
-import 'package:google_maps_routes_api/src/types/route.dart';
-export 'package:google_maps_routes_api/src/types/toll_info.dart';
+import 'route.dart';
+
 export 'package:google_maps_routes_api/src/types/route.dart';
 export 'package:google_maps_routes_api/src/types/route_leg.dart';
+export 'package:google_maps_routes_api/src/types/toll_info.dart';
 
 class RoutesResponse {
   const RoutesResponse({this.routes, this.fallbackInfo});
@@ -16,7 +17,7 @@ class RoutesResponse {
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
 
-    List<Route>? routes = data['routes'] != null
+    final List<Route>? routes = data['routes'] != null
         ? List<Route>.from(data['routes'].map((model) => Route.fromJson(model)))
         : null;
 
@@ -29,12 +30,12 @@ class RoutesResponse {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
-      'routes': routes?.map((route) => route.toJson()).toList(),
+    final Map<String, dynamic> json = <String, dynamic>{
+      'routes': routes?.map((Route route) => route.toJson()).toList(),
       'fallbackInfo': fallbackInfo?.toJson(),
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -65,12 +66,12 @@ class FallbackInfo {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'routingMode': routingMode?.name,
       'reason': reason?.name,
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }

@@ -1,5 +1,5 @@
-import 'package:google_maps_routes_api/src/types/enums.dart';
-import 'package:google_maps_routes_api/src/types/routes_request.dart';
+import 'enums.dart';
+import 'routes_request.dart';
 
 class RouteMatrixRequest {
   RouteMatrixRequest({
@@ -17,16 +17,18 @@ class RouteMatrixRequest {
   String? departureTime;
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
-      'origins': origins.map((origin) => origin.toJson()).toList(),
-      'destinations':
-          destinations.map((destination) => destination.toJson()).toList(),
+    final Map<String, dynamic> json = <String, dynamic>{
+      'origins':
+          origins.map((RouteMatrixOrigin origin) => origin.toJson()).toList(),
+      'destinations': destinations
+          .map((RouteMatrixDestination destination) => destination.toJson())
+          .toList(),
       'travelMode': travelMode?.name,
       'routingPreference': routingPreference?.name,
       'departureTime': departureTime,
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -41,12 +43,12 @@ class RouteMatrixOrigin {
   RouteModifiers? routeModifiers;
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'waypoint': waypoint.toJson(),
       'routeModifiers': routeModifiers?.toJson(),
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }

@@ -1,8 +1,8 @@
-import 'package:google_maps_routes_api/src/types/location.dart';
-import 'package:google_maps_routes_api/src/types/polyline.dart';
-import 'package:google_maps_routes_api/src/types/route_leg.dart';
-import 'package:google_maps_routes_api/src/types/enums.dart';
-import 'package:google_maps_routes_api/src/types/travel_advisory.dart';
+import 'enums.dart';
+import 'location.dart';
+import 'polyline.dart';
+import 'route_leg.dart';
+import 'travel_advisory.dart';
 
 class Route {
   const Route({
@@ -37,12 +37,12 @@ class Route {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    List<RouteLabel>? routeLabels = data['routeLabels'] != null
+    final List<RouteLabel>? routeLabels = data['routeLabels'] != null
         ? List<RouteLabel>.from(
             data['routeLabels'].map((label) => RouteLabel.values.byName(label)))
         : null;
 
-    List<RouteLeg> legs = List<RouteLeg>.from(
+    final List<RouteLeg> legs = List<RouteLeg>.from(
         data['legs'].map((model) => RouteLeg.fromJson(model)));
     return Route(
       routeLabels: routeLabels,
@@ -66,9 +66,10 @@ class Route {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
-      'routeLabels': routeLabels?.map((label) => label.name).toList(),
-      'legs': legs?.map((leg) => leg.toJson()).toList(),
+    final Map<String, dynamic> json = <String, dynamic>{
+      'routeLabels':
+          routeLabels?.map((RouteLabel label) => label.name).toList(),
+      'legs': legs?.map((RouteLeg leg) => leg.toJson()).toList(),
       'distanceMeters': distanceMeters,
       'duration': duration,
       'staticDuration': staticDuration,
@@ -80,7 +81,7 @@ class Route {
       'routeToken': routeToken,
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
@@ -105,12 +106,12 @@ class Viewport {
   }
 
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = <String, dynamic>{
+    final Map<String, dynamic> json = <String, dynamic>{
       'low': low?.toMap(),
       'high': high?.toMap(),
     };
 
-    json.removeWhere((key, value) => value == null);
+    json.removeWhere((String key, value) => value == null);
     return json;
   }
 }
