@@ -1,9 +1,22 @@
 import 'enums.dart';
+import 'polyline.dart';
+import 'route.dart';
+import 'route_leg.dart';
 
+/// Encapsulates toll information on a [Route] or on a [RouteLeg]
 class TollInfo {
+  /// Creates a [TollInfo].
   const TollInfo({required this.estimatedPrice});
+
+  /// The monetary amount of tolls for the corresponding [Route] or [RouteLeg].
+  /// This list contains a money amount for each currency that is expected to
+  /// be charged by the toll stations. Typically this list will contain only
+  /// one item for routes with tolls in one currency. For international trips,
+  /// this list may contain multiple items to reflect tolls in different
+  /// currencies.
   final List<Money> estimatedPrice;
 
+  /// Decodes a JSON object to a [TollInfo].
   static TollInfo? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -16,6 +29,7 @@ class TollInfo {
     return TollInfo(estimatedPrice: estimatedPrice);
   }
 
+  /// Returns a JSON representation of the [TollInfo].
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{
       'estimatedPrice':
@@ -27,14 +41,29 @@ class TollInfo {
   }
 }
 
+/// Represents an amount of money with its currency type.
 class Money {
+  /// Creates a [Money].
   const Money(
       {required this.currencyCode, required this.units, required this.nanos});
 
+  /// The three-letter currency code defined in ISO 4217.
   final String currencyCode;
+
+  /// The whole units of the amount. For example if [currencyCode] is "USD",
+  /// then 1 unit is one US dollar.
   final String units;
+
+  /// Number of nano (10^-9) units of the amount. The value must be between
+  /// -999,999,999 and +999,999,999 inclusive. If units is positive, [nanos]
+  /// must be positive or zero. If [units] is zero, [nanos] can be positive,
+  /// zero, or negative. If [units] is negative, [nanos] must be negative or
+  /// zero.
+  ///
+  /// For example $-1.75 is represented as units=-1 and nanos=-750,000,000.
   final int nanos;
 
+  /// Decodes a JSON object to a [Money].
   static Money? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -49,6 +78,7 @@ class Money {
     );
   }
 
+  /// Returns a JSON representation of the [Money].
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{
       'estimatedPrice': currencyCode,
@@ -61,17 +91,27 @@ class Money {
   }
 }
 
+/// Traffic density indicator on a contiguous segment of a [Polyline].
+/// Given a path with points P_0, P_1, ... , P_N (zero-based index),
+/// the [SpeedReadingInterval] defines an interval and describes its traffic.
 class SpeedReadingInterval {
+  /// Creates a [SpeedReadingInterval].
   const SpeedReadingInterval({
     this.speed,
     this.startPolylinePointIndex,
     this.endPolylinePointIndex,
   });
 
+  /// Traffic speed in this interval.
   final Speed? speed;
+
+  /// The starting index of this interval in the [Polyline].
   final int? startPolylinePointIndex;
+
+  /// The ending index of this interval in the [Polyline].
   final int? endPolylinePointIndex;
 
+  /// Decodes a JSON object to a [SpeedReadingInterval].
   static SpeedReadingInterval? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -86,6 +126,7 @@ class SpeedReadingInterval {
     );
   }
 
+  /// Returns a JSON representation of the [SpeedReadingInterval].
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{
       'speed': speed?.name,

@@ -1,16 +1,27 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+import 'enums.dart';
 
 // Types copied from https://github.com/flutter/plugins/tree/main/packages/google_maps_flutter/google_maps_flutter_platform_interface
 
 /// Encapsulates a location (a geographic point [LatLng], and an optional [heading]).
 class Location {
+  /// Creates a [Location].
   const Location({this.latLng, this.heading});
 
+  /// The waypoint's geographic coordinates
   final LatLng? latLng;
+
+  /// The compass heading associated with the direction of the flow of traffic.
+  /// This value is used to specify the side of the road to use for pickup and
+  /// drop-off. The [heading] values can be from 0 to 360, where 0 specifies a
+  /// [heading] of due North, 90 specifies a [heading] of due East, etc.
+  /// You can use this field only for [RouteTravelMode.DRIVE] and
+  /// [RouteTravelMode.TWO_WHEELER] travel modes.
   final int? heading;
 
+  /// Decodes a JSON object to a [Location].
   static Location? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -22,6 +33,7 @@ class Location {
         latLng: LatLng.fromMap(map['latLng']), heading: map['heading']);
   }
 
+  /// Returns a JSON representation of the [Location].
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{
       'latLng': latLng?.toMap(),

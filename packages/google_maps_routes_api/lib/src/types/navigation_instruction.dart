@@ -1,11 +1,20 @@
 import 'enums.dart';
+import 'route_leg.dart';
 
+/// Encapsulates navigation instructions for a [RouteLegStep].
 class NavigationInstruction {
+  /// Creates a [NavigationInstruction].
   const NavigationInstruction({this.maneuver, this.instructions});
 
+  /// Encapsulates the navigation instructions for the current [RouteLegStep]
+  /// (e.g., turn left, merge, straight, etc.). This field determines which
+  /// icon to display.
   final Maneuver? maneuver;
+
+  /// Instructions for navigating this [RouteLegStep].
   final String? instructions;
 
+  /// Decodes a JSON object to a [NavigationInstruction].
   static NavigationInstruction? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -20,6 +29,7 @@ class NavigationInstruction {
         instructions: data['instructions']);
   }
 
+  /// Returns a JSON representation of the [NavigationInstruction].
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{
       'maneuver': maneuver?.name,

@@ -1,15 +1,34 @@
+import 'enums.dart';
+import 'route.dart';
+import 'route_leg.dart';
 import 'toll_info.dart';
 
+/// Encapsulates the additional information that the user should be informed
+/// about, such as possible traffic zone restriction etc.
 class RouteTravelAdvisory {
-  const RouteTravelAdvisory(
-      {this.tollInfo,
-      this.speedReadingIntervals,
-      this.fuelConsumptionMicroliters});
+  /// Creates a [RouteTravelAdvisory]
+  const RouteTravelAdvisory({
+    this.tollInfo,
+    this.speedReadingIntervals,
+    this.fuelConsumptionMicroliters,
+  });
 
+  /// Encapsulates information about tolls on the [Route]. This field is only
+  /// populated if we expect there are tolls on the [Route]. If this field is
+  /// set but the [TollInfo.estimatedPrice] subfield is not populated, we
+  /// expect that road contains tolls but we do not know an estimated price.
+  /// If this field is not set, then we expect there is no toll on the [Route].
   final TollInfo? tollInfo;
+
+  /// Speed reading intervals detailing traffic density for the [Route].
+  /// Applicable in case of [RoutingPreference.TRAFFIC_AWARE] and
+  /// [RoutingPreference.TRAFFIC_AWARE_OPTIMAL] routing preferences.
   final List<SpeedReadingInterval>? speedReadingIntervals;
+
+  /// The fuel consumption prediction in microliters.
   final String? fuelConsumptionMicroliters;
 
+  /// Decodes a JSON object to a [RouteTravelAdvisory].
   static RouteTravelAdvisory? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -30,6 +49,7 @@ class RouteTravelAdvisory {
     );
   }
 
+  /// Returns a JSON representation of the [RouteTravelAdvisory].
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{
       'tollInfo': tollInfo?.toJson(),
@@ -44,12 +64,26 @@ class RouteTravelAdvisory {
   }
 }
 
+/// Encapsulates the additional information that the user should be informed
+/// about, such as possible traffic zone restriction etc. on a [RouteLeg].
 class RouteLegTravelAdvisory {
+  /// Creates a [RouteLegTravelAdvisory].
   const RouteLegTravelAdvisory({this.tollInfo, this.speedReadingIntervals});
 
+  /// Encapsulates information about tolls on the specific [RouteLeg].
+  /// This field is only populated if we expect there are tolls on the
+  /// [RouteLeg]. If this field is set but the [TollInfo.estimatedPrice]
+  /// subfield is not populated, we expect that road contains tolls but we do
+  /// not know an estimated price. If this field does not exist, then there is
+  /// no toll on the [RouteLeg].
   final TollInfo? tollInfo;
+
+  /// Speed reading intervals detailing traffic density for the [RouteLeg].
+  /// Applicable in case of [RoutingPreference.TRAFFIC_AWARE] and
+  /// [RoutingPreference.TRAFFIC_AWARE_OPTIMAL] routing preferences.
   final List<SpeedReadingInterval>? speedReadingIntervals;
 
+  /// Decodes a JSON object to a [RouteLegTravelAdvisory].
   static RouteLegTravelAdvisory? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -69,6 +103,7 @@ class RouteLegTravelAdvisory {
         speedReadingIntervals: speedReadingIntervals);
   }
 
+  /// Returns a JSON representation of the [RouteLegTravelAdvisory].
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{
       'tollInfo': tollInfo?.toJson(),
@@ -82,11 +117,18 @@ class RouteLegTravelAdvisory {
   }
 }
 
+/// Encapsulates the additional information that the user should be informed
+/// about, such as possible traffic zone restriction etc. on a [RouteLegStep].
 class RouteLegStepTravelAdvisory {
+  /// Creates a [RouteLegStepTravelAdvisory]
   const RouteLegStepTravelAdvisory({required this.speedReadingIntervals});
 
+  /// Speed reading intervals detailing traffic density for the [RouteLegStep].
+  /// Applicable in case of [RoutingPreference.TRAFFIC_AWARE] and
+  /// [RoutingPreference.TRAFFIC_AWARE_OPTIMAL] routing preferences.
   final List<SpeedReadingInterval> speedReadingIntervals;
 
+  /// Decodes a JSON object to a [RouteLegStepTravelAdvisory].
   static RouteLegStepTravelAdvisory? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -101,6 +143,7 @@ class RouteLegStepTravelAdvisory {
         speedReadingIntervals: speedReadingIntervals);
   }
 
+  /// Returns a JSON representation of the [RouteLegStepTravelAdvisory].
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'speedReadingIntervals': speedReadingIntervals

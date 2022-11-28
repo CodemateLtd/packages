@@ -1,5 +1,6 @@
 import 'enums.dart';
 import 'routes_request.dart';
+import 'waypoint.dart';
 
 class RouteMatrixRequest {
   RouteMatrixRequest({

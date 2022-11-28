@@ -1,5 +1,6 @@
 import 'package:google_maps_routes_api/routes_service.dart';
 import 'package:google_maps_routes_api/src/types/index.dart';
+import 'package:google_maps_routes_api/src/types/waypoint.dart';
 
 void main() async {
   final RoutesResponse routes = await _computeRoutes();
