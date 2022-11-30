@@ -1,3 +1,7 @@
+// Copyright 2013 The Flutter Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 export 'package:google_maps_routes_api/src/types/enums.dart';
 export 'package:google_maps_routes_api/src/types/location.dart';
 export 'package:google_maps_routes_api/src/types/navigation_instruction.dart';
