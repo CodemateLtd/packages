@@ -39,14 +39,15 @@ class RouteLeg {
   final Polyline? polyline;
 
   /// The start [Location] of this [RouteLeg]. This might be different from the
-  /// provided [RoutesRequest.origin]. For example, when the provided
-  /// [RoutesRequest.origin] is not near a road, this is a point on the road.
+  /// provided [ComputeRoutesRequest.origin]. For example, when the provided
+  /// [ComputeRoutesRequest.origin] is not near a road, this is a point on the
+  /// road.
   final Location? startLocation;
 
   /// The end [Location] of this [RouteLeg]. This might be different from the
-  /// provided [RoutesRequest.destination]. For example, when the provided
-  /// [RoutesRequest.destination] is not near a road, this is a point on the
-  /// road.
+  /// provided [ComputeRoutesRequest.destination]. For example, when the provided
+  /// [ComputeRoutesRequest.destination] is not near a road, this is a point on
+  /// the road.
   final Location? endLocation;
 
   /// An array of [RouteLegStep] objects denoting segments within this
