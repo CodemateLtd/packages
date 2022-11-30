@@ -1,16 +1,27 @@
+import 'fallback_info.dart';
 import 'route.dart';
+import 'routes_request.dart';
 
-export 'package:google_maps_routes_api/src/types/route.dart';
-export 'package:google_maps_routes_api/src/types/route_leg.dart';
-export 'package:google_maps_routes_api/src/types/toll_info.dart';
+/// v2.computeRoutes response message
+class ComputeRoutesResponse {
+  /// Creates a [ComputeRoutesResponse] object.
+  const ComputeRoutesResponse({this.routes, this.fallbackInfo});
 
-class RoutesResponse {
-  const RoutesResponse({this.routes, this.fallbackInfo});
-
+  /// Contains an array of computed routes (up to three) when you specify
+  /// [ComputeRoutesRequest.computeAlternativeRoutes], and contains just one
+  /// [Route] when you don't. When this array contains multiple entries, the
+  /// first one is the most recommended [Route]. If the array is empty, then
+  /// it means no [Route] could be found.
   final List<Route>? routes;
+
+  /// In some cases when the server is not able to compute the route results
+  /// with all of the input preferences, it may fallback to using a different
+  /// way of computation. When fallback mode is used, this field contains
+  /// detailed info about the fallback response. Otherwise this field is unset.
   final FallbackInfo? fallbackInfo;
 
-  static RoutesResponse? fromJson(Object? json) {
+  /// Decodes a JSON object to a [ComputeRoutesResponse].
+  static ComputeRoutesResponse? fromJson(Object? json) {
     if (json == null) {
       return null;
     }
@@ -21,7 +32,7 @@ class RoutesResponse {
         ? List<Route>.from(data['routes'].map((model) => Route.fromJson(model)))
         : null;
 
-    return RoutesResponse(
+    return ComputeRoutesResponse(
       routes: routes,
       fallbackInfo: FallbackInfo.fromJson(
         data['FallbackInfo'],
@@ -29,6 +40,7 @@ class RoutesResponse {
     );
   }
 
+  /// Returns a JSON representation of the [ComputeRoutesResponse].
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{
       'routes': routes?.map((Route route) => route.toJson()).toList(),
@@ -38,52 +50,4 @@ class RoutesResponse {
     json.removeWhere((String key, value) => value == null);
     return json;
   }
-}
-
-class FallbackInfo {
-  const FallbackInfo({this.routingMode, this.reason});
-
-  final FallbackRoutingMode? routingMode;
-  final FallbackReason? reason;
-
-  static FallbackInfo? fromJson(Object? json) {
-    if (json == null) {
-      return null;
-    }
-    assert(json is Map<String, dynamic>);
-    final Map<String, dynamic> data = json as Map<String, dynamic>;
-
-    return FallbackInfo(
-      routingMode: data['routingMode'] != null
-          ? FallbackRoutingMode.values.byName(data['routingMode'])
-          : null,
-      reason: data['reason'] != null
-          ? FallbackReason.values.byName(
-              data['reason'],
-            )
-          : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> json = <String, dynamic>{
-      'routingMode': routingMode?.name,
-      'reason': reason?.name,
-    };
-
-    json.removeWhere((String key, value) => value == null);
-    return json;
-  }
-}
-
-enum FallbackRoutingMode {
-  FALLBACK_ROUTING_MODE_UNSPECIFIED,
-  FALLBACK_TRAFFIC_UNAWARE,
-  FALLBACK_TRAFFIC_AWARE,
-}
-
-enum FallbackReason {
-  FALLBACK_REASON_UNSPECIFIED,
-  SERVER_ERROR,
-  LATENCY_EXCEEDED,
 }

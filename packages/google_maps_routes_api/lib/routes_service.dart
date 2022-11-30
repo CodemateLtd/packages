@@ -14,7 +14,7 @@ class RoutesService {
 
   static const String _routesApiUrl = 'https://routes.googleapis.com/';
 
-  Future<RoutesResponse> computeRoute(
+  Future<ComputeRoutesResponse> computeRoute(
     ComputeRoutesRequest body, {
     String? fields,
     Map<String, String>? headers,
@@ -36,9 +36,9 @@ class RoutesService {
       throw Exception(response.body);
     }
 
-    final RoutesResponse? result =
-        RoutesResponse.fromJson(json.decode(response.body));
-    return Future<RoutesResponse>.value(result);
+    final ComputeRoutesResponse? result =
+        ComputeRoutesResponse.fromJson(json.decode(response.body));
+    return Future<ComputeRoutesResponse>.value(result);
   }
 
   Future<List<RouteMatrixElement>> computeRouteMatrix(

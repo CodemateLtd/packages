@@ -1,5 +1,5 @@
 import 'enums.dart';
-import 'routes_response.dart';
+import 'fallback_info.dart';
 import 'travel_advisory.dart';
 
 /// Encapsulates route information computed for an origin/destination pair in

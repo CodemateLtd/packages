@@ -3,7 +3,7 @@ import 'package:google_maps_routes_api/src/types/index.dart';
 import 'package:google_maps_routes_api/src/types/waypoint.dart';
 
 void main() async {
-  final RoutesResponse routes = await _computeRoutes();
+  final ComputeRoutesResponse routes = await _computeRoutes();
   print('ROUTES FETCHED:');
   print(routes.toJson());
   print('\n\n');
@@ -12,7 +12,7 @@ void main() async {
   print(matrixes.map((RouteMatrixElement matrix) => matrix.toJson()));
 }
 
-Future<RoutesResponse> _computeRoutes() async {
+Future<ComputeRoutesResponse> _computeRoutes() async {
   const String API_KEY =
       String.fromEnvironment('GOOGLE_API_KEY', defaultValue: 'GOOGLE_API_KEY');
 
@@ -36,7 +36,7 @@ Future<RoutesResponse> _computeRoutes() async {
 
   const String fields =
       'routes.legs,routes.duration,routes.distanceMeters,routes.polyline,routes.warnings,routes.description,routes.viewport,routes.routeLabels';
-  final RoutesResponse response =
+  final ComputeRoutesResponse response =
       await routesService.computeRoute(body, fields: fields);
   return response;
 }
