@@ -75,7 +75,7 @@ enum RouteLabel {
   DEFAULT_ROUTE,
 
   /// An alternative to the default "best" route. Routes like this will be
-  /// returned when [RoutesRequest.computeAlternativeRoutes] is specified.
+  /// returned when [ComputeRoutesRequest.computeAlternativeRoutes] is specified.
   DEFAULT_ROUTE_ALTERNATE,
 
   /// Fuel efficient route. Routes labeled with this value are determined to be
@@ -168,7 +168,7 @@ enum Units {
   IMPERIAL,
 }
 
-/// A supported reference route on the [RoutesRequest].
+/// A supported reference route on the [ComputeRoutesRequest].
 enum ReferenceRoute {
   /// Not used. Requests containing this value fail.
   REFERENCE_ROUTE_UNSPECIFIED,
@@ -261,7 +261,19 @@ enum TollPass {
   /// India, HP state plate exemption.
   IN_LOCAL_HP_PLATE_EXEMPT,
 
-  /// Mexico toll pass.
+  /// Mexico toll pass. https://iave.capufe.gob.mx/#/
+  MX_IAVE,
+
+  /// Mexico https://www.pase.com.mx
+  MX_PASE,
+
+  /// Mexico https://operadoravial.com/quick-pass/
+  MX_QUICKPASS,
+
+  /// http://appsh.chihuahua.gob.mx/transparencia/?doc=/ingresos/TelepeajeFormato4.pdf
+  MX_SISTEMA_TELEPEAJE_CHIHUAHUA,
+
+  /// Mexico.
   MX_TAG_IAVE,
 
   /// Mexico toll pass company. One of many operating in Mexico City. See
