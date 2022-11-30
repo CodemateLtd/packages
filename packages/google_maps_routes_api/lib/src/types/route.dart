@@ -90,7 +90,7 @@ class Route {
 
     final List<RouteLeg> legs = List<RouteLeg>.from(
       data['legs'].map(
-        (Map<String, dynamic> model) => RouteLeg.fromJson(model),
+        (dynamic model) => RouteLeg.fromJson(model),
       ),
     );
 

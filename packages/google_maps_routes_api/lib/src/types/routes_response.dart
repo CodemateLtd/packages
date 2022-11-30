@@ -33,7 +33,7 @@ class ComputeRoutesResponse {
 
     final List<Route>? routes = data['routes'] != null
         ? List<Route>.from(data['routes']
-            .map((Map<String, dynamic> model) => Route.fromJson(model)))
+            .map((dynamic model) => Route.fromJson(model)))
         : null;
 
     return ComputeRoutesResponse(

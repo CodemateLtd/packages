@@ -111,8 +111,7 @@ class RoutesService {
 
     final List<RouteMatrixElement> result = List<RouteMatrixElement>.from(json
         .decode(response.body)
-        .map((Map<String, dynamic> model) =>
-            RouteMatrixElement.fromJson(model)));
+        .map((dynamic model) => RouteMatrixElement.fromJson(model)));
     return Future<List<RouteMatrixElement>>.value(result);
   }
 }

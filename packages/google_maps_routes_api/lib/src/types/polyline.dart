@@ -67,8 +67,7 @@ class GeoJsonLinestring {
     return GeoJsonLinestring(
       type: data['type'],
       coordinates: List<LatLng>.from(
-        data['coordinates']
-            .map((List<Object?> coordinate) => LatLng.fromJson(coordinate)),
+        data['coordinates'].map((dynamic coordinate) => LatLng.fromJson(coordinate)),
       ),
     );
   }
