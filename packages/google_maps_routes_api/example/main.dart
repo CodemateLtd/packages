@@ -7,9 +7,9 @@ void main() async {
   print('ROUTES FETCHED:');
   print(routes.toJson());
   print('\n\n');
-  final List<RouteMatrix> matrixes = await _computeRouteMatrix();
+  final List<RouteMatrixElement> matrixes = await _computeRouteMatrix();
   print('ROUTE MATRIX FETCHED:');
-  print(matrixes.map((RouteMatrix matrix) => matrix.toJson()));
+  print(matrixes.map((RouteMatrixElement matrix) => matrix.toJson()));
 }
 
 Future<RoutesResponse> _computeRoutes() async {
@@ -27,7 +27,7 @@ Future<RoutesResponse> _computeRoutes() async {
       latLng: LatLng(37.417670, -122.079595),
     ),
   );
-  final RoutesRequest body = RoutesRequest(
+  final ComputeRoutesRequest body = ComputeRoutesRequest(
     origin: origin,
     destination: destination,
     travelMode: RouteTravelMode.DRIVE,
@@ -35,13 +35,13 @@ Future<RoutesResponse> _computeRoutes() async {
   );
 
   const String fields =
-      'routes.legs,routes.duration,routes.distanceMeters,routes.polyline,routes.warnings,routes.description';
+      'routes.legs,routes.duration,routes.distanceMeters,routes.polyline,routes.warnings,routes.description,routes.viewport,routes.routeLabels';
   final RoutesResponse response =
       await routesService.computeRoute(body, fields: fields);
   return response;
 }
 
-Future<List<RouteMatrix>> _computeRouteMatrix() async {
+Future<List<RouteMatrixElement>> _computeRouteMatrix() async {
   const String API_KEY =
       String.fromEnvironment('GOOGLE_API_KEY', defaultValue: 'GOOGLE_API_KEY');
 
@@ -82,13 +82,13 @@ Future<List<RouteMatrix>> _computeRouteMatrix() async {
   const String fields =
       'status,originIndex,destinationIndex,condition,distanceMeters,duration';
 
-  final RouteMatrixRequest body = RouteMatrixRequest(
+  final ComputeRouteMatrixRequest body = ComputeRouteMatrixRequest(
     origins: origins,
     destinations: destinations,
     travelMode: RouteTravelMode.DRIVE,
     routingPreference: RoutingPreference.TRAFFIC_AWARE,
   );
-  final List<RouteMatrix> response =
+  final List<RouteMatrixElement> response =
       await routesService.computeRouteMatrix(body, fields: fields);
 
   return response;

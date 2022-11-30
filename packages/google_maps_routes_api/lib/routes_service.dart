@@ -15,7 +15,7 @@ class RoutesService {
   static const String _routesApiUrl = 'https://routes.googleapis.com/';
 
   Future<RoutesResponse> computeRoute(
-    RoutesRequest body, {
+    ComputeRoutesRequest body, {
     String? fields,
     Map<String, String>? headers,
   }) async {
@@ -41,8 +41,11 @@ class RoutesService {
     return Future<RoutesResponse>.value(result);
   }
 
-  Future<List<RouteMatrix>> computeRouteMatrix(RouteMatrixRequest body,
-      {String? fields, Map<String, String>? headers}) async {
+  Future<List<RouteMatrixElement>> computeRouteMatrix(
+    ComputeRouteMatrixRequest body, {
+    String? fields,
+    Map<String, String>? headers,
+  }) async {
     const String url = '$_routesApiUrl/distanceMatrix/v2:computeRouteMatrix';
     final Map<String, String> defaultHeaders = {
       'X-Goog-Api-Key': apiKey,
@@ -60,8 +63,9 @@ class RoutesService {
       throw Exception(response.body);
     }
 
-    final List<RouteMatrix> result = List<RouteMatrix>.from(
-        json.decode(response.body).map((model) => RouteMatrix.fromJson(model)));
-    return Future<List<RouteMatrix>>.value(result);
+    final List<RouteMatrixElement> result = List<RouteMatrixElement>.from(json
+        .decode(response.body)
+        .map((model) => RouteMatrixElement.fromJson(model)));
+    return Future<List<RouteMatrixElement>>.value(result);
   }
 }
