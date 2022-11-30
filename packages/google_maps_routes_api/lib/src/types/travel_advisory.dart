@@ -37,8 +37,9 @@ class RouteTravelAdvisory {
     final Map<String, dynamic> data = json as Map<String, dynamic>;
     final List<SpeedReadingInterval>? speedReadingIntervals =
         data['speedReadingIntervals'] != null
-            ? List<SpeedReadingInterval>.from(data['speedReadingIntervals']
-                .map((model) => SpeedReadingInterval.fromJson(model)))
+            ? List<SpeedReadingInterval>.from(data['speedReadingIntervals'].map(
+                (Map<String, dynamic> model) =>
+                    SpeedReadingInterval.fromJson(model)))
             : null;
 
     return RouteTravelAdvisory(
@@ -59,7 +60,7 @@ class RouteTravelAdvisory {
       'fuelConsumptionMicroliters': fuelConsumptionMicroliters,
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
@@ -92,8 +93,9 @@ class RouteLegTravelAdvisory {
     final Map<String, dynamic> data = json as Map<String, dynamic>;
     final List<SpeedReadingInterval>? speedReadingIntervals =
         data['speedReadingIntervals'] != null
-            ? List<SpeedReadingInterval>.from(data['speedReadingIntervals']
-                .map((model) => SpeedReadingInterval.fromJson(model)))
+            ? List<SpeedReadingInterval>.from(data['speedReadingIntervals'].map(
+                (Map<String, dynamic> model) =>
+                    SpeedReadingInterval.fromJson(model)))
             : null;
 
     return RouteLegTravelAdvisory(
@@ -112,7 +114,7 @@ class RouteLegTravelAdvisory {
           .toList(),
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
@@ -136,8 +138,9 @@ class RouteLegStepTravelAdvisory {
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
     final List<SpeedReadingInterval> speedReadingIntervals =
-        List<SpeedReadingInterval>.from(data['speedReadingIntervals']
-            .map((model) => SpeedReadingInterval.fromJson(model)));
+        List<SpeedReadingInterval>.from(data['speedReadingIntervals'].map(
+            (Map<String, dynamic> model) =>
+                SpeedReadingInterval.fromJson(model)));
 
     return RouteLegStepTravelAdvisory(
         speedReadingIntervals: speedReadingIntervals);

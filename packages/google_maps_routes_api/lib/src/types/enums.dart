@@ -1,7 +1,6 @@
 import 'polyline.dart';
 import 'route.dart';
 import 'route_leg.dart';
-import 'route_matrix.dart';
 import 'routes_request.dart';
 
 /// A set of values that specify the navigation action to take for the current

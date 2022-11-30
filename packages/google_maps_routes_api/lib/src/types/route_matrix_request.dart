@@ -68,7 +68,7 @@ class ComputeRouteMatrixRequest {
       'departureTime': departureTime,
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
@@ -94,7 +94,7 @@ class RouteMatrixOrigin {
       'routeModifiers': routeModifiers?.toJson(),
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }

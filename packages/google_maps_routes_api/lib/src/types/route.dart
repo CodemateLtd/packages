@@ -86,7 +86,10 @@ class Route {
         : null;
 
     final List<RouteLeg> legs = List<RouteLeg>.from(
-        data['legs'].map((model) => RouteLeg.fromJson(model)));
+      data['legs'].map(
+        (Map<String, dynamic> model) => RouteLeg.fromJson(model),
+      ),
+    );
 
     return Route(
       routeLabels: routeLabels,
@@ -97,9 +100,9 @@ class Route {
       polyline:
           data['polyline'] != null ? Polyline.fromJson(data['polyline']) : null,
       description: data['description'],
-      warnings: data['warnings'] == null
-          ? []
-          : (data['warnings'] as List<dynamic>).cast<String>(),
+      warnings: data['warnings'] != null
+          ? (data['warnings'] as List<dynamic>).cast<String>()
+          : null,
       viewport:
           data['viewport'] != null ? Viewport.fromJson(data['viewport']) : null,
       travelAdvisory: data['travelAdvisory'] == null
@@ -126,7 +129,7 @@ class Route {
       'routeToken': routeToken,
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }

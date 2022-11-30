@@ -1,5 +1,5 @@
 name: google_maps_routes_api
-description: A new Flutter package project.
+description: Google Maps Routes API service to calculate routes and route matrixes between locations.
 version: 0.0.1
 homepage:
 
@@ -15,7 +15,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -113,7 +113,7 @@ class ComputeRoutesRequest {
       'requestedReferenceRoutes': requestedReferenceRoutes?.name
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
@@ -169,9 +169,9 @@ class RouteModifiers {
       'avoidFerries': avoidFerries,
       'avoidIndoor': avoidIndoor,
       'vehicleInfo': vehicleInfo?.toJson(),
-      'tollPasses': tollPasses as List<String>,
+      'tollPasses': tollPasses?.map((TollPass tollPass) => tollPass.name),
     };
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }

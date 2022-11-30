@@ -42,7 +42,7 @@ class RoutesService {
     if (queryParams != null && queryParams.isNotEmpty) {
       url += '?${queryParams.join("&")}';
     }
-    final Map<String, String> defaultHeaders = {
+    final Map<String, String> defaultHeaders = <String, String>{
       'X-Goog-Api-Key': apiKey,
       'X-Goog-Fieldmask': fields ?? 'routes.duration, routes.distanceMeters',
       'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ class RoutesService {
     final http.Response response = await http.post(
       Uri.parse(url),
       body: jsonEncode(body),
-      headers: {...defaultHeaders, ...?headers},
+      headers: <String, String>{...defaultHeaders, ...?headers},
     );
 
     if (response.statusCode != 200) {
@@ -90,7 +90,7 @@ class RoutesService {
       url += '?${queryParams.join("&")}';
     }
 
-    final Map<String, String> defaultHeaders = {
+    final Map<String, String> defaultHeaders = <String, String>{
       'X-Goog-Api-Key': apiKey,
       'X-Goog-Fieldmask': fields ?? 'duration, distanceMeters',
       'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ class RoutesService {
     final http.Response response = await http.post(
       Uri.parse(url),
       body: jsonEncode(body),
-      headers: {...defaultHeaders, ...?headers},
+      headers: <String, String>{...defaultHeaders, ...?headers},
     );
 
     if (response.statusCode != 200) {
@@ -108,7 +108,8 @@ class RoutesService {
 
     final List<RouteMatrixElement> result = List<RouteMatrixElement>.from(json
         .decode(response.body)
-        .map((model) => RouteMatrixElement.fromJson(model)));
+        .map((Map<String, dynamic> model) =>
+            RouteMatrixElement.fromJson(model)));
     return Future<List<RouteMatrixElement>>.value(result);
   }
 }

@@ -24,7 +24,7 @@ class TollInfo {
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
     final List<Money> estimatedPrice = List<Money>.from(
-        data['estimatedPrice'].map((model) => Money.fromJson(model)));
+        data['estimatedPrice'].map((Map<String, dynamic> model) => Money.fromJson(model)));
 
     return TollInfo(estimatedPrice: estimatedPrice);
   }
@@ -36,7 +36,7 @@ class TollInfo {
           estimatedPrice.map((Money price) => price.toJson()).toList(),
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
@@ -86,7 +86,7 @@ class Money {
       'nanos': nanos,
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
@@ -134,7 +134,7 @@ class SpeedReadingInterval {
       'endPolylinePointIndex': endPolylinePointIndex,
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }

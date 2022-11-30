@@ -35,7 +35,7 @@ class Polyline {
       'geoJsonLinestring': geoJsonLinestring?.toJson(),
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
@@ -64,7 +64,8 @@ class GeoJsonLinestring {
     return GeoJsonLinestring(
       type: data['type'],
       coordinates: List<LatLng>.from(
-        data['coordinates'].map((coordinate) => LatLng.fromJson(coordinate)),
+        data['coordinates']
+            .map((List<Object?> coordinate) => LatLng.fromJson(coordinate)),
       ),
     );
   }
@@ -77,7 +78,7 @@ class GeoJsonLinestring {
           coordinates.map((LatLng coordinate) => coordinate.toJson()).toList(),
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }

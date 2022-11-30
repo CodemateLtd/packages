@@ -46,7 +46,7 @@ Future<List<RouteMatrixElement>> _computeRouteMatrix() async {
       String.fromEnvironment('GOOGLE_API_KEY', defaultValue: 'GOOGLE_API_KEY');
 
   const RoutesService routesService = RoutesService(apiKey: API_KEY);
-  final List<RouteMatrixOrigin> origins = [
+  final List<RouteMatrixOrigin> origins = <RouteMatrixOrigin>[
     RouteMatrixOrigin(
       waypoint: const Waypoint(
         location: Location(
@@ -62,7 +62,7 @@ Future<List<RouteMatrixElement>> _computeRouteMatrix() async {
       ),
     ),
   ];
-  final List<RouteMatrixDestination> destinations = [
+  final List<RouteMatrixDestination> destinations = <RouteMatrixDestination>[
     RouteMatrixDestination(
       waypoint: const Waypoint(
         location: Location(

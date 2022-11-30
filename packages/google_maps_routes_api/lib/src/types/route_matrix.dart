@@ -93,7 +93,7 @@ class RouteMatrixElement {
       'destinationIndex': destinationIndex,
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
@@ -142,7 +142,7 @@ class Status {
       'details': details,
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }

@@ -75,10 +75,12 @@ class LatLng {
     return <double>[latitude, longitude];
   }
 
+  /// Converts this object to a serializable map.
   Map<String, dynamic> toMap() {
-    return {'latitude': latitude, 'longitude': longitude};
+    return <String, dynamic>{'latitude': latitude, 'longitude': longitude};
   }
 
+  /// Initializes a [LatLng] from a dynamic map.
   static LatLng? fromMap(Map<String, dynamic> map) {
     if (map == null) {
       return null;
@@ -87,7 +89,7 @@ class LatLng {
     return LatLng(map['latitude'], map['longitude']);
   }
 
-  /// Initialize a LatLng from an \[lat, lng\] array.
+  /// Initialize a [LatLng] from an \[lat, lng\] array.
   static LatLng? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -95,66 +97,5 @@ class LatLng {
     assert(json is List && json.length == 2);
     final List<Object?> list = json as List<Object?>;
     return LatLng(list[0]! as double, list[1]! as double);
-  }
-}
-
-/// A latitude/longitude aligned rectangle.
-///
-/// The rectangle conceptually includes all points (lat, lng) where
-/// * lat ∈ [`southwest.latitude`, `northeast.latitude`]
-/// * lng ∈ [`southwest.longitude`, `northeast.longitude`],
-///   if `southwest.longitude` ≤ `northeast.longitude`,
-/// * lng ∈ [-180, `northeast.longitude`] ∪ [`southwest.longitude`, 180],
-///   if `northeast.longitude` < `southwest.longitude`
-class LatLngBounds {
-  /// Creates geographical bounding box with the specified corners.
-  ///
-  /// The latitude of the southwest corner cannot be larger than the
-  /// latitude of the northeast corner.
-  LatLngBounds({required this.southwest, required this.northeast})
-      : assert(southwest != null),
-        assert(northeast != null),
-        assert(southwest.latitude <= northeast.latitude);
-
-  /// The southwest corner of the rectangle.
-  final LatLng southwest;
-
-  /// The northeast corner of the rectangle.
-  final LatLng northeast;
-
-  /// Converts this object to something serializable in JSON.
-  Object toJson() {
-    return <Object>[southwest.toJson(), northeast.toJson()];
-  }
-
-  /// Returns whether this rectangle contains the given [LatLng].
-  bool contains(LatLng point) {
-    return _containsLatitude(point.latitude) &&
-        _containsLongitude(point.longitude);
-  }
-
-  bool _containsLatitude(double lat) {
-    return (southwest.latitude <= lat) && (lat <= northeast.latitude);
-  }
-
-  bool _containsLongitude(double lng) {
-    if (southwest.longitude <= northeast.longitude) {
-      return southwest.longitude <= lng && lng <= northeast.longitude;
-    } else {
-      return southwest.longitude <= lng || lng <= northeast.longitude;
-    }
-  }
-
-  /// Converts a list to [LatLngBounds].
-  static LatLngBounds? fromList(Object? json) {
-    if (json == null) {
-      return null;
-    }
-    assert(json is List && json.length == 2);
-    final List<Object?> list = json as List<Object?>;
-    return LatLngBounds(
-      southwest: LatLng.fromJson(list[0])!,
-      northeast: LatLng.fromJson(list[1])!,
-    );
   }
 }

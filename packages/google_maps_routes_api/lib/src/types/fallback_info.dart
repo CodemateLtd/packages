@@ -44,7 +44,7 @@ class FallbackInfo {
       'reason': reason?.name,
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }

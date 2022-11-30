@@ -65,8 +65,8 @@ class RouteLeg {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    final List<RouteLegStep> steps = List<RouteLegStep>.from(
-        data['steps'].map((model) => RouteLegStep.fromJson(model)));
+    final List<RouteLegStep> steps = List<RouteLegStep>.from(data['steps']
+        .map((Map<String, dynamic> model) => RouteLegStep.fromJson(model)));
 
     return RouteLeg(
       distanceMeters: data['distanceMeters'],
@@ -99,7 +99,7 @@ class RouteLeg {
       'travelAdvisory': travelAdvisory?.toJson(),
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
@@ -186,7 +186,7 @@ class RouteLegStep {
       'travelAdvisory': travelAdvisory?.toJson(),
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }

@@ -29,7 +29,8 @@ class ComputeRoutesResponse {
     final Map<String, dynamic> data = json as Map<String, dynamic>;
 
     final List<Route>? routes = data['routes'] != null
-        ? List<Route>.from(data['routes'].map((model) => Route.fromJson(model)))
+        ? List<Route>.from(data['routes']
+            .map((Map<String, dynamic> model) => Route.fromJson(model)))
         : null;
 
     return ComputeRoutesResponse(
@@ -47,7 +48,7 @@ class ComputeRoutesResponse {
       'fallbackInfo': fallbackInfo?.toJson(),
     };
 
-    json.removeWhere((String key, value) => value == null);
+    json.removeWhere((String key, dynamic value) => value == null);
     return json;
   }
 }
