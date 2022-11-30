@@ -6,20 +6,42 @@ import 'package:http/http.dart' as http;
 
 import 'src/types/index.dart';
 
-/// A service used to calculate a route between two points
+/// A service used to calculate routes and route matrixes using
+/// Google Routes API REST endpoints.
 class RoutesService {
+  /// Creates the [RoutesService].
   const RoutesService({required this.apiKey});
 
+  /// Google API key used for the requests.
   final String apiKey;
 
   static const String _routesApiUrl = 'https://routes.googleapis.com/';
 
+  /// POST https://routes.googleapis.com/directions/v2:computeRoutes
+  ///
+  /// You can provide the response field mask by using the [fields] parameter.
+  ///
+  /// Default field mask if no [fields] are given is:
+  /// 'routes.duration, routes.distanceMeters'
+  ///
+  /// You can also provide additional [headers] and [queryParams] for the
+  /// request.
+  ///
+  /// See the available URL query params and headers:
+  /// https://cloud.google.com/apis/docs/system-parameters
+  ///
+  /// Detailed documentation about how to construct the field paths:
+  /// https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/field_mask.proto
   Future<ComputeRoutesResponse> computeRoute(
     ComputeRoutesRequest body, {
     String? fields,
     Map<String, String>? headers,
+    List<String>? queryParams,
   }) async {
-    const String url = '$_routesApiUrl/directions/v2:computeRoutes';
+    String url = '$_routesApiUrl/directions/v2:computeRoutes';
+    if (queryParams != null && queryParams.isNotEmpty) {
+      url += '?${queryParams.join("&")}';
+    }
     final Map<String, String> defaultHeaders = {
       'X-Goog-Api-Key': apiKey,
       'X-Goog-Fieldmask': fields ?? 'routes.duration, routes.distanceMeters',
@@ -41,12 +63,33 @@ class RoutesService {
     return Future<ComputeRoutesResponse>.value(result);
   }
 
+  /// POST https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix
+  ///
+  /// You can provide the response field mask by using the [fields] parameter.
+  ///
+  /// Default field mask if no [fields] are given is:
+  /// 'duration, distanceMeters'
+  ///
+  /// You can also provide additional [headers] and [queryParams] for the
+  /// request.
+  ///
+  /// See the available URL query params and headers:
+  /// https://cloud.google.com/apis/docs/system-parameters
+  ///
+  /// Detailed documentation about how to construct the field paths:
+  /// https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/field_mask.proto
   Future<List<RouteMatrixElement>> computeRouteMatrix(
     ComputeRouteMatrixRequest body, {
     String? fields,
     Map<String, String>? headers,
+    List<String>? queryParams,
   }) async {
-    const String url = '$_routesApiUrl/distanceMatrix/v2:computeRouteMatrix';
+    String url = '$_routesApiUrl/distanceMatrix/v2:computeRouteMatrix';
+
+    if (queryParams != null && queryParams.isNotEmpty) {
+      url += '?${queryParams.join("&")}';
+    }
+
     final Map<String, String> defaultHeaders = {
       'X-Goog-Api-Key': apiKey,
       'X-Goog-Fieldmask': fields ?? 'duration, distanceMeters',
