@@ -109,9 +109,11 @@ class RoutesService {
       throw Exception(response.body);
     }
 
-    final List<RouteMatrixElement> result = List<RouteMatrixElement>.from(json
-        .decode(response.body)
-        .map((dynamic model) => RouteMatrixElement.fromJson(model)));
+    final List<RouteMatrixElement> result = List<RouteMatrixElement>.from(
+      (json.decode(response.body) as List<dynamic>).map(
+        (dynamic model) => RouteMatrixElement.fromJson(model),
+      ),
+    );
     return Future<List<RouteMatrixElement>>.value(result);
   }
 }

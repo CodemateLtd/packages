@@ -27,7 +27,10 @@ class TollInfo {
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
     final List<Money> estimatedPrice = List<Money>.from(
-        data['estimatedPrice'].map((dynamic model) => Money.fromJson(model)));
+      (data['estimatedPrice'] as List<dynamic>).map(
+        (dynamic model) => Money.fromJson(model),
+      ),
+    );
 
     return TollInfo(estimatedPrice: estimatedPrice);
   }

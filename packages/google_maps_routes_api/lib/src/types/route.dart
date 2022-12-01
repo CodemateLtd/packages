@@ -88,11 +88,13 @@ class Route {
           )
         : null;
 
-    final List<RouteLeg> legs = List<RouteLeg>.from(
-      data['legs'].map(
-        (dynamic model) => RouteLeg.fromJson(model),
-      ),
-    );
+    final List<RouteLeg>? legs = data['legs'] != null
+        ? List<RouteLeg>.from(
+            (data['legs'] as List<dynamic>).map(
+              (dynamic model) => RouteLeg.fromJson(model),
+            ),
+          )
+        : null;
 
     return Route(
       routeLabels: routeLabels,
