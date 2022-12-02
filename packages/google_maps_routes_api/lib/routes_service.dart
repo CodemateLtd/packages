@@ -20,8 +20,8 @@ class RoutesService {
 
   static const String _routesApiUrl = 'https://routes.googleapis.com/';
 
-  /// Does a POST request to fetch a [ComputeRoutesResponse] based on 
-  /// [ComputeRoutesRequest] parameters.
+  /// Calculates a primary [Route] along with optional alternate routes, given a
+  /// set of terminal and intermediate [Waypoint] objects.
   ///
   /// POST https://routes.googleapis.com/directions/v2:computeRoutes
   ///
@@ -73,8 +73,7 @@ class RoutesService {
     }
   }
 
-  /// Does a POST request to fetch a list of [RouteMatrixElement] objects based 
-  /// on [ComputeRouteMatrixRequest] parameters.
+  /// Computes a route matrix for a given set of origins and destinations.
   ///
   /// POST https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix
   ///
