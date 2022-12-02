@@ -60,6 +60,8 @@ class RouteMatrixElement {
   final int? destinationIndex;
 
   /// Decodes a JSON object to a [RouteMatrixElement].
+  ///
+  /// Returns null if [json] is null.
   static RouteMatrixElement? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -126,6 +128,8 @@ class Status {
   final List<Map<String, dynamic>>? details;
 
   /// Decodes a JSON object to a [Status].
+  ///
+  /// Returns null if [json] is null.
   static Status? fromJson(Object? json) {
     if (json == null) {
       return null;

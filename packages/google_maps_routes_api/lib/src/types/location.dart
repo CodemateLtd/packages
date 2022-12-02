@@ -22,6 +22,8 @@ class Location {
   final int? heading;
 
   /// Decodes a JSON object to a [Location].
+  ///
+  /// Returns null if [json] is null.
   static Location? fromJson(Object? json) {
     if (json == null) {
       return null;

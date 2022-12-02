@@ -20,6 +20,9 @@ class RoutesService {
 
   static const String _routesApiUrl = 'https://routes.googleapis.com/';
 
+  /// Does a POST request to fetch a [ComputeRoutesResponse] based on 
+  /// [ComputeRoutesRequest] parameters.
+  ///
   /// POST https://routes.googleapis.com/directions/v2:computeRoutes
   ///
   /// You can provide the response field mask by using the [fields] parameter.
@@ -70,6 +73,9 @@ class RoutesService {
     }
   }
 
+  /// Does a POST request to fetch a list of [RouteMatrixElement] objects based 
+  /// on [ComputeRouteMatrixRequest] parameters.
+  ///
   /// POST https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix
   ///
   /// You can provide the response field mask by using the [fields] parameter.

@@ -32,6 +32,8 @@ class RouteTravelAdvisory {
   final String? fuelConsumptionMicroliters;
 
   /// Decodes a JSON object to a [RouteTravelAdvisory].
+  ///
+  /// Returns null if [json] is null.
   static RouteTravelAdvisory? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -90,6 +92,8 @@ class RouteLegTravelAdvisory {
   final List<SpeedReadingInterval>? speedReadingIntervals;
 
   /// Decodes a JSON object to a [RouteLegTravelAdvisory].
+  ///
+  /// Returns null if [json] is null.
   static RouteLegTravelAdvisory? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -138,6 +142,8 @@ class RouteLegStepTravelAdvisory {
   final List<SpeedReadingInterval> speedReadingIntervals;
 
   /// Decodes a JSON object to a [RouteLegStepTravelAdvisory].
+  ///
+  /// Returns null if [json] is null.
   static RouteLegStepTravelAdvisory? fromJson(Object? json) {
     if (json == null) {
       return null;

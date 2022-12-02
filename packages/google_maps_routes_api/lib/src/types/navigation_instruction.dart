@@ -18,6 +18,8 @@ class NavigationInstruction {
   final String? instructions;
 
   /// Decodes a JSON object to a [NavigationInstruction].
+  /// 
+  /// Returns null if [json] is null.
   static NavigationInstruction? fromJson(Object? json) {
     if (json == null) {
       return null;

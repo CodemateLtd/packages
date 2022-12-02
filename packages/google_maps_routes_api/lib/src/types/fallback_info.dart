@@ -22,6 +22,8 @@ class FallbackInfo {
   final FallbackReason? reason;
 
   /// Decodes a JSON object to a [FallbackInfo] object.
+  ///
+  /// Returns null if [json] is null.
   static FallbackInfo? fromJson(Object? json) {
     if (json == null) {
       return null;

@@ -62,6 +62,8 @@ class RouteLeg {
   final RouteLegTravelAdvisory? travelAdvisory;
 
   /// Decodes a JSON object to a [RouteLeg].
+  /// 
+  /// Returns null if [json] is null.
   static RouteLeg? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -153,6 +155,8 @@ class RouteLegStep {
   final RouteLegStepTravelAdvisory? travelAdvisory;
 
   /// Decodes a JSON object to a [RouteLegStep].
+  ///
+  /// Returns null if [json] is null.
   static RouteLegStep? fromJson(Object? json) {
     if (json == null) {
       return null;

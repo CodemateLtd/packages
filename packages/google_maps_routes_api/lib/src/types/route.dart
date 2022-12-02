@@ -74,6 +74,8 @@ class Route {
   final String? routeToken;
 
   /// Decodes a JSON object to a [Route].
+  ///
+  /// Returns null if [json] is null.
   static Route? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -175,6 +177,8 @@ class Viewport {
   final LatLng high;
 
   /// Decodes a JSON object to a [Viewport].
+  ///
+  /// Returns null if [json] is null.
   static Viewport? fromJson(Object? json) {
     if (json == null) {
       return null;

@@ -76,7 +76,7 @@ class ComputeRouteMatrixRequest {
   }
 }
 
-/// A single origin for [ComputeRouteMatrixRequest]
+/// A single origin for [ComputeRouteMatrixRequest].
 class RouteMatrixOrigin {
   /// Creates a [RouteMatrixOrigin].
   RouteMatrixOrigin({
@@ -102,7 +102,7 @@ class RouteMatrixOrigin {
   }
 }
 
-/// A single destination for [ComputeRouteMatrixRequest]
+/// A single destination for [ComputeRouteMatrixRequest].
 class RouteMatrixDestination {
   /// Creates a [RouteMatrixDestination].
   RouteMatrixDestination({

@@ -5,7 +5,7 @@ import 'fallback_info.dart';
 import 'route.dart';
 import 'routes_request.dart';
 
-/// v2.computeRoutes response message
+/// v2.computeRoutes response message.
 class ComputeRoutesResponse {
   /// Creates a [ComputeRoutesResponse] object.
   const ComputeRoutesResponse({this.routes, this.fallbackInfo});
@@ -24,6 +24,8 @@ class ComputeRoutesResponse {
   final FallbackInfo? fallbackInfo;
 
   /// Decodes a JSON object to a [ComputeRoutesResponse].
+  ///
+  /// Returns null if [json] is null.
   static ComputeRoutesResponse? fromJson(Object? json) {
     if (json == null) {
       return null;

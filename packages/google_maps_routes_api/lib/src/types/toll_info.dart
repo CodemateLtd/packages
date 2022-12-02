@@ -6,7 +6,7 @@ import 'polyline.dart';
 import 'route.dart';
 import 'route_leg.dart';
 
-/// Encapsulates toll information on a [Route] or on a [RouteLeg]
+/// Encapsulates toll information on a [Route] or on a [RouteLeg].
 class TollInfo {
   /// Creates a [TollInfo].
   const TollInfo({required this.estimatedPrice});
@@ -20,6 +20,8 @@ class TollInfo {
   final List<Money> estimatedPrice;
 
   /// Decodes a JSON object to a [TollInfo].
+  ///
+  /// Returns null if [json] is null.
   static TollInfo? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -70,6 +72,8 @@ class Money {
   final int nanos;
 
   /// Decodes a JSON object to a [Money].
+  ///
+  /// Returns null if [json] is null.
   static Money? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -118,6 +122,8 @@ class SpeedReadingInterval {
   final int? endPolylinePointIndex;
 
   /// Decodes a JSON object to a [SpeedReadingInterval].
+  ///
+  /// Returns null if [json] is null.
   static SpeedReadingInterval? fromJson(Object? json) {
     if (json == null) {
       return null;

@@ -17,6 +17,8 @@ class Polyline {
   final GeoJsonLinestring? geoJsonLinestring;
 
   /// Decodes a JSON object to a [Polyline].
+  ///
+  /// Returns null if [json] is null.
   static Polyline? fromJson(Object? json) {
     if (json == null) {
       return null;
@@ -57,6 +59,8 @@ class GeoJsonLinestring {
   final List<LatLng> coordinates;
 
   /// Decodes a JSON object to a [GeoJsonLinestring].
+  ///
+  /// Returns null if [json] is null.
   static GeoJsonLinestring? fromJson(Object? json) {
     if (json == null) {
       return null;
