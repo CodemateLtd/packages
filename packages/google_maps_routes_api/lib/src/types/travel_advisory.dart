@@ -171,3 +171,53 @@ class RouteLegStepTravelAdvisory {
     };
   }
 }
+
+/// Traffic density indicator on a contiguous segment of a [Polyline].
+/// Given a path with points P_0, P_1, ... , P_N (zero-based index),
+/// the [SpeedReadingInterval] defines an interval and describes its traffic.
+class SpeedReadingInterval {
+  /// Creates a [SpeedReadingInterval].
+  const SpeedReadingInterval({
+    this.speed,
+    this.startPolylinePointIndex,
+    this.endPolylinePointIndex,
+  });
+
+  /// Traffic speed in this interval.
+  final Speed? speed;
+
+  /// The starting index of this interval in the [Polyline].
+  final int? startPolylinePointIndex;
+
+  /// The ending index of this interval in the [Polyline].
+  final int? endPolylinePointIndex;
+
+  /// Decodes a JSON object to a [SpeedReadingInterval].
+  ///
+  /// Returns null if [json] is null.
+  static SpeedReadingInterval? fromJson(Object? json) {
+    if (json == null) {
+      return null;
+    }
+    assert(json is Map<String, dynamic>);
+    final Map<String, dynamic> data = json as Map<String, dynamic>;
+
+    return SpeedReadingInterval(
+      speed: data['speed'] != null ? Speed.values.byName(data['speed']) : null,
+      startPolylinePointIndex: data['startPolylinePointIndex'],
+      endPolylinePointIndex: data['endPolylinePointIndex'],
+    );
+  }
+
+  /// Returns a JSON representation of the [SpeedReadingInterval].
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> json = <String, dynamic>{
+      'speed': speed?.name,
+      'startPolylinePointIndex': startPolylinePointIndex,
+      'endPolylinePointIndex': endPolylinePointIndex,
+    };
+
+    json.removeWhere((String key, dynamic value) => value == null);
+    return json;
+  }
+}

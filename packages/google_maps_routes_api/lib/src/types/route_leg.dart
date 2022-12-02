@@ -78,6 +78,7 @@ class RouteLeg {
 
     return RouteLeg(
       distanceMeters: data['distanceMeters'],
+      duration: data['duration'],
       staticDuration: data['staticDuration'],
       polyline:
           data['polyline'] != null ? Polyline.fromJson(data['polyline']) : null,

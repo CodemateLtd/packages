@@ -187,11 +187,21 @@ class Viewport {
     assert(json is Map<String, dynamic>);
 
     final Map<String, dynamic> data = json as Map<String, dynamic>;
+    
     assert(data['low'] != null);
     assert(data['high'] != null);
+
+    final LatLng low = LatLng.fromMap(data['low'])!;
+    final LatLng high = LatLng.fromMap(data['high'])!;
+
+    assert(low.latitude >= -90 && low.latitude <= 90);
+    assert(high.latitude >= -90 && high.latitude <= 90);
+    assert(low.longitude >= -180 && low.longitude <= 180);
+    assert(high.longitude >= -180 && high.longitude <= 180);
+
     return Viewport(
-      low: LatLng.fromMap(data['low'])!,
-      high: LatLng.fromMap(data['high'])!,
+      low: low,
+      high: high,
     );
   }
 
