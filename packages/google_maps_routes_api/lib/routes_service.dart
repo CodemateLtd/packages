@@ -41,29 +41,33 @@ class RoutesService {
     Map<String, String>? headers,
     List<String>? queryParams,
   }) async {
-    String url = '$_routesApiUrl/directions/v2:computeRoutes';
-    if (queryParams != null && queryParams.isNotEmpty) {
-      url += '?${queryParams.join("&")}';
+    try {
+      String url = '$_routesApiUrl/directions/v2:computeRoutes';
+      if (queryParams != null && queryParams.isNotEmpty) {
+        url += '?${queryParams.join("&")}';
+      }
+      final Map<String, String> defaultHeaders = <String, String>{
+        'X-Goog-Api-Key': apiKey,
+        'X-Goog-Fieldmask': fields ?? 'routes.duration, routes.distanceMeters',
+        'Content-Type': 'application/json',
+      };
+
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(body),
+        headers: <String, String>{...defaultHeaders, ...?headers},
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception(response.body);
+      }
+
+      final ComputeRoutesResponse? result =
+          ComputeRoutesResponse.fromJson(json.decode(response.body));
+      return Future<ComputeRoutesResponse>.value(result);
+    } catch (error) {
+      rethrow;
     }
-    final Map<String, String> defaultHeaders = <String, String>{
-      'X-Goog-Api-Key': apiKey,
-      'X-Goog-Fieldmask': fields ?? 'routes.duration, routes.distanceMeters',
-      'Content-Type': 'application/json',
-    };
-
-    final http.Response response = await http.post(
-      Uri.parse(url),
-      body: jsonEncode(body),
-      headers: <String, String>{...defaultHeaders, ...?headers},
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception(response.body);
-    }
-
-    final ComputeRoutesResponse? result =
-        ComputeRoutesResponse.fromJson(json.decode(response.body));
-    return Future<ComputeRoutesResponse>.value(result);
   }
 
   /// POST https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix
@@ -87,33 +91,37 @@ class RoutesService {
     Map<String, String>? headers,
     List<String>? queryParams,
   }) async {
-    String url = '$_routesApiUrl/distanceMatrix/v2:computeRouteMatrix';
+    try {
+      String url = '$_routesApiUrl/distanceMatrix/v2:computeRouteMatrix';
 
-    if (queryParams != null && queryParams.isNotEmpty) {
-      url += '?${queryParams.join("&")}';
+      if (queryParams != null && queryParams.isNotEmpty) {
+        url += '?${queryParams.join("&")}';
+      }
+
+      final Map<String, String> defaultHeaders = <String, String>{
+        'X-Goog-Api-Key': apiKey,
+        'X-Goog-Fieldmask': fields ?? 'duration, distanceMeters',
+        'Content-Type': 'application/json',
+      };
+
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(body),
+        headers: <String, String>{...defaultHeaders, ...?headers},
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception(response.body);
+      }
+
+      final List<RouteMatrixElement> result = List<RouteMatrixElement>.from(
+        (json.decode(response.body) as List<dynamic>).map(
+          (dynamic model) => RouteMatrixElement.fromJson(model),
+        ),
+      );
+      return Future<List<RouteMatrixElement>>.value(result);
+    } catch (error) {
+      rethrow;
     }
-
-    final Map<String, String> defaultHeaders = <String, String>{
-      'X-Goog-Api-Key': apiKey,
-      'X-Goog-Fieldmask': fields ?? 'duration, distanceMeters',
-      'Content-Type': 'application/json',
-    };
-
-    final http.Response response = await http.post(
-      Uri.parse(url),
-      body: jsonEncode(body),
-      headers: <String, String>{...defaultHeaders, ...?headers},
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception(response.body);
-    }
-
-    final List<RouteMatrixElement> result = List<RouteMatrixElement>.from(
-      (json.decode(response.body) as List<dynamic>).map(
-        (dynamic model) => RouteMatrixElement.fromJson(model),
-      ),
-    );
-    return Future<List<RouteMatrixElement>>.value(result);
   }
 }

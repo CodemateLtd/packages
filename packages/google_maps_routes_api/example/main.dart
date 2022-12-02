@@ -3,16 +3,16 @@ import 'package:google_maps_routes_api/src/types/index.dart';
 import 'package:google_maps_routes_api/src/types/waypoint.dart';
 
 void main() async {
-  final ComputeRoutesResponse routes = await _computeRoutes();
+  final ComputeRoutesResponse? routes = await _computeRoutes();
   print('ROUTES FETCHED:');
-  print(routes.toJson());
+  print(routes?.toJson());
   print('\n\n');
-  final List<RouteMatrixElement> matrixes = await _computeRouteMatrix();
+  final List<RouteMatrixElement>? matrixes = await _computeRouteMatrix();
   print('ROUTE MATRIX FETCHED:');
-  print(matrixes.map((RouteMatrixElement matrix) => matrix.toJson()));
+  print(matrixes?.map((RouteMatrixElement matrix) => matrix.toJson()));
 }
 
-Future<ComputeRoutesResponse> _computeRoutes() async {
+Future<ComputeRoutesResponse?> _computeRoutes() async {
   const String API_KEY =
       String.fromEnvironment('GOOGLE_API_KEY', defaultValue: 'GOOGLE_API_KEY');
 
@@ -36,12 +36,18 @@ Future<ComputeRoutesResponse> _computeRoutes() async {
 
   const String fields =
       'routes.legs,routes.duration,routes.distanceMeters,routes.polyline,routes.warnings,routes.description,routes.viewport,routes.routeLabels';
-  final ComputeRoutesResponse response =
-      await routesService.computeRoute(body, fields: fields);
-  return response;
+
+  try {
+    final ComputeRoutesResponse response =
+        await routesService.computeRoute(body, fields: fields);
+    return response;
+  } catch (error) {
+    print(error);
+    return null;
+  }
 }
 
-Future<List<RouteMatrixElement>> _computeRouteMatrix() async {
+Future<List<RouteMatrixElement>?> _computeRouteMatrix() async {
   const String API_KEY =
       String.fromEnvironment('GOOGLE_API_KEY', defaultValue: 'GOOGLE_API_KEY');
 
@@ -88,8 +94,14 @@ Future<List<RouteMatrixElement>> _computeRouteMatrix() async {
     travelMode: RouteTravelMode.DRIVE,
     routingPreference: RoutingPreference.TRAFFIC_AWARE,
   );
-  final List<RouteMatrixElement> response =
-      await routesService.computeRouteMatrix(body, fields: fields);
 
-  return response;
+  try {
+    final List<RouteMatrixElement> response =
+        await routesService.computeRouteMatrix(body, fields: fields);
+
+    return response;
+  } catch (error) {
+    print(error);
+    return null;
+  }
 }
