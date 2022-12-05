@@ -72,7 +72,7 @@ class GeoJsonLinestring {
       type: data['type'],
       coordinates: List<LatLng>.from(
         (data['coordinates'] as List<dynamic>).map(
-          (dynamic coordinate) => LatLng.fromJson(coordinate),
+          (dynamic coordinate) => LatLng.fromReversedJson(coordinate),
         ),
       ),
     );
@@ -82,8 +82,10 @@ class GeoJsonLinestring {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{
       'type': type,
-      'coordinates':
-          coordinates.map((LatLng coordinate) => coordinate.toJson()).toList(),
+      'coordinates': coordinates
+          .map((LatLng coordinate) =>
+              <double>[coordinate.longitude, coordinate.latitude])
+          .toList(),
     };
 
     json.removeWhere((String key, dynamic value) => value == null);

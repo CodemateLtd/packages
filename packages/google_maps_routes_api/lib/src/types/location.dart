@@ -100,4 +100,14 @@ class LatLng {
     final List<Object?> list = json as List<Object?>;
     return LatLng(list[0]! as double, list[1]! as double);
   }
+
+  /// Initialize a [LatLng] from an \[lng, lat\] array.
+  static LatLng? fromReversedJson(Object? json) {
+    if (json == null) {
+      return null;
+    }
+    assert(json is List && json.length == 2);
+    final List<Object?> list = json as List<Object?>;
+    return LatLng(list[1]! as double, list[0]! as double);
+  }
 }
