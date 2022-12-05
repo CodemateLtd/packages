@@ -7,7 +7,7 @@ void main() {
         () {
       // Load the expected JSON
       final Map<String, dynamic> jsonData = <String, dynamic>{
-        'tollInfo': {
+        'tollInfo': <String, dynamic>{
           'estimatedPrice': <Map<String, dynamic>>[
             <String, dynamic>{
               'currencyCode': 'USD',
@@ -54,7 +54,7 @@ void main() {
             ),
           ],
         ),
-        speedReadingIntervals: [
+        speedReadingIntervals: <SpeedReadingInterval>[
           SpeedReadingInterval(
             startPolylinePointIndex: 0,
             endPolylinePointIndex: 10,
@@ -69,23 +69,23 @@ void main() {
         fuelConsumptionMicroliters: '1234',
       );
 
-      final Map<String, dynamic> expectedJson = {
-        'tollInfo': {
-          'estimatedPrice': [
-            {
+      final Map<String, dynamic> expectedJson = <String, dynamic>{
+        'tollInfo': <String, dynamic>{
+          'estimatedPrice': <Map<String, dynamic>>[
+            <String, dynamic>{
               'currencyCode': 'USD',
               'units': '100',
               'nanos': 0,
             },
           ],
         },
-        'speedReadingIntervals': [
-          {
+        'speedReadingIntervals': <Map<String, dynamic>>[
+          <String, dynamic>{
             'startPolylinePointIndex': 0,
             'endPolylinePointIndex': 10,
             'speed': 'NORMAL',
           },
-          {
+          <String, dynamic>{
             'startPolylinePointIndex': 10,
             'endPolylinePointIndex': 20,
             'speed': 'NORMAL',
@@ -102,23 +102,23 @@ void main() {
     test('fromJson() correctly decodes JSON to a RouteLegTravelAdvisory object',
         () {
       // Load the expected JSON
-      final Map<String, dynamic> jsonData = {
-        'tollInfo': {
-          'estimatedPrice': [
-            {
+      final Map<String, dynamic> jsonData = <String, dynamic>{
+        'tollInfo': <String, dynamic>{
+          'estimatedPrice': <Map<String, dynamic>>[
+            <String, dynamic>{
               'currencyCode': 'USD',
               'units': '100',
               'nanos': 0,
             },
           ],
         },
-        'speedReadingIntervals': [
-          {
+        'speedReadingIntervals': <Map<String, dynamic>>[
+          <String, dynamic>{
             'startPolylinePointIndex': 0,
             'endPolylinePointIndex': 10,
             'speed': 'NORMAL',
           },
-          {
+          <String, dynamic>{
             'startPolylinePointIndex': 10,
             'endPolylinePointIndex': 20,
             'speed': 'NORMAL',
@@ -150,7 +150,7 @@ void main() {
             ),
           ],
         ),
-        speedReadingIntervals: [
+        speedReadingIntervals: <SpeedReadingInterval>[
           SpeedReadingInterval(
             startPolylinePointIndex: 0,
             endPolylinePointIndex: 10,
@@ -164,23 +164,23 @@ void main() {
         ],
       );
 
-      final Map<String, dynamic> expectedJson = {
-        'tollInfo': {
-          'estimatedPrice': [
-            {
+      final Map<String, dynamic> expectedJson = <String, dynamic>{
+        'tollInfo': <String, dynamic>{
+          'estimatedPrice': <Map<String, dynamic>>[
+            <String, dynamic>{
               'currencyCode': 'USD',
               'units': '100',
               'nanos': 0,
             },
           ],
         },
-        'speedReadingIntervals': [
-          {
+        'speedReadingIntervals': <Map<String, dynamic>>[
+          <String, dynamic>{
             'startPolylinePointIndex': 0,
             'endPolylinePointIndex': 10,
             'speed': 'NORMAL',
           },
-          {
+          <String, dynamic>{
             'startPolylinePointIndex': 10,
             'endPolylinePointIndex': 20,
             'speed': 'NORMAL',
@@ -227,7 +227,7 @@ void main() {
       // Create a RouteTravelAdvisory object
       const RouteLegStepTravelAdvisory routeLegStepTravelAdvisory =
           RouteLegStepTravelAdvisory(
-        speedReadingIntervals: [
+        speedReadingIntervals: <SpeedReadingInterval>[
           SpeedReadingInterval(
             startPolylinePointIndex: 0,
             endPolylinePointIndex: 10,
@@ -264,7 +264,7 @@ void main() {
     test('fromJson() correctly decodes JSON to a SpeedReadingInterval object',
         () {
       // Load the expected JSON
-      final Map<String, dynamic> jsonData = {
+      final Map<String, dynamic> jsonData = <String, dynamic>{
         'speed': 'NORMAL',
         'startPolylinePointIndex': 0,
         'endPolylinePointIndex': 10,

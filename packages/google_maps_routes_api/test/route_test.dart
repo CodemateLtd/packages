@@ -12,7 +12,7 @@ void main() {
       final Route? route = Route.fromJson(json.decode(jsonString));
 
       expect(route?.distanceMeters, 773);
-      expect(route?.routeLabels, [RouteLabel.DEFAULT_ROUTE]);
+      expect(route?.routeLabels, <RouteLabel>[RouteLabel.DEFAULT_ROUTE]);
       expect(route?.duration, '149s');
       expect(route?.staticDuration, '149s');
       expect(route?.polyline?.geoJsonLinestring?.coordinates.length, 6);
@@ -45,7 +45,7 @@ void main() {
           'latitude': 37.4165247,
           'longitude': -122.0829497,
         },
-        'high': {
+        'high': <String, dynamic>{
           'latitude': 37.419733799999996,
           'longitude': -122.07938779999999,
         }
@@ -69,7 +69,7 @@ void main() {
           'latitude': 37.4165247,
           'longitude': -122.0829497,
         },
-        'high': {
+        'high': <String, dynamic>{
           'latitude': 37.419733799999996,
           'longitude': -122.07938779999999,
         }

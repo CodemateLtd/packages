@@ -19,8 +19,8 @@ void main() {
         'via': true,
         'vehicleStopover': true,
         'sideOfRoad': true,
-        'location': {
-          'latLng': {
+        'location': <String, dynamic>{
+          'latLng': <String, dynamic>{
             'latitude': 37.4165247,
             'longitude': -122.0829497,
           },

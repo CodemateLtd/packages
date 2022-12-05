@@ -4,8 +4,8 @@ import 'package:test/test.dart';
 void main() {
   group('TollInfo & Money', () {
     test('fromJson() correctly decodes a JSON object to a TollInfo', () {
-      const Map<String, dynamic> json = {
-        'estimatedPrice': [
+      const Map<String, dynamic> json = <String, dynamic>{
+        'estimatedPrice': <Map<String, dynamic>>[
           <String, dynamic>{
             'currencyCode': 'USD',
             'units': '1',
@@ -37,8 +37,8 @@ void main() {
         estimatedPrice: estimatedPrice,
       );
 
-      final Map<String, dynamic> expectedJson = {
-        'estimatedPrice': [
+      final Map<String, dynamic> expectedJson = <String, dynamic>{
+        'estimatedPrice': <Map<String, dynamic>>[
           <String, dynamic>{
             'currencyCode': 'USD',
             'units': '1',

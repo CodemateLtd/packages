@@ -38,8 +38,8 @@ void main() {
         'geoJsonLinestring': <String, dynamic>{
           'type': 'LineString',
           'coordinates': <List<double>>[
-            <double>[37.4224764, -122.0842499],
-            <double>[37.4223456, -122.0845678],
+            <double>[-122.0842499, 37.4224764],
+            <double>[-122.0845678, 37.4223456],
           ],
         },
       };
@@ -54,8 +54,8 @@ void main() {
         'geoJsonLinestring': <String, dynamic>{
           'type': 'LineString',
           'coordinates': <List<double>>[
-            <double>[37.4224764, -122.0842499],
-            <double>[37.4223456, -122.0845678],
+            <double>[-122.0842499, 37.4224764],
+            <double>[-122.0845678, 37.4223456],
           ],
         },
       };
@@ -82,8 +82,8 @@ void main() {
         'geoJsonLinestring': <String, dynamic>{
           'type': 'LineString',
           'coordinates': <List<double>>[
-            <double>[37.4224764, -122.0842499],
-            <double>[37.4223456, -122.0845678],
+            <double>[-122.0842499, 37.4224764],
+            <double>[-122.0845678, 37.4223456],
           ],
         },
       };

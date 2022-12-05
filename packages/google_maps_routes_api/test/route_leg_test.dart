@@ -164,7 +164,7 @@ void main() {
           'instructions': 'Turn left onto Main St.',
         },
         'travelAdvisory': <String, dynamic>{
-          'tollInfo': {
+          'tollInfo': <String, dynamic>{
             'estimatedPrice': <Map<String, dynamic>>[
               <String, dynamic>{
                 'currencyCode': 'USD',
@@ -217,7 +217,7 @@ void main() {
           instructions: 'Turn left onto Main St.',
         ),
         travelAdvisory: RouteLegStepTravelAdvisory(
-          speedReadingIntervals: [
+          speedReadingIntervals: <SpeedReadingInterval>[
             SpeedReadingInterval(
               startPolylinePointIndex: 0,
               endPolylinePointIndex: 10,

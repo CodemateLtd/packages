@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'package:google_maps_routes_api/routes_service.dart';
 import 'package:google_maps_routes_api/src/types/index.dart';
-import 'package:google_maps_routes_api/src/types/waypoint.dart';
 
 void main() async {
   final ComputeRoutesResponse? routes = await _computeRoutes();
@@ -16,7 +17,7 @@ Future<ComputeRoutesResponse?> _computeRoutes() async {
   const String API_KEY =
       String.fromEnvironment('GOOGLE_API_KEY', defaultValue: 'GOOGLE_API_KEY');
 
-  const RoutesService routesService = RoutesService(apiKey: API_KEY);
+  final RoutesService routesService = RoutesService(apiKey: API_KEY);
   const Waypoint origin = Waypoint(
     location: Location(
       latLng: LatLng(37.419734, -122.0827784),
@@ -51,7 +52,7 @@ Future<List<RouteMatrixElement>?> _computeRouteMatrix() async {
   const String API_KEY =
       String.fromEnvironment('GOOGLE_API_KEY', defaultValue: 'GOOGLE_API_KEY');
 
-  const RoutesService routesService = RoutesService(apiKey: API_KEY);
+  final RoutesService routesService = RoutesService(apiKey: API_KEY);
   final List<RouteMatrixOrigin> origins = <RouteMatrixOrigin>[
     RouteMatrixOrigin(
       waypoint: const Waypoint(

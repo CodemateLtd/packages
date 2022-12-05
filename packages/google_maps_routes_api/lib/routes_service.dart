@@ -13,7 +13,10 @@ import 'src/types/index.dart';
 /// Google Routes API REST endpoints.
 class RoutesService {
   /// Creates the [RoutesService].
-  const RoutesService({required this.apiKey});
+  RoutesService({required this.apiKey});
+
+  /// HTTP client for making the requests.
+  http.Client client = http.Client();
 
   /// Google API key used for the requests.
   final String apiKey;
@@ -55,7 +58,7 @@ class RoutesService {
         'Content-Type': 'application/json',
       };
 
-      final http.Response response = await http.post(
+      final http.Response response = await client.post(
         Uri.parse(url),
         body: jsonEncode(body),
         headers: <String, String>{...defaultHeaders, ...?headers},
@@ -109,7 +112,7 @@ class RoutesService {
         'Content-Type': 'application/json',
       };
 
-      final http.Response response = await http.post(
+      final http.Response response = await client.post(
         Uri.parse(url),
         body: jsonEncode(body),
         headers: <String, String>{...defaultHeaders, ...?headers},
