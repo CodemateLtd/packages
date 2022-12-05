@@ -70,11 +70,11 @@ class RouteLeg {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    final List<RouteLegStep> steps = List<RouteLegStep>.from(
+    final List<RouteLegStep>? steps = data['steps'] != null ? List<RouteLegStep>.from(
       (data['steps'] as List<dynamic>).map(
         (dynamic model) => RouteLegStep.fromJson(model),
       ),
-    );
+    ) : null;
 
     return RouteLeg(
       distanceMeters: data['distanceMeters'],

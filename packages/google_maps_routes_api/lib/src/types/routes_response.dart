@@ -43,9 +43,9 @@ class ComputeRoutesResponse {
 
     return ComputeRoutesResponse(
       routes: routes,
-      fallbackInfo: FallbackInfo.fromJson(
-        data['FallbackInfo'],
-      ),
+      fallbackInfo: data['fallbackInfo'] != null ? FallbackInfo.fromJson(
+        data['fallbackInfo'],
+      ) : null,
     );
   }
 
