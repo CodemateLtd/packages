@@ -1,39 +1,81 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Google Maps Routes API for Dart
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+A Dart package for making API requests to the [Google Routes API](https://developers.google.com/maps/documentation/routes).
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+With this package, you can easily get routes, estimated travel times, distance between locations and much more in your Dart or Flutter application.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Compute routes using Google Routes API [computeRoutes](https://developers.google.com/maps/documentation/routes/compute_route_directions) endpoint.
+
+- Compute route matrixes using Google Routes API [computeRouteMatrixes](https://developers.google.com/maps/documentation/routes/compute_route_matrix) endpoint.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+* Get an API key at https://cloud.google.com/maps-platform/.
 
-## Usage
+* Enable [Google Routes API](https://console.cloud.google.com/marketplace/product/google/routes.googleapis.com?q=search&referrer=search&project=need-277508) for your project.
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+
+To use this package, add google_maps_routes_api as a dependency in your pubspec.yaml file.
+
+Next, create an instance of the RoutesService class, providing your API key as a parameter:
+
+`final RoutesService routesService = RoutesService(apiKey: "YOUR_GOOGLE_API_KEY_HERE");`
+
+You can then use the routesService object to make requests to the Google Routes API.
+
+## Sample usage
 
 ```dart
-const like = 'sample';
+import 'package:google_maps_routes_api/routes_service.dart';
+
+
+final RoutesService routesService = RoutesService(apiKey: API_KEY);
+
+const Waypoint origin = Waypoint(
+  location: Location(
+    latLng: LatLng(37.419734, -122.0827784),
+  ),
+);
+const Waypoint destination = Waypoint(
+  location: Location(
+    latLng: LatLng(37.417670, -122.079595),
+  ),
+);
+
+final ComputeRoutesRequest body = ComputeRoutesRequest(
+  origin: origin,
+  destination: destination,
+);
+
+final ComputeRoutesResponse response =
+    await routesService.computeRoute(body);
+
 ```
 
-## Additional information
+You can specify the [field mask](https://developers.google.com/maps/documentation/routes/choose_fields) for your request by giving a `fields` parameter or by using the `X-Goog-FieldMask` header:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```
+const String fields =
+    'status,originIndex,destinationIndex,condition,distanceMeters,duration';
+
+final ComputeRoutesResponse response =
+    await routesService.computeRoute(body, fields: fields);
+```
+
+You can override and add [headers](https://cloud.google.com/apis/docs/system-parameters) to your request:
+
+```
+final Map<String, String> headers = <String, String>{
+  'X-Goog-Fieldmask': 'status,originIndex,destinationIndex,condition,distanceMeters,duration'
+};
+
+final ComputeRoutesResponse response = 
+    await routesService.computeRoute(body, headers: headers);
+
+```
+
+
+For a complete sample app, look at the [example](examples/main.dart).
+
