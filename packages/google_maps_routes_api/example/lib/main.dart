@@ -23,12 +23,12 @@ Future<ComputeRoutesResponse?> _computeRoutes() async {
   final RoutesService routesService = RoutesService(apiKey: API_KEY);
   const Waypoint origin = Waypoint(
     location: Location(
-      latLng: LatLng(37.419734, -122.0827784),
+      latLng: LatLng(65.0121, 25.4651),
     ),
   );
   const Waypoint destination = Waypoint(
     location: Location(
-      latLng: LatLng(37.417670, -122.079595),
+      latLng: LatLng(65.0161, 25.4251),
     ),
   );
   final ComputeRoutesRequest body = ComputeRoutesRequest(
