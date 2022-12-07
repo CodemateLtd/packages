@@ -1,6 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
 import 'enums.dart';
 import 'location.dart';
 import 'route.dart';
@@ -38,10 +39,10 @@ class Waypoint {
   final bool? vehicleStopover;
 
   /// Indicates that the [Location] of this [Waypoint] is meant to have a
-  /// preference for the vehicle to stop at a particular side of road. 
+  /// preference for the vehicle to stop at a particular side of road.
   /// When you set this value, the [Route] will pass through the [Location] so
   /// that the vehicle can stop at the side of road that the [Location]
-  /// is biased towards from the center of the road. 
+  /// is biased towards from the center of the road.
   ///
   /// This option works only for [RouteTravelMode.DRIVE] and
   /// [RouteTravelMode.TWO_WHEELER] travel modes
@@ -50,7 +51,7 @@ class Waypoint {
   /// A point specified using geographic coordinates, including an optional
   /// [Location.heading]
   final Location? location;
-  
+
   /// The POI Place ID associated with the [Waypoint].
   final String? placeId;
 

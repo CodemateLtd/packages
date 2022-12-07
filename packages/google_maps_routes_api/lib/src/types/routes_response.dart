@@ -1,6 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
 import 'fallback_info.dart';
 import 'route.dart';
 import 'routes_request.dart';
@@ -43,9 +44,11 @@ class ComputeRoutesResponse {
 
     return ComputeRoutesResponse(
       routes: routes,
-      fallbackInfo: data['fallbackInfo'] != null ? FallbackInfo.fromJson(
-        data['fallbackInfo'],
-      ) : null,
+      fallbackInfo: data['fallbackInfo'] != null
+          ? FallbackInfo.fromJson(
+              data['fallbackInfo'],
+            )
+          : null,
     );
   }
 

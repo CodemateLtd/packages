@@ -1,8 +1,11 @@
+// Copyright 2013 The Flutter Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:google_maps_routes_api/routes_service.dart';
-import 'package:google_maps_routes_api/src/types/index.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:test/test.dart';
@@ -28,7 +31,8 @@ void main() {
     );
     setUp(() {
       routesService.client = MockClient((Request request) async {
-        final File jsonFile = File('test/mocks/mock_compute_routes_response.json');
+        final File jsonFile =
+            File('test/mocks/mock_compute_routes_response.json');
         final String jsonString = await jsonFile.readAsString();
         return Response(jsonString, 200);
       });
@@ -38,7 +42,8 @@ void main() {
       final ComputeRoutesResponse response =
           await routesService.computeRoute(body);
 
-      final File jsonFile = File('test/mocks/mock_compute_routes_response.json');
+      final File jsonFile =
+          File('test/mocks/mock_compute_routes_response.json');
       final String expectedJson = await jsonFile.readAsString();
       expect(response.toJson(), equals(json.decode(expectedJson)));
     });
@@ -68,7 +73,8 @@ void main() {
               'X-Goog-Fieldmask': 'routes.duration, routes.distanceMeters',
               'Content-Type': 'application/json; charset=utf-8'
             }));
-        final File jsonFile = File('test/mocks/mock_compute_routes_response.json');
+        final File jsonFile =
+            File('test/mocks/mock_compute_routes_response.json');
         final String jsonString = await jsonFile.readAsString();
         return Response(jsonString, 200);
       });
@@ -94,7 +100,8 @@ void main() {
               'Content-Type': 'application/json; charset=utf-8',
               'X-Goog-Request-Reason': 'test'
             }));
-        final File jsonFile = File('test/mocks/mock_compute_routes_response.json');
+        final File jsonFile =
+            File('test/mocks/mock_compute_routes_response.json');
         final String jsonString = await jsonFile.readAsString();
         return Response(jsonString, 200);
       });
@@ -154,7 +161,8 @@ void main() {
       });
     });
     test('correctly fetches and parses JSON response', () async {
-      final File jsonFile = File('test/mocks/mock_compute_route_matrix_response.json');
+      final File jsonFile =
+          File('test/mocks/mock_compute_route_matrix_response.json');
       final String expectedJson = await jsonFile.readAsString();
 
       final List<RouteMatrixElement> response =

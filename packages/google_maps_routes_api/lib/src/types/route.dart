@@ -1,6 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
 import 'enums.dart';
 import 'location.dart';
 import 'polyline.dart';
@@ -187,7 +188,7 @@ class Viewport {
     assert(json is Map<String, dynamic>);
 
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    
+
     assert(data['low'] != null);
     assert(data['high'] != null);
 

@@ -1,6 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
 import 'enums.dart';
 
 // Types copied from https://github.com/flutter/plugins/tree/main/packages/google_maps_flutter/google_maps_flutter_platform_interface

@@ -1,6 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
 library google_maps_routes_api;
 
 import 'dart:convert';
@@ -8,6 +9,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'src/types/index.dart';
+export 'src/types/index.dart';
 
 /// A service used to calculate routes and route matrixes using
 /// Google Routes API REST endpoints.

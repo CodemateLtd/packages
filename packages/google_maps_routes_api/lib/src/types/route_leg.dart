@@ -1,6 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
 import 'location.dart';
 import 'navigation_instruction.dart';
 import 'polyline.dart';
@@ -62,7 +63,7 @@ class RouteLeg {
   final RouteLegTravelAdvisory? travelAdvisory;
 
   /// Decodes a JSON object to a [RouteLeg].
-  /// 
+  ///
   /// Returns null if [json] is null.
   static RouteLeg? fromJson(Object? json) {
     if (json == null) {
@@ -70,11 +71,13 @@ class RouteLeg {
     }
     assert(json is Map<String, dynamic>);
     final Map<String, dynamic> data = json as Map<String, dynamic>;
-    final List<RouteLegStep>? steps = data['steps'] != null ? List<RouteLegStep>.from(
-      (data['steps'] as List<dynamic>).map(
-        (dynamic model) => RouteLegStep.fromJson(model),
-      ),
-    ) : null;
+    final List<RouteLegStep>? steps = data['steps'] != null
+        ? List<RouteLegStep>.from(
+            (data['steps'] as List<dynamic>).map(
+              (dynamic model) => RouteLegStep.fromJson(model),
+            ),
+          )
+        : null;
 
     return RouteLeg(
       distanceMeters: data['distanceMeters'],

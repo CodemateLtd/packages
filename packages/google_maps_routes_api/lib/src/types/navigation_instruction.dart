@@ -1,6 +1,7 @@
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
 import 'enums.dart';
 import 'route_leg.dart';
 
@@ -18,7 +19,7 @@ class NavigationInstruction {
   final String? instructions;
 
   /// Decodes a JSON object to a [NavigationInstruction].
-  /// 
+  ///
   /// Returns null if [json] is null.
   static NavigationInstruction? fromJson(Object? json) {
     if (json == null) {
