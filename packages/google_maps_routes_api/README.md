@@ -84,4 +84,4 @@ final ComputeRoutesResponse response =
 ```
 
 
-For a complete sample app, look at the [example](examples/main.dart).
+For a complete sample app, look at the [example](examples/lib/main.dart).
