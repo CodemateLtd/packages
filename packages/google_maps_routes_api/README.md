@@ -85,3 +85,6 @@ final ComputeRoutesResponse response =
 
 
 For a complete sample app, look at the [example](example/lib/main.dart).
+
+Example app can be run with:
+`dart run --define=GOOGLE_API_KEY={YOUR GOOGLE API KEY HERE} example/lib/main.dart`
