@@ -1,5 +1,7 @@
 # Google Maps Routes API for Dart
 
+<?code-excerpt path-base="excerpts/packages/google_maps_routes_api_example"?>
+
 A Dart package for making API requests to the [Google Routes API](https://developers.google.com/maps/documentation/routes).
 
 With this package, you can easily get routes, estimated travel times, distance between locations and much more in your Dart or Flutter application.
@@ -27,11 +29,12 @@ You can then use the routesService object to make requests to the Google Routes 
 
 ## Sample usage
 
+<?code-excerpt "readme_excerpts.dart (SampleUsage)"?>
 ```dart
+
 import 'package:google_maps_routes_api/routes_service.dart';
 
-
-final RoutesService routesService = RoutesService(apiKey: API_KEY);
+final RoutesService routesService = RoutesService(apiKey: 'GOOGLE_API_KEY');
 
 const Waypoint origin = Waypoint(
   location: Location(
@@ -48,15 +51,17 @@ final ComputeRoutesRequest body = ComputeRoutesRequest(
   origin: origin,
   destination: destination,
 );
+// ···
 
-final ComputeRoutesResponse response =
-    await routesService.computeRoute(body);
-
+  final ComputeRoutesResponse response = await routesService.computeRoute(body);
 ```
+
 
 You can specify the [field mask](https://developers.google.com/maps/documentation/routes/choose_fields) for your request by giving a `fields` parameter or by using the `X-Goog-FieldMask` header:
 
-```
+<?code-excerpt "readme_excerpts.dart (CustomFieldmask)"?>
+```dart
+
 const String fields =
     'status,originIndex,destinationIndex,condition,distanceMeters,duration';
 
@@ -66,14 +71,16 @@ final ComputeRoutesResponse response =
 
 You can override and add [headers](https://cloud.google.com/apis/docs/system-parameters) to your request:
 
-```
+<?code-excerpt "readme_excerpts.dart (CustomHeaders)"?>
+```dart
+
 final Map<String, String> headers = <String, String>{
-  'X-Goog-Fieldmask': 'status,originIndex,destinationIndex,condition,distanceMeters,duration'
+  'X-Goog-Fieldmask':
+      'status,originIndex,destinationIndex,condition,distanceMeters,duration'
 };
 
-final ComputeRoutesResponse response = 
+final ComputeRoutesResponse response =
     await routesService.computeRoute(body, headers: headers);
-
 ```
 
 
