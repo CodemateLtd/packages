@@ -73,6 +73,7 @@ class GeoJsonLinestring {
       type: data['type'],
       coordinates: List<LatLng>.from(
         (data['coordinates'] as List<dynamic>).map(
+          // Coordinates in GeoJSONLinestring are in \[lon, lat\] format.
           (dynamic coordinate) => LatLng.fromReversedJson(coordinate),
         ),
       ),
