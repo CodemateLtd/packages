@@ -257,7 +257,7 @@
 - (UIImage *)scaleImage:(UIImage *)image scale:(CGFloat)scale {
   if (fabs(scale - image.scale) > 1e-3) {
     return [UIImage imageWithCGImage:[image CGImage]
-                               scale:(scale)orientation:(image.imageOrientation)];
+                               scale:scale orientation:(image.imageOrientation)];
   }
   return image;
 }
