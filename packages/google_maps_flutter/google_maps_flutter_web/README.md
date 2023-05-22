@@ -1,5 +1,7 @@
 # google_maps_flutter_web
 
+<?code-excerpt path-base="excerpts/packages/google_maps_flutter_web_integration_tests"?>
+
 The web implementation of [google_maps_flutter](https://pub.dev/packages/google_maps_flutter).
 
 Powered by [a14n](https://github.com/a14n)'s [google_maps](https://pub.dev/packages/google_maps) Dart JS interop layer.
@@ -72,3 +74,25 @@ Indoor and building layers are still not available on the web. Traffic is.
 Only Android supports "[Lite Mode](https://developers.google.com/maps/documentation/android-sdk/lite)", so the `liteModeEnabled` constructor argument can't be set to `true` on web apps.
 
 Google Maps for web uses `HtmlElementView` to render maps. When a `GoogleMap` is stacked below other widgets, [`package:pointer_interceptor`](https://www.pub.dev/packages/pointer_interceptor) must be used to capture mouse events on the Flutter overlays. See issue [#73830](https://github.com/flutter/flutter/issues/73830).
+
+## Custom marker icons
+
+In order to achieve the best possible performance when using custom marker images on the web platform, the `size` parameter should be used to scale the marker when using `BitmapDescriptor.createFromAsset` or `BitmapDescriptor.createFromBytes` methods.
+
+<?code-excerpt "readme_excerpts.dart (CreateFromAsset)"?>
+```dart
+final ImageConfiguration imageConfiguration = createLocalImageConfiguration(
+  context,
+  size: const Size(48, 48),
+);
+final BitmapDescriptor bitmapDescriptor =
+    await BitmapDescriptor.createFromAsset(
+        imageConfiguration, 'assets/red_square.png');
+```
+
+<?code-excerpt "readme_excerpts.dart (CreateFromBytes)"?>
+```dart
+final Uint8List bytes = _getMarkerImageBytes();
+final BitmapDescriptor bitmapDescriptor =
+    BitmapDescriptor.createFromBytes(bytes, size: const Size(48, 48));
+```

@@ -1,5 +1,6 @@
-## NEXT
+## 2.5.0
 
+* Adds support for BitmapDescriptors created with `BitmapDescriptor.createFromAsset` or `BitmapDescriptor.createFromBytes`.
 * Fixes unawaited_futures violations.
 
 ## 2.4.15
