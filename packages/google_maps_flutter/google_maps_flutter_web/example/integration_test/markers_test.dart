@@ -99,7 +99,7 @@ void main() {
           position: LatLng(42, 54),
         ),
       };
-      controller.addMarkers(markers);
+      await controller.addMarkers(markers);
 
       marker = controller.markers[const MarkerId('1')]?.marker;
       expect(marker, isNotNull);
