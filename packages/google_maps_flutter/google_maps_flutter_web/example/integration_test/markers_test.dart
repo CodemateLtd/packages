@@ -117,7 +117,7 @@ void main() {
           draggable: true,
         ),
       };
-      controller.changeMarkers(updatedMarkers);
+      await controller.changeMarkers(updatedMarkers);
       expect(controller.markers.length, 1);
 
       marker = controller.markers[const MarkerId('1')]?.marker;

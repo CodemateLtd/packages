@@ -276,86 +276,84 @@ Future<gmaps.Icon?> _gmIconFromBitmapDescriptor(
         ..scaledSize = size;
     }
   } else if (iconConfig[0] == 'asset') {
-      assert(iconConfig.length >= 3);
-      // iconConfig[2] contains the DPIs of the screen, but that information is
-      // already encoded in the iconConfig[1]
+    assert(iconConfig.length >= 3);
+    // iconConfig[2] contains the DPIs of the screen, but that information is
+    // already encoded in the iconConfig[1]
 
-      final String assetUrl =
-          ui.webOnlyAssetManager.getAssetUrl(iconConfig[1]! as String);
-      icon = gmaps.Icon()..url = assetUrl;
+    final String assetUrl =
+        ui.webOnlyAssetManager.getAssetUrl(iconConfig[1]! as String);
+    icon = gmaps.Icon()..url = assetUrl;
 
-      switch (iconConfig[2]! as String) {
-        case BitmapDescriptor.bitmapAutoScaling:
-          if (iconConfig.length == 4) {
-            final double scale = iconConfig[3]! as double;
-            // Google Maps Web SDK does not support the scaling of the marker with anything other than
-            // the size parameter, therefore the width and height of the image must be read from the image.
-            // To avoid this, it is best to provide the image size instead of scale when using the web platform.
+    switch (iconConfig[2]! as String) {
+      case BitmapDescriptor.bitmapAutoScaling:
+        if (iconConfig.length == 4) {
+          final double scale = iconConfig[3]! as double;
+          // Google Maps Web SDK does not support the scaling of the marker with anything other than
+          // the size parameter, therefore the width and height of the image must be read from the image.
+          // To avoid this, it is best to provide the image size instead of scale when using the web platform.
 
-            final ByteData bytedata =
-                await ui.webOnlyAssetManager.load(iconConfig[1]! as String);
-            final Uint8List bytes = bytedata.buffer.asUint8List();
-            final img.Decoder? decoder = img.findDecoderForData(bytes);
-            final img.DecodeInfo? decodeInfo = decoder?.startDecode(bytes);
+          final ByteData bytedata =
+              await ui.webOnlyAssetManager.load(iconConfig[1]! as String);
+          final Uint8List bytes = bytedata.buffer.asUint8List();
+          final img.Decoder? decoder = img.findDecoderForData(bytes);
+          final img.DecodeInfo? decodeInfo = decoder?.startDecode(bytes);
 
-            if (decodeInfo != null) {
-              final gmaps.Size size = gmaps.Size(
-                decodeInfo.width / scale,
-                decodeInfo.height / scale,
-              );
-              icon.size = size;
-              icon.scaledSize = size;
-            }
-          } else if (iconConfig.length == 5) {
-            final gmaps.Size? size = _gmSizeFromIconConfig(iconConfig, 4);
-            if (size != null) {
-              icon.size = size;
-              icon.scaledSize = size;
-            }
+          if (decodeInfo != null) {
+            final gmaps.Size size = gmaps.Size(
+              decodeInfo.width / scale,
+              decodeInfo.height / scale,
+            );
+            icon.size = size;
+            icon.scaledSize = size;
           }
-          break;
-        case BitmapDescriptor.bitmapNoScaling:
-          break;
-      }
-    } else if (iconConfig[0] == 'bytes') {
-      // Grab the bytes, and put them into a blob
-      final List<int> bytes = iconConfig[1]! as List<int>;
-      // Create a Blob from bytes, but let the browser figure out the encoding
-      final Blob blob = Blob(<dynamic>[bytes]);
-      icon = gmaps.Icon()..url = Url.createObjectUrlFromBlob(blob);
-      switch (iconConfig[2]! as String) {
-        case BitmapDescriptor.bitmapAutoScaling:
-          if (iconConfig.length == 4) {
-            final double scale = iconConfig[3]! as double;
-            // Google Maps Web SDK does not support the scaling of the marker with anything other than
-            // the size parameter, therefore the width and height of the image must be read from the image.
-            // To avoid this, it is best to provide the image size instead of scale when using the web platform.
-            final img.Decoder? decoder =
-                img.findDecoderForData(bytes as Uint8List);
-            final img.DecodeInfo? decodeInfo = decoder?.startDecode(bytes);
-
-            if (decodeInfo != null) {
-              final gmaps.Size size = gmaps.Size(
-                decodeInfo.width / scale,
-                decodeInfo.height / scale,
-              );
-              icon.size = size;
-              icon.scaledSize = size;
-            }
-          } else if (iconConfig.length == 5) {
-            final gmaps.Size? size = _gmSizeFromIconConfig(iconConfig, 4);
-            if (size != null) {
-              icon.size = size;
-              icon.scaledSize = size;
-            }
+        } else if (iconConfig.length == 5) {
+          final gmaps.Size? size = _gmSizeFromIconConfig(iconConfig, 4);
+          if (size != null) {
+            icon.size = size;
+            icon.scaledSize = size;
           }
-          break;
-        case BitmapDescriptor.bitmapNoScaling:
-          break;
-      }
+        }
+        break;
+      case BitmapDescriptor.bitmapNoScaling:
+        break;
+    }
+  } else if (iconConfig[0] == 'bytes') {
+    // Grab the bytes, and put them into a blob
+    final List<int> bytes = iconConfig[1]! as List<int>;
+    // Create a Blob from bytes, but let the browser figure out the encoding
+    final Blob blob = Blob(<dynamic>[bytes]);
+    icon = gmaps.Icon()..url = Url.createObjectUrlFromBlob(blob);
+    switch (iconConfig[2]! as String) {
+      case BitmapDescriptor.bitmapAutoScaling:
+        if (iconConfig.length == 4) {
+          final double scale = iconConfig[3]! as double;
+          // Google Maps Web SDK does not support the scaling of the marker with anything other than
+          // the size parameter, therefore the width and height of the image must be read from the image.
+          // To avoid this, it is best to provide the image size instead of scale when using the web platform.
+          final img.Decoder? decoder =
+              img.findDecoderForData(bytes as Uint8List);
+          final img.DecodeInfo? decodeInfo = decoder?.startDecode(bytes);
+
+          if (decodeInfo != null) {
+            final gmaps.Size size = gmaps.Size(
+              decodeInfo.width / scale,
+              decodeInfo.height / scale,
+            );
+            icon.size = size;
+            icon.scaledSize = size;
+          }
+        } else if (iconConfig.length == 5) {
+          final gmaps.Size? size = _gmSizeFromIconConfig(iconConfig, 4);
+          if (size != null) {
+            icon.size = size;
+            icon.scaledSize = size;
+          }
+        }
+        break;
+      case BitmapDescriptor.bitmapNoScaling:
+        break;
     }
   }
-
   return icon;
 }
 
