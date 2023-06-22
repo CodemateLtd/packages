@@ -72,6 +72,31 @@ class BitmapDescriptor {
           assert((jsonList[3] as List<dynamic>).length == 2);
         }
         break;
+      case _asset:
+        assert(jsonList.length == 4 || jsonList.length == 5);
+        assert(jsonList[1] != null && jsonList[1] is String);
+        assert((jsonList[1] as String).isNotEmpty);
+        assert(jsonList[2] != null && jsonList[2] is String);
+        assert(jsonList[3] != null && jsonList[3] is double);
+        if (jsonList.length == 5) {
+          assert(jsonList[4] != null && jsonList[4] is List<dynamic>);
+          assert((jsonList[4] as List<dynamic>).length == 2);
+        }
+        break;
+      case _bytes:
+        assert(jsonList.length == 4 || jsonList.length == 5);
+        assert(jsonList[1] != null && jsonList[1] is List<int>);
+        assert(jsonList[2] != null && jsonList[2] is String);
+        assert(jsonList[3] != null && jsonList[3] is double);
+        if (jsonList.length == 5) {
+          assert(jsonList[4] != null && jsonList[4] is List<dynamic>);
+          assert((jsonList[4] as List<dynamic>).length == 2);
+        }
+        assert(
+            (jsonList[2] as String) != bitmapNoScaling || jsonList.length == 4);
+        assert((jsonList[2] as String) != bitmapNoScaling ||
+            (jsonList[3] as double) == 1.0);
+        break;
       default:
         break;
     }
@@ -81,11 +106,8 @@ class BitmapDescriptor {
   static const String _asset = 'asset';
   static const String _bytes = 'bytes';
 
-  @Deprecated('No longer supported')
   static const String _fromAsset = 'fromAsset';
-  @Deprecated('No longer supported')
   static const String _fromAssetImage = 'fromAssetImage';
-  @Deprecated('No longer supported')
   static const String _fromBytes = 'fromBytes';
 
   /// Value representing auto scaling parameter.
@@ -152,7 +174,7 @@ class BitmapDescriptor {
   /// This method takes into consideration various asset resolutions
   /// and scales the images to the right resolution depending on the dpi.
   /// Set `mipmaps` to false to load the exact dpi version of the image, `mipmap` is true by default.
-  @Deprecated('No longer supported')
+  @Deprecated('Switch to using createFromAsset instead')
   static Future<BitmapDescriptor> fromAssetImage(
     ImageConfiguration configuration,
     String assetName, {
@@ -191,7 +213,7 @@ class BitmapDescriptor {
   /// bitmap, regardless of the actual resolution of the encoded PNG.
   /// This helps the browser to render High-DPI images at the correct size.
   /// `size` is not required (and ignored, if passed) in other platforms.
-  @Deprecated('No longer supported')
+  @Deprecated('Switch to using createFromBytes instead')
   static BitmapDescriptor fromBytes(Uint8List byteData, {Size? size}) {
     assert(byteData.isNotEmpty,
         'Cannot create BitmapDescriptor with empty byteData');
