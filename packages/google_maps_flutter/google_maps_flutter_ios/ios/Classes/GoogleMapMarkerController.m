@@ -191,13 +191,14 @@
       if (iconData.count == 4) {
         // Update proper scale information for image object.
         CGFloat imageScale = [iconData[3] doubleValue];
-        image = [self scaleImage:image scale:imageScale];
+        image = [self scaleImage:image withScale:imageScale];
       } else if (iconData.count == 5) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
         // Update proper scale information for image object.
-        image = [self scaleImage:image scale:screenScale];
+        image = [self scaleImage:image withScale:screenScale];
         // Create resized image.
-        CGSize size = [FLTGoogleMapJSONConversions sizeFromArray:iconData[4] scale:screenScale];
+        CGSize size_param = [FLTGoogleMapJSONConversions sizeFromArray:iconData[4]];
+        CGSize size = [self scaleSizeToInt:size_param withScale:screenScale];
         image = [self scaleImage:image toSize:size];
       }
     }
@@ -222,7 +223,8 @@
           // Update proper scale information for image object.
           image = [UIImage imageWithData:[byteData data] scale:screenScale];
           // Create resized image.
-          CGSize size = [FLTGoogleMapJSONConversions sizeFromArray:iconData[4] scale:screenScale];
+          CGSize size_param = [FLTGoogleMapJSONConversions sizeFromArray:iconData[4]];
+          CGSize size = [self scaleSizeToInt:size_param withScale:screenScale];
           image = [self scaleImage:image toSize:size];
         }
       } else {
@@ -254,7 +256,16 @@
   return image;
 }
 
-- (UIImage *)scaleImage:(UIImage *)image scale:(CGFloat)scale {
+/**
+ * Scales an input UIImage by a specified scale factor. If the scale factor is significantly different 
+ * from the image's current scale, a new UIImage object is created with the specified scale. 
+ * Otherwise, the original image is returned.
+ * 
+ * @param image The UIImage to scale.
+ * @param scale The factor by which to scale the image.
+ * @return UIImage Returns the scaled UIImage.
+ */
+- (UIImage *)scaleImage:(UIImage *)image withScale:(CGFloat)scale {
   if (fabs(scale - image.scale) > 1e-3) {
     return [UIImage imageWithCGImage:[image CGImage]
                                scale:scale
@@ -264,13 +275,13 @@
 }
 
 /**
- Scales an input UIImage to a specified size. If the aspect ratio of the input image
- is similar to the target size, the image's scale property is updated rather than resizing the
- image. If the aspect ratios significantly differ, the method redraws the image at the target size.
-
- @param image The UIImage to scale.
- @param size The target CGSize to scale the image to.
- @return UIImage Returns the scaled UIImage.
+ * Scales an input UIImage to a specified size. If the aspect ratio of the input image
+ * is similar to the target size, the image's scale property is updated rather than resizing the
+ * image. If the aspect ratios significantly differ, the method redraws the image at the target size.
+ *
+ * @param image The UIImage to scale.
+ * @param size The target CGSize to scale the image to.
+ * @return UIImage Returns the scaled UIImage.
  */
 - (UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)size {
   if (fabs(((int)image.size.width * image.scale) - size.width) > 0 ||
@@ -290,6 +301,17 @@
     }
   }
   return image;
+}
+
+/**
+ * Scales the input CGSize by a specified scale factor and truncates the floating point values to integers.
+ *  
+ * @param size The CGSize to scale.
+ * @param scale The scale factor to apply to the width and height of the CGSize.
+ * @return CGSize Returns the scaled CGSize with width and height as integers.
+ */
+- (CGSize)scaleSizeToInt:(CGSize)size withScale:(CGFloat)scale {
+    return CGSizeMake((int)(size.width * scale), (int)(size.height * scale));
 }
 
 @end

@@ -24,7 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (GMSCoordinateBounds *)coordinateBoundsFromLatLongs:(NSArray *)latlongs;
 + (GMSMapViewType)mapViewTypeFromTypeValue:(NSNumber *)value;
 + (nullable GMSCameraUpdate *)cameraUpdateFromChannelValue:(NSArray *)channelValue;
-+ (CGSize)sizeFromArray:(NSArray *)array scale:(CGFloat)scale;
+
+// Creates a CGSize from an NSArray. The first and second elements of the array are interpreted as the width and height of the CGSize, respectively.
++ (CGSize)sizeFromArray:(NSArray *)array;
 
 @end
 
