@@ -15,14 +15,14 @@ import 'package:flutter/widgets.dart'
         Size,
         WidgetsBinding;
 
-/// Type of bitmap scaling options to use on BitmapDescriptor creation.
+/// Type of bitmap scaling to use on BitmapDescriptor creation.
 enum BitmapScaling {
   /// Automatically scale image with devices pixel ratio or to given size,
   /// to keep marker sizes same between platforms and devices.
   auto,
 
   /// Render marker to the map as without scaling, this can be used if the image
-  /// is already pre-scaled, or to increase performance with large marker amounts.
+  /// is already pre-scaled, or to increase performance with a large numbers of markers.
   noScaling,
 }
 
@@ -237,6 +237,10 @@ class BitmapDescriptor {
   /// Set `mipmaps` to false to load the exact dpi version of the image, `mipmap` is true by default.
   /// If `mipmaps` is set to false, optional `imagePixelRatio` can be given to
   /// override `devicePixelRatio` value from `ImageConfiguration`.
+  ///
+  /// Note: Image scaling with [ImageConfiguration.size] parameter does not maintain the aspect ratio.
+  /// If a proportional resize is required, ensure to provide a [ImageConfiguration.size] with the
+  /// correct aspect ratio.
   static Future<BitmapDescriptor> createFromAsset(
     ImageConfiguration configuration,
     String assetName, {
@@ -246,6 +250,9 @@ class BitmapDescriptor {
     double? imagePixelRatio,
     BitmapScaling bitmapScaling = BitmapScaling.auto,
   }) async {
+    assert(!mipmaps || imagePixelRatio == null,
+        'If `mipmaps` is true, then `imagePixelRatio` must be null.');
+
     final double devicePixelRatio =
         WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
     final double? targetImagePixelRatio =
@@ -256,7 +263,7 @@ class BitmapDescriptor {
       return BitmapDescriptor._(<Object>[
         _asset,
         assetName,
-        _getBitMapScalingString(bitmapScaling),
+        _getBitmapScalingString(bitmapScaling),
         targetImagePixelRatio ?? devicePixelRatio,
         if (size != null)
           <Object>[
@@ -274,7 +281,7 @@ class BitmapDescriptor {
     return BitmapDescriptor._(<Object>[
       _asset,
       assetBundleImageKey.name,
-      _getBitMapScalingString(bitmapScaling),
+      _getBitmapScalingString(bitmapScaling),
       assetBundleImageKey.scale,
       if (size != null)
         <Object>[
@@ -286,11 +293,16 @@ class BitmapDescriptor {
 
   /// Creates a BitmapDescriptor using an array of bytes that must be encoded
   /// as PNG.
+  ///
   /// The optional [size] parameter represents the *logical size* of the
   /// bitmap, regardless of the actual resolution of the encoded PNG.
   /// This helps the platform to render High-DPI images at the correct size.
-  /// [ImagePixelRatio] value can be use to scale the image to
+  /// [imagePixelRatio] value can be use to scale the image to
   /// proper size across platforms.
+  ///
+  /// Note: Image scaling with [size] parameter does not maintain the aspect ratio.
+  /// If a proportional resize is required, ensure to provide a [size] with the
+  /// correct aspect ratio.
   static BitmapDescriptor createFromBytes(
     Uint8List byteData, {
     BitmapScaling bitmapScaling = BitmapScaling.auto,
@@ -298,7 +310,7 @@ class BitmapDescriptor {
     Size? size,
   }) {
     assert(byteData.isNotEmpty,
-        'Cannot create BitmapDescriptor with empty byteData');
+        'Cannot create BitmapDescriptor with empty byteData.');
     assert(bitmapScaling != BitmapScaling.noScaling || imagePixelRatio == null,
         'If bitmapScaling is set to BitmapScaling.noScaling, scale parameter cannot be used.');
     assert(bitmapScaling != BitmapScaling.noScaling || size == null,
@@ -307,7 +319,7 @@ class BitmapDescriptor {
     return BitmapDescriptor._(<Object>[
       _bytes,
       byteData,
-      _getBitMapScalingString(bitmapScaling),
+      _getBitmapScalingString(bitmapScaling),
       imagePixelRatio ?? 1.0,
       if (size != null)
         <Object>[
@@ -317,7 +329,7 @@ class BitmapDescriptor {
     ]);
   }
 
-  static String _getBitMapScalingString(BitmapScaling bitmapScaling) {
+  static String _getBitmapScalingString(BitmapScaling bitmapScaling) {
     switch (bitmapScaling) {
       case BitmapScaling.auto:
         return bitmapAutoScaling;

@@ -198,7 +198,7 @@
         image = [self scaleImage:image scale:screenScale];
         // Create resized image.
         CGSize size = [FLTGoogleMapJSONConversions sizeFromArray:iconData[4] scale:screenScale];
-        image = [self scaleImage:image size:size];
+        image = [self scaleImage:image toSize:size];
       }
     }
 
@@ -223,7 +223,7 @@
           image = [UIImage imageWithData:[byteData data] scale:screenScale];
           // Create resized image.
           CGSize size = [FLTGoogleMapJSONConversions sizeFromArray:iconData[4] scale:screenScale];
-          image = [self scaleImage:image size:size];
+          image = [self scaleImage:image toSize:size];
         }
       } else {
         // No scaling, load image from bytes without scale parameter.
@@ -263,7 +263,16 @@
   return image;
 }
 
-- (UIImage *)scaleImage:(UIImage *)image size:(CGSize)size {
+/**
+ Scales an input UIImage to a specified size. If the aspect ratio of the input image
+ is similar to the target size, the image's scale property is updated rather than resizing the
+ image. If the aspect ratios significantly differ, the method redraws the image at the target size.
+
+ @param image The UIImage to scale.
+ @param size The target CGSize to scale the image to.
+ @return UIImage Returns the scaled UIImage.
+ */
+- (UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)size {
   if (fabs(((int)image.size.width * image.scale) - size.width) > 0 ||
       fabs(((int)image.size.height * image.scale) - size.height) > 0) {
     if (fabs(image.size.width / image.size.height - size.width / size.height) < 1e-2) {
