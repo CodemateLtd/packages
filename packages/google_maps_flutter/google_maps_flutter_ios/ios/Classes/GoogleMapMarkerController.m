@@ -257,10 +257,10 @@
 }
 
 /**
- * Scales an input UIImage by a specified scale factor. If the scale factor is significantly different 
- * from the image's current scale, a new UIImage object is created with the specified scale. 
- * Otherwise, the original image is returned.
- * 
+ * Scales an input UIImage by a specified scale factor. If the scale factor is significantly
+ * different from the image's current scale, a new UIImage object is created with the specified
+ * scale. Otherwise, the original image is returned.
+ *
  * @param image The UIImage to scale.
  * @param scale The factor by which to scale the image.
  * @return UIImage Returns the scaled UIImage.
@@ -277,7 +277,8 @@
 /**
  * Scales an input UIImage to a specified size. If the aspect ratio of the input image
  * is similar to the target size, the image's scale property is updated rather than resizing the
- * image. If the aspect ratios significantly differ, the method redraws the image at the target size.
+ * image. If the aspect ratios significantly differ, the method redraws the image at the target
+ * size.
  *
  * @param image The UIImage to scale.
  * @param size The target CGSize to scale the image to.
@@ -304,14 +305,15 @@
 }
 
 /**
- * Scales the input CGSize by a specified scale factor and truncates the floating point values to integers.
- *  
+ * Scales the input CGSize by a specified scale factor and truncates the floating point values to
+ * integers.
+ *
  * @param size The CGSize to scale.
  * @param scale The scale factor to apply to the width and height of the CGSize.
  * @return CGSize Returns the scaled CGSize with width and height as integers.
  */
 - (CGSize)scaleSizeToInt:(CGSize)size withScale:(CGFloat)scale {
-    return CGSizeMake((int)(size.width * scale), (int)(size.height * scale));
+  return CGSizeMake((int)(size.width * scale), (int)(size.height * scale));
 }
 
 @end
