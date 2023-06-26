@@ -198,7 +198,7 @@
         image = [self scaleImage:image withScale:screenScale];
         // Create resized image.
         CGSize size_param = [FLTGoogleMapJSONConversions sizeFromArray:iconData[4]];
-        CGSize size = [self scaleSizeToInt:size_param withScale:screenScale];
+        CGSize size = [self scaleSizeToInt:size_param withFactor:screenScale];
         image = [self scaleImage:image toSize:size];
       }
     }
@@ -224,7 +224,7 @@
           image = [UIImage imageWithData:[byteData data] scale:screenScale];
           // Create resized image.
           CGSize size_param = [FLTGoogleMapJSONConversions sizeFromArray:iconData[4]];
-          CGSize size = [self scaleSizeToInt:size_param withScale:screenScale];
+          CGSize size = [self scaleSizeToInt:size_param withFactor:screenScale];
           image = [self scaleImage:image toSize:size];
         }
       } else {
@@ -257,9 +257,9 @@
 }
 
 /**
- * Scales an input UIImage by a specified scale factor. If the scale factor is significantly
- * different from the image's current scale, a new UIImage object is created with the specified
- * scale. Otherwise, the original image is returned.
+ * Creates a scaled version of the provided UIImage based on a specified scale factor. If the scale
+ * factor is significantly different from the image's current scale, a new UIImage object is
+ * created with the specified scale. Otherwise, the original image is returned.
  *
  * @param image The UIImage to scale.
  * @param scale The factor by which to scale the image.
@@ -291,14 +291,14 @@
       // Scaled image has close to same aspect ratio, updating image scale instead of resizing
       // image.
       return [self scaleImage:image
-                        scale:(image.scale * (size.width / (image.size.width * image.scale)))];
+                    withScale:(image.scale * (size.width / (image.size.width * image.scale)))];
     } else {
       UIGraphicsBeginImageContextWithOptions(size, NO, 1.0);
       [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
       UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
       // Return image with proper scaling
-      return [self scaleImage:newImage scale:image.scale];
+      return [self scaleImage:newImage withScale:image.scale];
     }
   }
   return image;
@@ -312,7 +312,7 @@
  * @param scale The scale factor to apply to the width and height of the CGSize.
  * @return CGSize Returns the scaled CGSize with width and height as integers.
  */
-- (CGSize)scaleSizeToInt:(CGSize)size withScale:(CGFloat)scale {
+- (CGSize)scaleSizeToInt:(CGSize)size withFactor:(CGFloat)scale {
   return CGSizeMake((int)(size.width * scale), (int)(size.height * scale));
 }
 
