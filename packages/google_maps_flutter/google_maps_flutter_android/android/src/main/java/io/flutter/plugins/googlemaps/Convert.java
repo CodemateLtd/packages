@@ -98,6 +98,17 @@ class Convert {
     }
   }
 
+  /**
+   * Creates a BitmapDescriptor object from bytes data based on provided density.
+   *
+   * @param data is a list of data. The data should contain exactly 4 or 5 arguments which are the
+   *     bytes, scaling mode, scale and optional size respectively.
+   * @param density is a floating point value which is used to compute scale and physical size of
+   *     image.
+   * @return BitmapDescriptor object from bytes data.
+   * @throws IllegalArgumentException If data size is not 4 or 5 or if the data cannot be
+   *     interpreted as a valid image.
+   */
   private static BitmapDescriptor getBitmapFromBytes(List<?> data, float density) {
     if (data.size() == 4 || data.size() == 5) {
       try {
@@ -131,6 +142,18 @@ class Convert {
     }
   }
 
+  /**
+   * Creates a BitmapDescriptor object from asset based on provided density.
+   *
+   * @param data is a list of data. The data should contain exactly 4 or 5 arguments which are the
+   *     asset name, scaling mode, scale and optional size respectively.
+   * @param assetManager assetManager An instance of Android's AssetManager, which provides access
+   *     to any raw asset files stored in the application's assets directory.
+   * @param density is a floating point value which is used to compute scale and physical size of
+   *     asset image.
+   * @return BitmapDescriptor object from asset.
+   * @throws IllegalArgumentException If data size is not 4 or 5 or if the asset cannot be opened.
+   */
   private static BitmapDescriptor getBitmapFromAsset(
       List<?> data, AssetManager assetManager, float density) {
     if (data.size() != 4 && data.size() != 5) {
@@ -138,8 +161,13 @@ class Convert {
           "'asset' Expected exactly 4 or 5 arguments, got: " + data.size());
     }
 
-    String asset =
-        FlutterInjector.instance().flutterLoader().getLookupKeyForAsset(toString(data.get(1)));
+    String assetKey;
+    try {
+      assetKey =
+          FlutterInjector.instance().flutterLoader().getLookupKeyForAsset(toString(data.get(1)));
+    } catch (Exception e) {
+      throw new IllegalArgumentException("'asset' cannot open asset: " + toString(data.get(1)));
+    }
 
     switch (toString(data.get(2))) {
       case "auto":
@@ -147,7 +175,8 @@ class Convert {
         // Scale image if size is given or scale is other than 1.0
         if (data.size() == 5 || Math.abs(scale - 1) > 0.001) {
           try {
-            InputStream inputStream = assetManager.open(asset);
+            InputStream inputStream = assetManager.open(assetKey);
+
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
             inputStream.close();
             if (data.size() == 5) {
@@ -170,7 +199,7 @@ class Convert {
         break;
     }
 
-    return BitmapDescriptorFactory.fromAsset(asset);
+    return BitmapDescriptorFactory.fromAsset(assetKey);
   }
 
   private static boolean toBoolean(Object o) {
