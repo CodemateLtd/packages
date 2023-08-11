@@ -72,9 +72,14 @@ class Convert {
       case "fromBytes":
         return getBitmapFromBytesLegacy(data);
       case "asset":
-        return getBitmapFromAsset(data, assetManager, density);
+        return getBitmapFromAsset(
+            data,
+            assetManager,
+            density,
+            new BitmapDescriptorFactoryWrapper(),
+            new FlutterInjectorWrapper());
       case "bytes":
-        return getBitmapFromBytes(data, density);
+        return getBitmapFromBytes(data, density, new BitmapDescriptorFactoryWrapper());
       default:
         throw new IllegalArgumentException("Cannot interpret " + o + " as BitmapDescriptor");
     }
@@ -105,11 +110,14 @@ class Convert {
    *     bytes, scaling mode, scale and optional size respectively.
    * @param density is a floating point value which is used to compute scale and physical size of
    *     image.
+   * @param bitmapDescriptorFactory is an instance of the BitmapDescriptorFactoryWrapper.
    * @return BitmapDescriptor object from bytes data.
    * @throws IllegalArgumentException If data size is not 4 or 5 or if the data cannot be
    *     interpreted as a valid image.
    */
-  private static BitmapDescriptor getBitmapFromBytes(List<?> data, float density) {
+  @VisibleForTesting
+  public static BitmapDescriptor getBitmapFromBytes(
+      List<?> data, float density, BitmapDescriptorFactoryWrapper bitmapDescriptorFactory) {
     if (data.size() == 4 || data.size() == 5) {
       try {
         Bitmap bitmap = toBitmap(data.get(1));
@@ -118,20 +126,20 @@ class Convert {
             if (data.size() == 4) {
               // Scales image using given scale ratio
               final float scale = density / toFloat(data.get(3));
-              return BitmapDescriptorFactory.fromBitmap(toScaledBitmap(bitmap, scale));
+              return bitmapDescriptorFactory.fromBitmap(toScaledBitmap(bitmap, scale));
             } else if (data.size() == 5) {
               // Scales image using physical size parameter
               final List<?> size = toList(data.get(4));
               final int width = toInt((double) size.get(0) * density);
               final int height = toInt((double) size.get(1) * density);
-              return BitmapDescriptorFactory.fromBitmap(
+              return bitmapDescriptorFactory.fromBitmap(
                   toScaledBitmap(bitmap, toInt(width), toInt(height)));
             }
             break;
           case "noScaling":
             break;
         }
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
+        return bitmapDescriptorFactory.fromBitmap(bitmap);
       } catch (Exception e) {
         throw new IllegalArgumentException("Unable to interpret bytes as a valid image.", e);
       }
@@ -151,11 +159,18 @@ class Convert {
    *     to any raw asset files stored in the application's assets directory.
    * @param density is a floating point value which is used to compute scale and physical size of
    *     asset image.
+   * @param bitmapDescriptorFactory is an instance of the BitmapDescriptorFactoryWrapper.
+   * @param flutterInjector An instance of the FlutterInjectorWrapper class.
    * @return BitmapDescriptor object from asset.
    * @throws IllegalArgumentException If data size is not 4 or 5 or if the asset cannot be opened.
    */
-  private static BitmapDescriptor getBitmapFromAsset(
-      List<?> data, AssetManager assetManager, float density) {
+  @VisibleForTesting
+  public static BitmapDescriptor getBitmapFromAsset(
+      List<?> data,
+      AssetManager assetManager,
+      float density,
+      BitmapDescriptorFactoryWrapper bitmapDescriptorFactory,
+      FlutterInjectorWrapper flutterInjector) {
     if (data.size() != 4 && data.size() != 5) {
       throw new IllegalArgumentException(
           "'asset' Expected exactly 4 or 5 arguments, got: " + data.size());
@@ -163,8 +178,7 @@ class Convert {
 
     String assetKey;
     try {
-      assetKey =
-          FlutterInjector.instance().flutterLoader().getLookupKeyForAsset(toString(data.get(1)));
+      assetKey = flutterInjector.getLookupKeyForAsset(toString(data.get(1)));
     } catch (Exception e) {
       throw new IllegalArgumentException("'asset' cannot open asset: " + toString(data.get(1)));
     }
@@ -184,10 +198,10 @@ class Convert {
               final List<?> size = toList(data.get(4));
               final int width = toInt((double) size.get(0) * density);
               final int height = toInt((double) size.get(1) * density);
-              return BitmapDescriptorFactory.fromBitmap(toScaledBitmap(bitmap, width, height));
+              return bitmapDescriptorFactory.fromBitmap(toScaledBitmap(bitmap, width, height));
             } else {
               // Scales asset image to using given scale.
-              return BitmapDescriptorFactory.fromBitmap(toScaledBitmap(bitmap, scale));
+              return bitmapDescriptorFactory.fromBitmap(toScaledBitmap(bitmap, scale));
             }
           } catch (Exception e) {
             throw new IllegalArgumentException(
@@ -199,7 +213,7 @@ class Convert {
         break;
     }
 
-    return BitmapDescriptorFactory.fromAsset(assetKey);
+    return bitmapDescriptorFactory.fromAsset(assetKey);
   }
 
   private static boolean toBoolean(Object o) {
@@ -408,7 +422,7 @@ class Convert {
   }
 
   private static Bitmap toScaledBitmap(Bitmap bitmap, int width, int height) {
-    if (bitmap.getWidth() != width || bitmap.getHeight() != height) {
+    if (width > 0 && height > 0 && (bitmap.getWidth() != width || bitmap.getHeight() != height)) {
       return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
     return bitmap;
@@ -829,5 +843,53 @@ class Convert {
       dataArray = (byte[]) data.get("data");
     }
     return new Tile(width, height, dataArray);
+  }
+
+  static class BitmapDescriptorFactoryWrapper {
+    /**
+     * Creates a BitmapDescriptor from the provided asset key using the {@link
+     * BitmapDescriptorFactory}.
+     *
+     * <p>This method is visible for testing purposes only and should never be used outside Convert
+     * class.
+     *
+     * @param assetKey the key of the asset.
+     * @return a new instance of the {@link BitmapDescriptor}.
+     */
+    @VisibleForTesting
+    public BitmapDescriptor fromAsset(String assetKey) {
+      return BitmapDescriptorFactory.fromAsset(assetKey);
+    }
+
+    /**
+     * Creates a BitmapDescriptor from the provided bitmap using the {@link
+     * BitmapDescriptorFactory}.
+     *
+     * <p>This method is visible for testing purposes only and should never be used outside Convert
+     * class.
+     *
+     * @param bitmap the bitmap to convert.
+     * @return a new instance of the {@link BitmapDescriptor}.
+     */
+    @VisibleForTesting
+    public BitmapDescriptor fromBitmap(Bitmap bitmap) {
+      return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+  }
+
+  static class FlutterInjectorWrapper {
+    /**
+     * Retrieves the lookup key for a given asset name using the {@link FlutterInjector}.
+     *
+     * <p>This method is visible for testing purposes only and should never be used outside Convert
+     * class.
+     *
+     * @param assetName the name of the asset.
+     * @return the lookup key for the asset.
+     */
+    @VisibleForTesting
+    public String getLookupKeyForAsset(String assetName) {
+      return FlutterInjector.instance().flutterLoader().getLookupKeyForAsset(assetName);
+    }
   }
 }
