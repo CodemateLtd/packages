@@ -161,12 +161,16 @@
                                                        brightness:0.7
                                                             alpha:1.0]];
   } else if ([iconData.firstObject isEqualToString:@"fromAssetImage"]) {
+    // Deprecated: This message handling for 'fromAssetImage' has been replaced by 'asset'.
+    // Refer to the flutter google_maps_flutter_platform_interface package for details.
     NSAssert((iconData.count == 3), @"'fromAssetImage' should have exactly 3 arguments. Got: %lu",
              (unsigned long)iconData.count);
     image = [UIImage imageNamed:[registrar lookupKeyForAsset:iconData[1]]];
     id scaleParam = iconData[2];
     image = [self scaleImage:image by:scaleParam];
   } else if ([iconData[0] isEqualToString:@"fromBytes"]) {
+    // Deprecated: This message handling for 'fromBytes' has been replaced by 'bytes'.
+    // Refer to the flutter google_maps_flutter_platform_interface package for details.
     NSAssert(iconData.count == 2,
              @"'fromBytes' should have exactly 2 arguments, the bytes. Got: %lu",
              (unsigned long)iconData.count);
@@ -241,8 +245,10 @@
   return image;
 }
 
-// Used by deprecated fromBytes functionality.
-// Can be removed when deprecated image bitmap types are removed from platform interface.
+// This method is deprecated within the context of `BitmapDescriptor.fromBytes` handling in the
+// flutter google_maps_flutter_platform_interface package which has been replaced by 'bytes' message
+// handling. It will be removed when the deprecated image bitmap description type 'fromBytes' is
+// removed from the platform interface.
 - (UIImage *)scaleImage:(UIImage *)image by:(id)scaleParam {
   double scale = 1.0;
   if ([scaleParam isKindOfClass:[NSNumber class]]) {
@@ -258,8 +264,9 @@
 
 /**
  * Creates a scaled version of the provided UIImage based on a specified scale factor. If the scale
- * factor is significantly different from the image's current scale, a new UIImage object is
- * created with the specified scale. Otherwise, the original image is returned.
+ * factor differs from the image's current scale by more than a small epsilon-delta (to account for
+ * minor floating-point inaccuracies), a new UIImage object is created with the specified scale.
+ * Otherwise, the original image is returned.
  *
  * @param image The UIImage to scale.
  * @param scale The factor by which to scale the image.
@@ -276,9 +283,9 @@
 
 /**
  * Scales an input UIImage to a specified size. If the aspect ratio of the input image
- * is similar to the target size, the image's scale property is updated rather than resizing the
- * image. If the aspect ratios significantly differ, the method redraws the image at the target
- * size.
+ * closely matches the target size, indicated by a small epsilon-delta, the image's scale
+ * property is updated instead of resizing the image. If the aspect ratios differ beyond this
+ * threshold, the method redraws the image at the target size.
  *
  * @param image The UIImage to scale.
  * @param size The target CGSize to scale the image to.
