@@ -214,7 +214,6 @@
       FlutterStandardTypedData *byteData = iconData[1];
       if ([iconData[2] isEqualToString:@"auto"]) {
         NSAssert((iconData.count == 4 || iconData.count == 5),
-
                  @"'bytes' with auto setting should have exactly 4 or 5 arguments, Got: %lu",
                  (unsigned long)iconData.count);
         if (iconData.count == 4) {
