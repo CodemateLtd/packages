@@ -430,11 +430,25 @@ class MockTileOverlaysController extends _i1.Mock
         returnValueForMissingStub: null,
       );
   @override
-  void addTileOverlays(Set<_i4.TileOverlay>? tileOverlays) =>
+  int get mapId => (super.noSuchMethod(
+        Invocation.getter(#mapId),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
+  @override
+  set mapId(int? _mapId) => super.noSuchMethod(
+        Invocation.setter(
+          #mapId,
+          _mapId,
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void addTileOverlays(Set<_i4.TileOverlay>? tileOverlaysToAdd) =>
       super.noSuchMethod(
         Invocation.method(
           #addTileOverlays,
-          [tileOverlays],
+          [tileOverlaysToAdd],
         ),
         returnValueForMissingStub: null,
       );
@@ -461,6 +475,21 @@ class MockTileOverlaysController extends _i1.Mock
         Invocation.method(
           #clearTileCache,
           [tileOverlayId],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void bindToMap(
+    int? mapId,
+    _i2.GMap? googleMap,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #bindToMap,
+          [
+            mapId,
+            googleMap,
+          ],
         ),
         returnValueForMissingStub: null,
       );
