@@ -197,7 +197,7 @@ final class GoogleMapController
     this.googleMap.setIndoorEnabled(this.indoorEnabled);
     this.googleMap.setTrafficEnabled(this.trafficEnabled);
     this.googleMap.setBuildingsEnabled(this.buildingsEnabled);
-    googleMap.setOnInfoWindowClickListener(this);
+    this.googleMap.setOnInfoWindowClickListener(this);
     if (mapReadyResult != null) {
       mapReadyResult.success(null);
       mapReadyResult = null;

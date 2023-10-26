@@ -10,25 +10,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterItem;
 
 class MarkerBuilder implements MarkerOptionsSink, ClusterItem {
-  private float alpha = 1.0f;
-  private float anchorU;
-  private float anchorV;
-  private boolean draggable;
-  private boolean flat;
-  private boolean consumeTapEvents;
-  private BitmapDescriptor bitmapDescriptor;
-  private float infoWindowAnchorU = 0.5f;
-  private float infoWindowAnchorV;
-  private String infoWindowTitle;
-  private String infoWindowSnippet;
-  private LatLng position = new LatLng(0.0f, 0.0f);
-  private float rotation;
-  private boolean visible;
-  private float zIndex;
+  private final MarkerOptions markerOptions;
   private String clusterManagerId;
   private String markerId;
+  private boolean consumeTapEvents;
 
   MarkerBuilder(String markerId, String clusterManagerId) {
+    this.markerOptions = new MarkerOptions();
     this.markerId = markerId;
     this.clusterManagerId = clusterManagerId;
   }
@@ -40,19 +28,7 @@ class MarkerBuilder implements MarkerOptionsSink, ClusterItem {
 
   /** Update existing markerOptions with builder values */
   MarkerOptions build(MarkerOptions markerOptions) {
-    return markerOptions
-        .position(position)
-        .alpha(alpha)
-        .anchor(anchorU, anchorV)
-        .draggable(draggable)
-        .flat(flat)
-        .icon(bitmapDescriptor)
-        .infoWindowAnchor(infoWindowAnchorU, infoWindowAnchorV)
-        .title(infoWindowTitle)
-        .snippet(infoWindowSnippet)
-        .rotation(rotation)
-        .visible(visible)
-        .zIndex(zIndex);
+    return markerOptions;
   }
 
   boolean consumeTapEvents() {
@@ -69,13 +45,12 @@ class MarkerBuilder implements MarkerOptionsSink, ClusterItem {
 
   @Override
   public void setAlpha(float alpha) {
-    this.alpha = alpha;
+    markerOptions.alpha(alpha);
   }
 
   @Override
   public void setAnchor(float u, float v) {
-    anchorU = u;
-    anchorV = v;
+    markerOptions.anchor(u, v);
   }
 
   @Override
@@ -85,63 +60,67 @@ class MarkerBuilder implements MarkerOptionsSink, ClusterItem {
 
   @Override
   public void setDraggable(boolean draggable) {
-    this.draggable = draggable;
+    markerOptions.draggable(draggable);
   }
 
   @Override
   public void setFlat(boolean flat) {
-    this.flat = flat;
+    markerOptions.flat(flat);
   }
 
   @Override
   public void setIcon(BitmapDescriptor bitmapDescriptor) {
-    this.bitmapDescriptor = bitmapDescriptor;
+    markerOptions.icon(bitmapDescriptor);
   }
 
   @Override
   public void setInfoWindowAnchor(float u, float v) {
-    infoWindowAnchorU = u;
-    infoWindowAnchorV = v;
+    markerOptions.infoWindowAnchor(u, v);
   }
 
   @Override
   public void setInfoWindowText(String title, String snippet) {
-    infoWindowTitle = title;
-    infoWindowSnippet = snippet;
+    markerOptions.title(title);
+    markerOptions.snippet(snippet);
   }
 
   @Override
   public void setPosition(LatLng position) {
-    this.position = position;
+    markerOptions.position(position);
   }
 
   @Override
   public void setRotation(float rotation) {
-    this.rotation = rotation;
+    markerOptions.rotation(rotation);
   }
 
   @Override
   public void setVisible(boolean visible) {
-    this.visible = visible;
+    markerOptions.visible(visible);
   }
 
   @Override
   public void setZIndex(float zIndex) {
-    this.zIndex = zIndex;
+    markerOptions.zIndex(zIndex);
   }
 
   @Override
   public LatLng getPosition() {
-    return position;
+    return markerOptions.getPosition();
   }
 
   @Override
   public String getTitle() {
-    return infoWindowTitle;
+    return markerOptions.getTitle();
   }
 
   @Override
   public String getSnippet() {
-    return infoWindowSnippet;
+    return markerOptions.getSnippet();
+  }
+
+  @Override
+  public Float getZIndex() {
+    return markerOptions.getZIndex();
   }
 }
