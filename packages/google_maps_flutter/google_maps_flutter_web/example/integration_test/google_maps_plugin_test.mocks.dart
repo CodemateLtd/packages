@@ -95,23 +95,24 @@ class MockGoogleMapController extends _i1.Mock
         ),
       ) as _i2.MapConfiguration);
   @override
-  _i3.StreamController<dynamic> get stream => (super.noSuchMethod(
+  _i3.StreamController<_i2.MapEvent<Object?>> get stream => (super.noSuchMethod(
         Invocation.getter(#stream),
-        returnValue: _FakeStreamController_1<dynamic>(
+        returnValue: _FakeStreamController_1<_i2.MapEvent<Object?>>(
           this,
           Invocation.getter(#stream),
         ),
-        returnValueForMissingStub: _FakeStreamController_1<dynamic>(
+        returnValueForMissingStub:
+            _FakeStreamController_1<_i2.MapEvent<Object?>>(
           this,
           Invocation.getter(#stream),
         ),
-      ) as _i3.StreamController<dynamic>);
+      ) as _i3.StreamController<_i2.MapEvent<Object?>>);
   @override
-  _i3.Stream<dynamic> get events => (super.noSuchMethod(
+  _i3.Stream<_i2.MapEvent<Object?>> get events => (super.noSuchMethod(
         Invocation.getter(#events),
-        returnValue: _i3.Stream<dynamic>.empty(),
-        returnValueForMissingStub: _i3.Stream<dynamic>.empty(),
-      ) as _i3.Stream<dynamic>);
+        returnValue: _i3.Stream<_i2.MapEvent<Object?>>.empty(),
+        returnValueForMissingStub: _i3.Stream<_i2.MapEvent<Object?>>.empty(),
+      ) as _i3.Stream<_i2.MapEvent<Object?>>);
   @override
   bool get isInitialized => (super.noSuchMethod(
         Invocation.getter(#isInitialized),
@@ -294,6 +295,56 @@ class MockGoogleMapController extends _i1.Mock
         Invocation.method(
           #updateClusterManagers,
           [updates],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void updateTileOverlays(Set<_i2.TileOverlay>? newOverlays) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #updateTileOverlays,
+          [newOverlays],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void clearTileCache(_i2.TileOverlayId? id) => super.noSuchMethod(
+        Invocation.method(
+          #clearTileCache,
+          [id],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void showInfoWindow(_i2.MarkerId? markerId) => super.noSuchMethod(
+        Invocation.method(
+          #showInfoWindow,
+          [markerId],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void hideInfoWindow(_i2.MarkerId? markerId) => super.noSuchMethod(
+        Invocation.method(
+          #hideInfoWindow,
+          [markerId],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  bool isInfoWindowShown(_i2.MarkerId? markerId) => (super.noSuchMethod(
+        Invocation.method(
+          #isInfoWindowShown,
+          [markerId],
+        ),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
         ),
         returnValueForMissingStub: null,
       );

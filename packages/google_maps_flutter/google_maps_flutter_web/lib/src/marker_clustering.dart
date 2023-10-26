@@ -49,8 +49,8 @@ class ClusterManagersController extends GeometryController {
     final MarkerClusterer? markerClusterer =
         _clusterManagerIdToMarkerClusterer[clusterManagerId];
     if (markerClusterer != null) {
-      markerClusterer.onRemove();
       markerClusterer.clearMarkers(true);
+      markerClusterer.onRemove();
     }
     _clusterManagerIdToMarkerClusterer.remove(clusterManagerId);
   }
@@ -60,7 +60,8 @@ class ClusterManagersController extends GeometryController {
     final MarkerClusterer? markerClusterer =
         _clusterManagerIdToMarkerClusterer[clusterManagerId];
     if (markerClusterer != null) {
-      markerClusterer.addMarker(marker, false);
+      markerClusterer.addMarker(marker, true);
+      markerClusterer.dirty = true;
     }
   }
 
@@ -70,9 +71,20 @@ class ClusterManagersController extends GeometryController {
       final MarkerClusterer? markerClusterer =
           _clusterManagerIdToMarkerClusterer[clusterManagerId];
       if (markerClusterer != null) {
-        markerClusterer.removeMarker(marker, false);
+        markerClusterer.removeMarker(marker, true);
+        markerClusterer.dirty = true;
       }
     }
+  }
+
+  // Renders all cluster managers that are marked as dirty.
+  void renderDirty() {
+    _clusterManagerIdToMarkerClusterer.values
+        .where((MarkerClusterer markerClusterer) => markerClusterer.dirty)
+        .forEach((MarkerClusterer markerClusterer) {
+      markerClusterer.dirty = false;
+      markerClusterer.render();
+    });
   }
 
   /// Returns list of clusters in [MarkerClusterer] with given [ClusterManagerId].
@@ -168,6 +180,9 @@ class MarkerClusterer {
 
   /// Recalculates and draws all the marker clusters.
   external void render();
+
+  /// Flag to control the need for re-rendering the cluster after bulk changes.
+  bool dirty = false;
 }
 
 MarkerClusterer createMarkerClusterer(

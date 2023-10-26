@@ -1105,7 +1105,6 @@ void main() {
     }
   });
 
-
   testWidgets('testSetStyleMapId', (WidgetTester tester) async {
     final Key key = GlobalKey();
 

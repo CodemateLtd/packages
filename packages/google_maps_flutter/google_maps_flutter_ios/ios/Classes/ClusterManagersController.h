@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-@import GoogleMapsUtils;
 #import <Flutter/Flutter.h>
 #import <GoogleMaps/GoogleMaps.h>
+@import GoogleMapsUtils;
 
 NS_ASSUME_NONNULL_BEGIN
 

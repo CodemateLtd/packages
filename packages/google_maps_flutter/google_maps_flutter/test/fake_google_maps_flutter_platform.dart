@@ -296,7 +296,8 @@ class PlatformMapStateRecorder {
     this.mapObjects = const MapObjects(),
     this.mapConfiguration = const MapConfiguration(),
   }) {
-    clusterManagerUpdates.add(ClusterManagerUpdates.from(const <ClusterManager>{}, mapObjects.clusterManagers));
+    clusterManagerUpdates.add(ClusterManagerUpdates.from(
+        const <ClusterManager>{}, mapObjects.clusterManagers));
     markerUpdates.add(MarkerUpdates.from(const <Marker>{}, mapObjects.markers));
     polygonUpdates
         .add(PolygonUpdates.from(const <Polygon>{}, mapObjects.polygons));
@@ -315,5 +316,6 @@ class PlatformMapStateRecorder {
   final List<PolylineUpdates> polylineUpdates = <PolylineUpdates>[];
   final List<CircleUpdates> circleUpdates = <CircleUpdates>[];
   final List<Set<TileOverlay>> tileOverlaySets = <Set<TileOverlay>>[];
-  final List<ClusterManagerUpdates> clusterManagerUpdates = <ClusterManagerUpdates>[];
+  final List<ClusterManagerUpdates> clusterManagerUpdates =
+      <ClusterManagerUpdates>[];
 }

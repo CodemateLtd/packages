@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-@import GoogleMapsUtils;
 #import "GoogleMapController.h"
 #import "FLTGoogleMapJSONConversions.h"
 #import "FLTGoogleMapTileOverlayController.h"
 #import "GMSMarker+Userdata.h"
+@import GoogleMapsUtils;
 
 #pragma mark - Conversion of JSON-like values sent via platform channels. Forward declarations.
 

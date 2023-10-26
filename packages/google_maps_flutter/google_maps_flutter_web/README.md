@@ -60,7 +60,7 @@ Modify the <head> tag of your web/index.html to load the [js-markerclusterer](ht
 
   <!-- // Other stuff -->
 
-  <script src="https://unpkg.com/@googlemaps/markerclusterer@2.3.1/dist/index.min.js"></script>
+  <script src="https://unpkg.com/@googlemaps/markerclusterer@2.5.0/dist/index.min.js"></script>
 </head>
 ```
 
