@@ -135,7 +135,7 @@ class ClusterManagersController implements GoogleMap.OnCameraIdleListener, Clust
   }
 
   /** Called when ClusterRenderer has rendered new visible marker to the map. */
-  void onClusterItemMarker(MarkerBuilder item, Marker marker) {
+  void onClusterItemMarker(@NonNull MarkerBuilder item, @NonNull Marker marker) {
     if (clusterItemListener != null) {
       clusterItemListener.onClusterItemMarker(item, marker);
     }
@@ -216,7 +216,7 @@ class ClusterManagersController implements GoogleMap.OnCameraIdleListener, Clust
   }
 
   /** Interface for handling situations where clusterManager adds new visible marker to the map. */
-  public interface onClusterItemMarker<T extends ClusterItem> {
-    void onClusterItemMarker(T item, Marker marker);
+  public interface OnClusterItemMarker<T extends ClusterItem> {
+    void onClusterItemMarker(@NonNull T item, @NonNull Marker marker);
   }
 }

@@ -197,7 +197,6 @@ final class GoogleMapController
     this.googleMap.setIndoorEnabled(this.indoorEnabled);
     this.googleMap.setTrafficEnabled(this.trafficEnabled);
     this.googleMap.setBuildingsEnabled(this.buildingsEnabled);
-    this.googleMap.setOnInfoWindowClickListener(this);
     if (mapReadyResult != null) {
       mapReadyResult.success(null);
       mapReadyResult = null;
@@ -642,6 +641,7 @@ final class GoogleMapController
 
     markerCollection.setOnMarkerClickListener(listener);
     markerCollection.setOnMarkerDragListener(listener);
+    markerCollection.setOnInfoWindowClickListener(listener);
   }
 
   private void setClusterListener(@Nullable ClusterItemListener listener) {
