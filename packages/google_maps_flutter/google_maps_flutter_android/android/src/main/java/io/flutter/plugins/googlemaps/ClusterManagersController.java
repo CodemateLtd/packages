@@ -205,7 +205,7 @@ class ClusterManagersController implements GoogleMap.OnCameraIdleListener, Clust
         @NonNull MarkerBuilder item, @NonNull MarkerOptions markerOptions) {
       // Builds new markerOptions for new marker created by the ClusterRenderer under
       // ClusterManager.
-      item.build(markerOptions);
+      item.update(markerOptions);
     }
 
     @Override

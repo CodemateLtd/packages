@@ -22,13 +22,25 @@ class MarkerBuilder implements MarkerOptionsSink, ClusterItem {
   }
 
   MarkerOptions build() {
-    MarkerOptions markerOptions = new MarkerOptions();
-    return build(markerOptions);
+    return markerOptions;
   }
 
   /** Update existing markerOptions with builder values */
-  MarkerOptions build(MarkerOptions markerOptions) {
-    return markerOptions;
+  void update(MarkerOptions markerOptionsToUpdate) {
+    markerOptionsToUpdate.position(markerOptions.getPosition());
+    markerOptionsToUpdate.alpha(markerOptions.getAlpha());
+    markerOptionsToUpdate.anchor(markerOptions.getAnchorU(), markerOptions.getAnchorV());
+    markerOptionsToUpdate.draggable(markerOptions.isDraggable());
+    markerOptionsToUpdate.flat(markerOptions.isFlat());
+    markerOptionsToUpdate.icon(markerOptions.getIcon());
+    markerOptionsToUpdate.infoWindowAnchor(
+        markerOptions.getInfoWindowAnchorU(), markerOptions.getInfoWindowAnchorV());
+    markerOptionsToUpdate.title(markerOptions.getTitle());
+    markerOptionsToUpdate.snippet(markerOptions.getSnippet());
+    markerOptionsToUpdate.position(markerOptions.getPosition());
+    markerOptionsToUpdate.rotation(markerOptions.getRotation());
+    markerOptionsToUpdate.visible(markerOptions.isVisible());
+    markerOptionsToUpdate.zIndex(markerOptions.getZIndex());
   }
 
   boolean consumeTapEvents() {
