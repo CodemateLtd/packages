@@ -25,22 +25,22 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param clusterManagersToAdd List of clustermanager object data.
  */
-- (void)addClusterManagers:(NSArray *)clusterManagersToAdd;
+- (void)addClusterManagers:(NSArray<NSDictionary *> *)clusterManagersToAdd;
 
 /**
  * Removes requested ClusterManagers from the controller.
  *
  * @param identifiers List of clusterManagerIds to remove.
  */
-- (void)removeClusterManagers:(NSArray *)identifiers;
+- (void)removeClusterManagersWithIdentifiers:(NSArray<NSString *> *)identifiers;
 
 /**
- * Get ClusterManager for the given id.
+ * Returns the ClusterManager for the given identifier.
  *
  * @param identifier identifier of the ClusterManager.
- * @return GMUClusterManager if found otherwise NSNull.
+ * @return GMUClusterManager if found otherwise nil.
  */
-- (GMUClusterManager *)getClusterManagerWithIdentifier:(NSString *)identifier;
+- (GMUClusterManager *)clusterManagerWithIdentifier:(NSString *)identifier;
 
 /**
  * Converts all clusters from the specific ClusterManager to result object response.
@@ -48,16 +48,16 @@ NS_ASSUME_NONNULL_BEGIN
  * @param identifier identifier of the ClusterManager.
  * @param result FlutterResult object to be updated with cluster data.
  */
-- (void)getClustersWithIdentifier:(NSString *)identifier result:(FlutterResult)result;
+- (void)clustersWithIdentifier:(NSString *)identifier result:(FlutterResult)result;
 
 /**
  * Called when cluster marker is tapped on the map.
  *
  * @param cluster GMUStaticCluster object.
  */
-- (void)handleTapCluster:(GMUStaticCluster *)cluster;
+- (void)didTapOnCluster:(GMUStaticCluster *)cluster;
 
-/// Calls cluster method of all ClusterManagers.
+/** Calls cluster method of all ClusterManagers. */
 - (void)clusterAll;
 @end
 

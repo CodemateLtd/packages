@@ -8,7 +8,7 @@
 
 @interface FLTClusterManagersController ()
 
-@property(strong, nonatomic) NSMutableDictionary *clusterManagerIdToManagers;
+@property(strong, nonatomic) NSMutableDictionary<NSString *, GMUClusterManager *> *clusterManagerIdToManagers;
 @property(strong, nonatomic) FlutterMethodChannel *methodChannel;
 @property(weak, nonatomic) GMSMapView *mapView;
 
@@ -26,7 +26,7 @@
   return self;
 }
 
-- (void)addClusterManagers:(NSArray *)clusterManagersToAdd {
+- (void)addClusterManagers:(NSArray<NSDictionary *> *)clusterManagersToAdd {
   for (NSDictionary *clusterDict in clusterManagersToAdd) {
     NSString *identifier = clusterDict[@"clusterManagerId"];
     id<GMUClusterAlgorithm> algorithm = [[GMUNonHierarchicalDistanceBasedAlgorithm alloc] init];
@@ -41,7 +41,7 @@
   }
 }
 
-- (void)removeClusterManagers:(NSArray *)identifiers {
+- (void)removeClusterManagersWithIdentifiers:(NSArray<NSString *> *)identifiers {
   for (NSString *identifier in identifiers) {
     GMUClusterManager *clusterManager = [self.clusterManagerIdToManagers objectForKey:identifier];
     if (!clusterManager) {
@@ -52,7 +52,7 @@
   }
 }
 
-- (GMUClusterManager *)getClusterManagerWithIdentifier:(NSString *)identifier {
+- (GMUClusterManager *)clusterManagerWithIdentifier:(NSString *)identifier {
   return [self.clusterManagerIdToManagers objectForKey:identifier];
 }
 
@@ -62,7 +62,7 @@
   }
 }
 
-- (void)getClustersWithIdentifier:(NSString *)identifier result:(FlutterResult)result {
+- (void)clustersWithIdentifier:(NSString *)identifier result:(FlutterResult)result {
   GMUClusterManager *clusterManager = [self.clusterManagerIdToManagers objectForKey:identifier];
 
   if (!clusterManager) {
@@ -75,11 +75,11 @@
   NSMutableArray *response = [[NSMutableArray alloc] init];
 
   // Ref:
-  // https://github.com/googlemaps/google-maps-ios-utils/blob/main/src/Clustering/GMUClusterManager.m#L94.
+  // https://github.com/googlemaps/google-maps-ios-utils/blob/0e7ed81f1bbd9d29e4529c40ae39b0791b0a0eb8/src/Clustering/GMUClusterManager.m#L94.
   NSUInteger integralZoom = (NSUInteger)floorf(_mapView.camera.zoom + 0.5f);
   NSArray<id<GMUCluster>> *clusters = [clusterManager.algorithm clustersAtZoom:integralZoom];
   for (id<GMUCluster> cluster in clusters) {
-    NSDictionary *clusterDict = [self getClusterDict:cluster];
+    NSDictionary *clusterDict = [self serializableDictionaryForCluster:cluster];
     if (clusterDict == nil) {
       continue;
     }
@@ -88,24 +88,39 @@
   result(response);
 }
 
-- (void)handleTapCluster:(GMUStaticCluster *)cluster {
-  NSDictionary *clusterDict = [self getClusterDict:cluster];
+- (void)didTapOnCluster:(GMUStaticCluster *)cluster {
+  NSDictionary *clusterDict = [self serializableDictionaryForCluster:cluster];
   if (clusterDict != nil) {
     [self.methodChannel invokeMethod:@"cluster#onTap" arguments:clusterDict];
   }
 }
 
-- (NSString *)getClusterManagerIdFrom:(GMUStaticCluster *)cluster {
+#pragma mark - Private methods
+
+/**
+ * Returns the cluster manager id for given cluster.
+ *
+ * @param cluster identifier of the ClusterManager.
+ * @return id NSString if found otherwise nil.
+ */
+- (NSString *)clusterManagerIdentifierForCluster:(GMUStaticCluster *)cluster {
   if ([cluster.items count] == 0) {
     return nil;
   }
 
-  GMSMarker *firstMarker = (GMSMarker *)cluster.items[0];
-  return [firstMarker getClusterManagerId];
+  // Typecasting here is safe because only GMSMarkers are clustered.
+  GMSMarker *firstMarker = (GMSMarker *)cluster.items.firstObject;
+  return [firstMarker getClusterManagerIdentifier];
 }
 
-- (NSDictionary *)getClusterDict:(GMUStaticCluster *)cluster {
-  NSString *clusterManagerId = [self getClusterManagerIdFrom:cluster];
+/**
+ * Converts GMSStaticCluster to serializable cluster dictionary.
+ *
+ * @param cluster GMUStaticCluster object.
+ * @return NSDictionary if found otherwise nil.
+ */
+- (NSDictionary *)serializableDictionaryForCluster:(GMUStaticCluster *)cluster {
+  NSString *clusterManagerId = [self clusterManagerIdentifierForCluster:cluster];
   if (clusterManagerId == nil) {
     return nil;
   }
@@ -114,7 +129,7 @@
   GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] init];
 
   for (GMSMarker *marker in cluster.items) {
-    [markerIds addObject:[marker getMarkerId]];
+    [markerIds addObject:[marker getMarkerIdentifier]];
     bounds = [bounds includingCoordinate:marker.position];
   }
 
