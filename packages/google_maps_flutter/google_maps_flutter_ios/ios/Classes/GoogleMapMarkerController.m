@@ -105,9 +105,9 @@
 
 - (void)updateMarkerUserData {
   if (self.clusterManagerId) {
-    [self.marker setMarkerID:self.markerId andClusterManagerId:self.clusterManagerId];
+    [self.marker setMarkerIdentifier:self.markerId andClusterManagerIdentifier:self.clusterManagerId];
   } else {
-    [self.marker setMarkerId:self.markerId];
+    [self.marker setMarkerIdentifier:self.markerId];
   }
 }
 
@@ -295,8 +295,8 @@
   [controller interpretMarkerOptions:markerToAdd registrar:self.registrar];
   if (clusterManagerId && clusterManagerId != (id)[NSNull null]) {
     GMUClusterManager *clusterManager =
-        [_clusterManagersController getClusterManagerWithIdentifier:clusterManagerId];
-    if (marker && clusterManager != (id)[NSNull null]) {
+        [_clusterManagersController clusterManagerWithIdentifier:clusterManagerId];
+    if (marker && clusterManager != nil) {
       [clusterManager addItem:(id<GMUClusterItem>)marker];
     }
   }
@@ -339,8 +339,8 @@
   NSString *clusterManagerId = [controller clusterManagerId];
   if (clusterManagerId && clusterManagerId != (id)[NSNull null]) {
     GMUClusterManager *clusterManager =
-        [_clusterManagersController getClusterManagerWithIdentifier:clusterManagerId];
-    if (controller.marker && clusterManager != (id)[NSNull null]) {
+        [_clusterManagersController clusterManagerWithIdentifier:clusterManagerId];
+    if (controller.marker && clusterManager != nil) {
       [clusterManager removeItem:(id<GMUClusterItem>)controller.marker];
     }
   } else {

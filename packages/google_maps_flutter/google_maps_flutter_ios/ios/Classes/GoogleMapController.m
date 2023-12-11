@@ -318,12 +318,12 @@
     }
     id clusterManagerIdsToRemove = call.arguments[@"clusterManagerIdsToRemove"];
     if ([clusterManagerIdsToRemove isKindOfClass:[NSArray class]]) {
-      [self.clusterManagersController removeClusterManagers:clusterManagerIdsToRemove];
+      [self.clusterManagersController removeClusterManagersWithIdentifiers:clusterManagerIdsToRemove];
     }
     result(nil);
   } else if ([call.method isEqualToString:@"clusterManager#getClusters"]) {
     id clusterManagerId = call.arguments[@"clusterManagerId"];
-    [self.clusterManagersController getClustersWithIdentifier:clusterManagerId result:result];
+    [self.clusterManagersController clustersWithIdentifier:clusterManagerId result:result];
   } else if ([call.method isEqualToString:@"polygons#update"]) {
     id polygonsToAdd = call.arguments[@"polygonsToAdd"];
     if ([polygonsToAdd isKindOfClass:[NSArray class]]) {
@@ -562,30 +562,30 @@
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker {
   if ([marker.userData conformsToProtocol:@protocol(GMUCluster)]) {
     GMUStaticCluster *cluster = marker.userData;
-    [self.clusterManagersController handleTapCluster:cluster];
+    [self.clusterManagersController didTapOnCluster:cluster];
     // When NO is returned the map will focus on the cluster
     return NO;
   }
-  return [self.markersController didTapMarkerWithIdentifier:[marker getMarkerId]];
+  return [self.markersController didTapMarkerWithIdentifier:[marker getMarkerIdentifier]];
 }
 
 - (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker {
-  [self.markersController didEndDraggingMarkerWithIdentifier:[marker getMarkerId]
+  [self.markersController didEndDraggingMarkerWithIdentifier:[marker getMarkerIdentifier]
                                                     location:marker.position];
 }
 
 - (void)mapView:(GMSMapView *)mapView didBeginDraggingMarker:(GMSMarker *)marker {
-  [self.markersController didStartDraggingMarkerWithIdentifier:[marker getMarkerId]
+  [self.markersController didStartDraggingMarkerWithIdentifier:[marker getMarkerIdentifier]
                                                       location:marker.position];
 }
 
 - (void)mapView:(GMSMapView *)mapView didDragMarker:(GMSMarker *)marker {
-  [self.markersController didDragMarkerWithIdentifier:[marker getMarkerId]
+  [self.markersController didDragMarkerWithIdentifier:[marker getMarkerIdentifier]
                                              location:marker.position];
 }
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker {
-  [self.markersController didTapInfoWindowOfMarkerWithIdentifier:[marker getMarkerId]];
+  [self.markersController didTapInfoWindowOfMarkerWithIdentifier:[marker getMarkerIdentifier]];
 }
 - (void)mapView:(GMSMapView *)mapView didTapOverlay:(GMSOverlay *)overlay {
   NSString *overlayId = overlay.userData[0];
