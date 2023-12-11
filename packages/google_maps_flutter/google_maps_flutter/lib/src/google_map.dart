@@ -398,9 +398,8 @@ class _GoogleMapState extends State<GoogleMap> {
 
   Future<void> _updateClusterManagers() async {
     final GoogleMapController controller = await _controller.future;
-    // ignore: unawaited_futures
-    controller._updateClusterManagers(ClusterManagerUpdates.from(
-        _clusterManagers.values.toSet(), widget.clusterManagers));
+    unawaited(controller._updateClusterManagers(ClusterManagerUpdates.from(
+        _clusterManagers.values.toSet(), widget.clusterManagers)));
     _clusterManagers = keyByClusterManagerId(widget.clusterManagers);
   }
 
