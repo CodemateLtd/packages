@@ -6,6 +6,9 @@
 
 @implementation GMSMarker (Userdata)
 
+const int markerIdentifierIndex = 0;
+const int clusterManagerIdentifierIndex = 1;
+
 - (void)setMarkerIdentifier:(NSString *)markerIdentifier {
   self.userData = @[ markerIdentifier ];
 }
@@ -15,10 +18,10 @@
 }
 
 - (NSString *)getMarkerIdentifier {
-  if ([self.userData count] == 0) {
+  if ([self.userData count] <= markerIdentifierIndex) {
     return nil;
   }
-  return self.userData[0];
+  return self.userData[markerIdentifierIndex];
 }
 
 - (NSString *)getClusterManagerIdentifier {
@@ -26,7 +29,7 @@
     return nil;
   }
 
-  NSString *clusterManagerIdentifier = self.userData[1];
+  id clusterManagerIdentifier = self.userData[clusterManagerIdentifierIndex];
   if (clusterManagerIdentifier == (id)[NSNull null]) {
     return nil;
   }
