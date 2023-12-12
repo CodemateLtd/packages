@@ -11,23 +11,23 @@
 @property(strong, nonatomic) GMSMarker *marker;
 @property(weak, nonatomic) GMSMapView *mapView;
 @property(assign, nonatomic, readwrite) BOOL consumeTapEvents;
-@property(strong, nonatomic) NSString *clusterManagerId;
-@property(strong, nonatomic) NSString *markerId;
+@property(copy, nonatomic) NSString *clusterManagerIdentifier;
+@property(copy, nonatomic) NSString *markerIdentifier;
 
 @end
 
 @implementation FLTGoogleMapMarkerController
 
 - (instancetype)initWithMarker:(GMSMarker *)marker
-                    identifier:(NSString *)identifier
-              clusterManagerId:(NSString *)clusterManagerId
+                    markerIdentifier:(NSString *)markerIdentifier
+              clusterManagerIdentifier:(NSString *)clusterManagerIdentifier
                        mapView:(GMSMapView *)mapView {
   self = [super init];
   if (self) {
     _marker = marker;
-    _markerId = identifier;
+    _markerIdentifier = [markerIdentifier copy];
     _mapView = mapView;
-    _clusterManagerId = clusterManagerId;
+    _clusterManagerIdentifier = [clusterManagerIdentifier copy];
     [self updateMarkerUserData];
   }
   return self;
@@ -92,7 +92,7 @@
   // If marker belongs the cluster manager, visibility need to be controlled with the opacity
   // as the cluster manager controls when marker is on the map and when not.
   // Alpha value for marker must always be interpreted before visibility value.
-  if (self.clusterManagerId && self.clusterManagerId != (id)[NSNull null]) {
+  if (self.clusterManagerIdentifier && self.clusterManagerIdentifier != (id)[NSNull null]) {
     self.marker.opacity = visible ? self.marker.opacity : 0.0f;
   } else {
     self.marker.map = visible ? self.mapView : nil;
@@ -104,10 +104,10 @@
 }
 
 - (void)updateMarkerUserData {
-  if (self.clusterManagerId) {
-    [self.marker setMarkerIdentifier:self.markerId andClusterManagerIdentifier:self.clusterManagerId];
+  if (self.clusterManagerIdentifier) {
+    [self.marker setMarkerIdentifier:self.markerIdentifier andClusterManagerIdentifier:self.clusterManagerIdentifier];
   } else {
-    [self.marker setMarkerIdentifier:self.markerId];
+    [self.marker setMarkerIdentifier:self.markerIdentifier];
   }
 }
 
@@ -246,7 +246,7 @@
 @interface FLTMarkersController ()
 
 @property(strong, nonatomic) NSMutableDictionary *markerIdentifierToController;
-@property(weak, nonatomic) FLTClusterManagersController *clusterManagersController;
+@property(weak, nonatomic, nullable) FLTClusterManagersController *clusterManagersController;
 @property(strong, nonatomic) FlutterMethodChannel *methodChannel;
 @property(weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
 @property(weak, nonatomic) GMSMapView *mapView;
@@ -255,25 +255,25 @@
 
 @implementation FLTMarkersController
 
-- (instancetype)initWithClusterManagersController:(FLTClusterManagersController *)clusterManagers
+- (instancetype)initWithClusterManagersController:(nullable FLTClusterManagersController *)clusterManagers
                                           channel:(FlutterMethodChannel *)channel
                                           mapView:(GMSMapView *)mapView
                                         registrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   _clusterManagersController = clusterManagers;
-  return [self initWithMethodChannel:channel mapView:mapView registrar:registrar];
+  self = [super init];
+  if (self) {
+      _methodChannel = channel;
+      _mapView = mapView;
+      _markerIdentifierToController = [[NSMutableDictionary alloc] init];
+      _registrar = registrar;
+  }
+  return self;
 }
 
 - (instancetype)initWithMethodChannel:(FlutterMethodChannel *)methodChannel
                               mapView:(GMSMapView *)mapView
                             registrar:(NSObject<FlutterPluginRegistrar> *)registrar {
-  self = [super init];
-  if (self) {
-    _methodChannel = methodChannel;
-    _mapView = mapView;
-    _markerIdentifierToController = [[NSMutableDictionary alloc] init];
-    _registrar = registrar;
-  }
-  return self;
+  return [self initWithClusterManagersController:nil channel:methodChannel mapView:mapView registrar:registrar];
 }
 
 - (void)addMarkers:(NSArray *)markersToAdd {
@@ -283,24 +283,24 @@
 }
 
 - (void)addMarker:(NSDictionary *)markerToAdd {
-  NSString *identifier = markerToAdd[@"markerId"];
-  NSString *clusterManagerId = markerToAdd[@"clusterManagerId"];
+  NSString *markerIdentifier = markerToAdd[@"markerId"];
+  NSString *clusterManagerIdentifier = markerToAdd[@"clusterManagerId"];
   CLLocationCoordinate2D position = [FLTMarkersController getPosition:markerToAdd];
   GMSMarker *marker = [GMSMarker markerWithPosition:position];
   FLTGoogleMapMarkerController *controller =
       [[FLTGoogleMapMarkerController alloc] initWithMarker:marker
-                                                identifier:identifier
-                                          clusterManagerId:clusterManagerId
+                                                markerIdentifier:markerIdentifier
+                                          clusterManagerIdentifier:clusterManagerIdentifier
                                                    mapView:self.mapView];
   [controller interpretMarkerOptions:markerToAdd registrar:self.registrar];
-  if (clusterManagerId && clusterManagerId != (id)[NSNull null]) {
+  if (clusterManagerIdentifier && clusterManagerIdentifier != (id)[NSNull null]) {
     GMUClusterManager *clusterManager =
-        [_clusterManagersController clusterManagerWithIdentifier:clusterManagerId];
-    if (marker && clusterManager != nil) {
+        [_clusterManagersController clusterManagerWithIdentifier:clusterManagerIdentifier];
+    if (marker && clusterManager != (id)[NSNull null]) {
       [clusterManager addItem:(id<GMUClusterItem>)marker];
     }
   }
-  self.markerIdentifierToController[identifier] = controller;
+  self.markerIdentifierToController[markerIdentifier] = controller;
 }
 
 - (void)changeMarkers:(NSArray *)markersToChange {
@@ -310,15 +310,15 @@
 }
 
 - (void)changeMarker:(NSDictionary *)markerToChange {
-  NSString *identifier = markerToChange[@"markerId"];
-  NSString *clusterManagerId = markerToChange[@"clusterManagerId"];
-  FLTGoogleMapMarkerController *controller = self.markerIdentifierToController[identifier];
+  NSString *markerIdentifier = markerToChange[@"markerId"];
+  NSString *clusterManagerIdentifier = markerToChange[@"clusterManagerId"];
+  FLTGoogleMapMarkerController *controller = self.markerIdentifierToController[markerIdentifier];
   if (!controller) {
     return;
   }
-  NSString *oldClusterManagerId = [controller clusterManagerId];
-  if (![oldClusterManagerId isEqualToString:clusterManagerId]) {
-    [self removeMarker:identifier];
+  NSString *previousClusterManagerIdentifier = [controller clusterManagerIdentifier];
+  if (![previousClusterManagerIdentifier isEqualToString:clusterManagerIdentifier]) {
+    [self removeMarker:markerIdentifier];
     [self addMarker:markerToChange];
   } else {
     [controller interpretMarkerOptions:markerToChange registrar:self.registrar];
@@ -336,10 +336,10 @@
   if (!controller) {
     return;
   }
-  NSString *clusterManagerId = [controller clusterManagerId];
-  if (clusterManagerId && clusterManagerId != (id)[NSNull null]) {
+  NSString *clusterManagerIdentifier = [controller clusterManagerIdentifier];
+  if (clusterManagerIdentifier && clusterManagerIdentifier != (id)[NSNull null]) {
     GMUClusterManager *clusterManager =
-        [_clusterManagersController clusterManagerWithIdentifier:clusterManagerId];
+        [_clusterManagersController clusterManagerWithIdentifier:clusterManagerIdentifier];
     if (controller.marker && clusterManager != nil) {
       [clusterManager removeItem:(id<GMUClusterItem>)controller.marker];
     }

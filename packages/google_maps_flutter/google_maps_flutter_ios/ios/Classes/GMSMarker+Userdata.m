@@ -29,7 +29,7 @@ const int clusterManagerIdentifierIndex = 1;
     return nil;
   }
 
-  id clusterManagerIdentifier = self.userData[clusterManagerIdentifierIndex];
+  NSString *clusterManagerIdentifier = self.userData[clusterManagerIdentifierIndex];
   if (clusterManagerIdentifier == (id)[NSNull null]) {
     return nil;
   }
