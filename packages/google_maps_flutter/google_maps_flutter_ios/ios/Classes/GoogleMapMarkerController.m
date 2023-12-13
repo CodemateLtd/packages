@@ -92,7 +92,7 @@
   // If marker belongs the cluster manager, visibility need to be controlled with the opacity
   // as the cluster manager controls when marker is on the map and when not.
   // Alpha value for marker must always be interpreted before visibility value.
-  if (self.clusterManagerIdentifier && self.clusterManagerIdentifier != (id)[NSNull null]) {
+  if (self.clusterManagerIdentifier) {
     self.marker.opacity = visible ? self.marker.opacity : 0.0f;
   } else {
     self.marker.map = visible ? self.mapView : nil;
@@ -283,8 +283,8 @@
 }
 
 - (void)addMarker:(NSDictionary *)markerToAdd {
-  NSString *markerIdentifier = markerToAdd[@"markerId"];
-  NSString *clusterManagerIdentifier = markerToAdd[@"clusterManagerId"];
+  id markerIdentifier = markerToAdd[@"markerId"];
+  id clusterManagerIdentifier = markerToAdd[@"clusterManagerId"];
   CLLocationCoordinate2D position = [FLTMarkersController getPosition:markerToAdd];
   GMSMarker *marker = [GMSMarker markerWithPosition:position];
   FLTGoogleMapMarkerController *controller =
@@ -293,10 +293,10 @@
                                           clusterManagerIdentifier:clusterManagerIdentifier
                                                    mapView:self.mapView];
   [controller interpretMarkerOptions:markerToAdd registrar:self.registrar];
-  if (clusterManagerIdentifier && clusterManagerIdentifier != (id)[NSNull null]) {
-    GMUClusterManager *clusterManager =
+  if (clusterManagerIdentifier && [clusterManagerIdentifier isKindOfClass:[NSString class]]) {
+    id clusterManager =
         [_clusterManagersController clusterManagerWithIdentifier:clusterManagerIdentifier];
-    if (marker && clusterManager != (id)[NSNull null]) {
+    if (marker && [clusterManager isKindOfClass:[GMUClusterManager class]]) {
       [clusterManager addItem:(id<GMUClusterItem>)marker];
     }
   }
@@ -336,11 +336,11 @@
   if (!controller) {
     return;
   }
-  NSString *clusterManagerIdentifier = [controller clusterManagerIdentifier];
-  if (clusterManagerIdentifier && clusterManagerIdentifier != (id)[NSNull null]) {
-    GMUClusterManager *clusterManager =
+  id clusterManagerIdentifier = [controller clusterManagerIdentifier];
+  if ([clusterManagerIdentifier isKindOfClass:[NSString class]]) {
+    id clusterManager =
         [_clusterManagersController clusterManagerWithIdentifier:clusterManagerIdentifier];
-    if (controller.marker && clusterManager != nil) {
+    if (controller.marker && [clusterManager isKindOfClass:[GMUClusterManager class]]) {
       [clusterManager removeItem:(id<GMUClusterItem>)controller.marker];
     }
   } else {
