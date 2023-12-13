@@ -7,7 +7,7 @@
 #import "GoogleMapController.h"
 #import "FLTGoogleMapJSONConversions.h"
 #import "FLTGoogleMapTileOverlayController.h"
-#import "GMSMarker+Userdata.h"
+#import "GoogleMarkerUtilities.h"
 
 #pragma mark - Conversion of JSON-like values sent via platform channels. Forward declarations.
 
@@ -567,26 +567,26 @@
     // When NO is returned, the map will focus on the cluster.
     return NO;
   }
-  return [self.markersController didTapMarkerWithIdentifier:[marker getMarkerIdentifier]];
+  return [self.markersController didTapMarkerWithIdentifier:[GoogleMarkerUtilities getMarkerIdentifierFrom:marker]];
 }
 
 - (void)mapView:(GMSMapView *)mapView didEndDraggingMarker:(GMSMarker *)marker {
-  [self.markersController didEndDraggingMarkerWithIdentifier:[marker getMarkerIdentifier]
+  [self.markersController didEndDraggingMarkerWithIdentifier:[GoogleMarkerUtilities getMarkerIdentifierFrom:marker]
                                                     location:marker.position];
 }
 
 - (void)mapView:(GMSMapView *)mapView didBeginDraggingMarker:(GMSMarker *)marker {
-  [self.markersController didStartDraggingMarkerWithIdentifier:[marker getMarkerIdentifier]
+  [self.markersController didStartDraggingMarkerWithIdentifier:[GoogleMarkerUtilities getMarkerIdentifierFrom:marker]
                                                       location:marker.position];
 }
 
 - (void)mapView:(GMSMapView *)mapView didDragMarker:(GMSMarker *)marker {
-  [self.markersController didDragMarkerWithIdentifier:[marker getMarkerIdentifier]
+  [self.markersController didDragMarkerWithIdentifier:[GoogleMarkerUtilities getMarkerIdentifierFrom:marker]
                                              location:marker.position];
 }
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker {
-  [self.markersController didTapInfoWindowOfMarkerWithIdentifier:[marker getMarkerIdentifier]];
+  [self.markersController didTapInfoWindowOfMarkerWithIdentifier:[GoogleMarkerUtilities getMarkerIdentifierFrom:marker]];
 }
 - (void)mapView:(GMSMapView *)mapView didTapOverlay:(GMSOverlay *)overlay {
   NSString *overlayId = overlay.userData[0];

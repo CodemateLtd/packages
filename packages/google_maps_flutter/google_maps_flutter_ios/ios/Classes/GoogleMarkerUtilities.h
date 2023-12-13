@@ -6,36 +6,40 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface GMSMarker (Userdata)
+@interface GoogleMarkerUtilities: NSObject
 
 /**
  * Sets MarkerId to GMSMarker UserData.
  *
  * @param markerIdentifier Identifier of the marker.
+ * @param marker GMSMarker object.
  */
-- (void)setMarkerIdentifier:(NSString *)markerIdentifier;
++ (void)setMarkerIdentifier:(NSString *)markerIdentifier for:(GMSMarker*)marker;
 
 /**
  * Sets MarkerId and ClusterManagerId to GMSMarker UserData.
  *
  * @param markerIdentifier Identifier of marker.
  * @param clusterManagerIdentifier Identifier of cluster manager.
+ * @param marker GMSMarker object.
  */
-- (void)setMarkerIdentifier:(NSString *)markerIdentifier andClusterManagerIdentifier:(NSString *)clusterManagerIdentifier;
++ (void)setMarkerIdentifier:(NSString *)markerIdentifier andClusterManagerIdentifier:(NSString *)clusterManagerIdentifier for:(GMSMarker*)marker;
 
 /**
  * Get MarkerIdentifier from GMSMarker UserData.
  *
+ * @param marker GMSMarker object.
  * @return NSString if found otherwise nil.
  */
-- (NSString *)getMarkerIdentifier;
++ (NSString *)getMarkerIdentifierFrom:(GMSMarker*)marker;
 
 /**
  * Get ClusterManagerIdentifier from GMSMarker UserData.
  *
+ * @param marker GMSMarker object.
  * @return NSString if found otherwise nil.
  */
-- (NSString *)getClusterManagerIdentifier;
++ (NSString *)getClusterManagerIdentifierFrom:(GMSMarker*)marker;
 
 @end
 

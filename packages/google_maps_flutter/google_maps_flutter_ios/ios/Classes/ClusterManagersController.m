@@ -4,7 +4,7 @@
 
 #import "ClusterManagersController.h"
 #import "FLTGoogleMapJSONConversions.h"
-#import "GMSMarker+Userdata.h"
+#import "GoogleMarkerUtilities.h"
 
 @interface FLTClusterManagersController ()
 
@@ -110,7 +110,7 @@
 
   // Typecasting here is safe because only GMSMarkers are clustered.
   GMSMarker *firstMarker = (GMSMarker *)cluster.items.firstObject;
-  return [firstMarker getClusterManagerIdentifier];
+  return [GoogleMarkerUtilities getClusterManagerIdentifierFrom:firstMarker];
 }
 
 /**
@@ -129,7 +129,7 @@
   GMSCoordinateBounds *bounds = [[GMSCoordinateBounds alloc] init];
 
   for (GMSMarker *marker in cluster.items) {
-    [markerIds addObject:[marker getMarkerIdentifier]];
+    [markerIds addObject:[GoogleMarkerUtilities getMarkerIdentifierFrom:marker]];
     bounds = [bounds includingCoordinate:marker.position];
   }
 
