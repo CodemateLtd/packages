@@ -22,7 +22,7 @@ Downloaded by pub (not CocoaPods).
   # has been confirmed to be compatible via an example in examples/. See discussion
   # in https://github.com/flutter/flutter/issues/86820 for why this is so broad.
   s.dependency 'GoogleMaps', '< 8.0'
-  # This should be updated once the plugin will have minimum supported iOS version 13+.
+  # Once the plugin moves its minimum iOS version to 13+, this should be updated.
   s.dependency 'Google-Maps-iOS-Utils', '4.1.0'
   s.static_framework = true
   s.platform = :ios, '11.0'

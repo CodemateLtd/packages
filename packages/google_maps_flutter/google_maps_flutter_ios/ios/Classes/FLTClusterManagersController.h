@@ -8,7 +8,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-// Defines cluster managers controller.
+// Defines cluster managers controller interface which
+// is responsible for adding/removing/returning one or more cluster managers.
 @interface FLTClusterManagersController : NSObject
 
 /**
@@ -43,7 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (GMUClusterManager *)clusterManagerWithIdentifier:(NSString *)identifier;
 
 /**
- * Converts all clusters from the specific ClusterManager to result object response.
+ * Converts all clusters from the specific ClusterManager to result object response
+ * and updates that to the provided result object.
  *
  * @param identifier identifier of the ClusterManager.
  * @param result FlutterResult object to be updated with cluster data.

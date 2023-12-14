@@ -108,9 +108,12 @@
     return nil;
   }
 
-  // Typecasting here is safe because only GMSMarkers are clustered.
-  GMSMarker *firstMarker = (GMSMarker *)cluster.items.firstObject;
-  return [GoogleMarkerUtilities getClusterManagerIdentifierFrom:firstMarker];
+  if (cluster.items.firstObject && [cluster.items.firstObject isKindOfClass:[GMSMarker class]]) {
+    GMSMarker *firstMarker = (GMSMarker *)cluster.items.firstObject;
+    return [GoogleMarkerUtilities getClusterManagerIdentifierFrom:firstMarker];
+  }
+  
+  return nil;
 }
 
 /**

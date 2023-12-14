@@ -11,7 +11,9 @@
 @property(strong, nonatomic) GMSMarker *marker;
 @property(weak, nonatomic) GMSMapView *mapView;
 @property(assign, nonatomic, readwrite) BOOL consumeTapEvents;
+/** The unique identifier for the cluster manager. */
 @property(copy, nonatomic) NSString *clusterManagerIdentifier;
+/** The unique identifier for the marker. */
 @property(copy, nonatomic) NSString *markerIdentifier;
 
 @end
@@ -246,6 +248,7 @@
 @interface FLTMarkersController ()
 
 @property(strong, nonatomic) NSMutableDictionary *markerIdentifierToController;
+/** Controller for adding/removing/fetching cluster managers */
 @property(weak, nonatomic, nullable) FLTClusterManagersController *clusterManagersController;
 @property(strong, nonatomic) FlutterMethodChannel *methodChannel;
 @property(weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
@@ -310,8 +313,12 @@
 }
 
 - (void)changeMarker:(NSDictionary *)markerToChange {
-  NSString *markerIdentifier = markerToChange[@"markerId"];
-  NSString *clusterManagerIdentifier = markerToChange[@"clusterManagerId"];
+  id markerIdentifier = markerToChange[@"markerId"];
+  id clusterManagerIdentifier = markerToChange[@"clusterManagerId"];
+
+  if (![markerIdentifier isKindOfClass:[NSString class]]) {
+    return;
+  }
   FLTGoogleMapMarkerController *controller = self.markerIdentifierToController[markerIdentifier];
   if (!controller) {
     return;
