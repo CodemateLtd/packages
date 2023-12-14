@@ -4,7 +4,7 @@
 
 #import <Flutter/Flutter.h>
 #import <GoogleMaps/GoogleMaps.h>
-#import "ClusterManagersController.h"
+#import "FLTClusterManagersController.h"
 #import "GoogleMapCircleController.h"
 #import "GoogleMapMarkerController.h"
 #import "GoogleMapPolygonController.h"
