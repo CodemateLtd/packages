@@ -24,10 +24,10 @@ class Cluster {
   /// The bounds containing all cluster markers.
   final LatLngBounds bounds;
 
-  /// List of [MarkerId]s inside the cluster.
+  /// List of [MarkerId]s in the cluster.
   final List<MarkerId> markerIds;
 
-  /// Returns the amount of markers in cluster.
+  /// Returns the number of markers in the cluster.
   int get count => markerIds.length;
 
   @override

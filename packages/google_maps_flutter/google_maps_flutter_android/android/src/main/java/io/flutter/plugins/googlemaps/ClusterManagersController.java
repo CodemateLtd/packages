@@ -114,7 +114,7 @@ class ClusterManagersController implements GoogleMap.OnCameraIdleListener, Clust
     clusterManager.cluster();
   }
 
-  /** Adds item to the ClusterManager it belongs. */
+  /** Adds item to the ClusterManager it belongs to. */
   public void addItem(MarkerBuilder item) {
     ClusterManager<MarkerBuilder> clusterManager =
         clusterManagerIdToManager.get(item.clusterManagerId());
@@ -124,7 +124,7 @@ class ClusterManagersController implements GoogleMap.OnCameraIdleListener, Clust
     }
   }
 
-  /** Removes item from the ClusterManager it belongs. */
+  /** Removes item from the ClusterManager it belongs to. */
   public void removeItem(MarkerBuilder item) {
     ClusterManager<MarkerBuilder> clusterManager =
         clusterManagerIdToManager.get(item.clusterManagerId());
