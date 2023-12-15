@@ -10,7 +10,7 @@ import 'types.dart';
 @immutable
 class Cluster {
   /// Creates a cluster with its location [LatLng], bounds [LatLngBounds],
-  /// and list of [MarkerId]s inside the cluster.
+  /// and list of [MarkerId]s in the cluster.
   const Cluster(
     this.clusterManagerId,
     this.markerIds, {
