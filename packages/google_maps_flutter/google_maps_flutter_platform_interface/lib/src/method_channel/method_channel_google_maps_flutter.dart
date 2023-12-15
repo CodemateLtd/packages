@@ -299,7 +299,12 @@ class MethodChannelGoogleMapsFlutter extends GoogleMapsFlutterPlatform {
 
         _mapEventStreamController.add(ClusterTapEvent(
           mapId,
-          Cluster(clusterManagerId, position, bounds, markerIds),
+          Cluster(
+            clusterManagerId,
+            markerIds,
+            position: position,
+            bounds: bounds,
+          ),
         ));
         break;
       default:

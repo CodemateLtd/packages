@@ -12,8 +12,11 @@ class Cluster {
   /// Creates a cluster with its location [LatLng], bounds [LatLngBounds],
   /// and list of [MarkerId]s inside the cluster.
   const Cluster(
-      this.clusterManagerId, this.position, this.bounds, this.markerIds)
-      : assert(markerIds.length > 0);
+    this.clusterManagerId,
+    this.markerIds, {
+    required this.position,
+    required this.bounds,
+  }) : assert(markerIds.length > 0);
 
   /// ID of the [ClusterManager] of the cluster.
   final ClusterManagerId clusterManagerId;

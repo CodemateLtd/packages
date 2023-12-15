@@ -756,7 +756,12 @@ class GoogleMapsFlutterAndroid extends GoogleMapsFlutterPlatform {
         .map((dynamic markerId) => MarkerId(markerId as String))
         .toList();
 
-    return Cluster(clusterManagerId, position, bounds, markerIds);
+    return Cluster(
+      clusterManagerId,
+      markerIds,
+      position: position,
+      bounds: bounds,
+    );
   }
 }
 

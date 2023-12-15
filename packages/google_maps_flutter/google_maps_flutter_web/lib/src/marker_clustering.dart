@@ -125,7 +125,12 @@ class ClusterManagersController extends GeometryController {
         .map<MarkerId>((gmaps.Marker marker) =>
             MarkerId(marker.get('markerId')! as String))
         .toList();
-    return Cluster(clusterManagerId, position, bounds, markerIds);
+    return Cluster(
+      clusterManagerId,
+      markerIds,
+      position: position,
+      bounds: bounds,
+    );
   }
 }
 
