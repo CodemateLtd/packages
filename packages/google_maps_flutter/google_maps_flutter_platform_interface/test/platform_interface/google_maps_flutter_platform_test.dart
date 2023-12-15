@@ -83,6 +83,26 @@ void main() {
         );
       },
     );
+
+    test(
+      'updateClusterManagers() throws UnimplementedError',
+      () {
+        expect(
+            () => BuildViewGoogleMapsFlutterPlatform().updateClusterManagers(
+                ClusterManagerUpdates.from(
+                  <ClusterManager>{
+                    const ClusterManager(
+                        clusterManagerId: ClusterManagerId('123'))
+                  },
+                  <ClusterManager>{
+                    const ClusterManager(
+                        clusterManagerId: ClusterManagerId('456'))
+                  },
+                ),
+                mapId: 0),
+            throwsUnimplementedError);
+      },
+    );
   });
 }
 
