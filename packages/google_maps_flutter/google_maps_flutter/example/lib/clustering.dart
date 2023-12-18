@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// ignore_for_file: public_member_api_docs
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -11,7 +9,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'page.dart';
 
+/// Page for demonstrating marker clustering support.
 class ClusteringPage extends GoogleMapExampleAppPage {
+  /// Default Constructor.
   const ClusteringPage({Key? key})
       : super(const Icon(Icons.place), 'Manage clustering', key: key);
 
@@ -21,27 +21,46 @@ class ClusteringPage extends GoogleMapExampleAppPage {
   }
 }
 
+/// Body of the clustering page.
 class ClusteringBody extends StatefulWidget {
+  /// Default Constructor.
   const ClusteringBody({super.key});
 
   @override
   State<StatefulWidget> createState() => ClusteringBodyState();
 }
 
-typedef MarkerUpdateAction = Marker Function(Marker marker);
-
+/// State of the clustering page.
 class ClusteringBodyState extends State<ClusteringBody> {
+  /// Default Constructor.
   ClusteringBodyState();
+
+  /// Starting point from where markers are added.
   static const LatLng center = LatLng(-33.86, 151.1547171);
+
+  /// Scale factor for longitude when placing markers.
   static const double _scaleFactor = 0.05;
 
+  /// Google map controller.
   GoogleMapController? controller;
+
+  /// Map of clusterManagers with identifier as the key.
   Map<ClusterManagerId, ClusterManager> clusterManagers =
       <ClusterManagerId, ClusterManager>{};
+
+  /// Map of markers with identifier as the key.
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+
+  /// Id of the currently selected marker.
   MarkerId? selectedMarker;
+
+  /// Counter for added cluster manager ids.
   int _clusterManagerIdCounter = 1;
+
+  /// Counter for added markers ids.
   int _markerIdCounter = 1;
+
+  /// Cluster that was tapped most recently.
   Cluster? lastCluster;
 
   // ignore: use_setters_to_change_properties
