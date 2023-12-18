@@ -50,9 +50,7 @@ To request multiple libraries, separate them with commas:
 
 Now you should be able to use the Google Maps plugin normally.
 
-## Clustering support
-
-Modify the <head> tag of your web/index.html to load the [js-markerclusterer](https://github.com/googlemaps/js-markerclusterer#install) library, like so:
+If you are using clustering support, modify the <head> tag to load the [js-markerclusterer](https://github.com/googlemaps/js-markerclusterer#install) library, like so:
 
 
 ```html
