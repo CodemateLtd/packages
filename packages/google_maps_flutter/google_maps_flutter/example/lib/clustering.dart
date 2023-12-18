@@ -41,6 +41,18 @@ class ClusteringBodyState extends State<ClusteringBody> {
   /// Scale factor for longitude when placing markers.
   static const double _scaleFactor = 0.05;
 
+  /// Maximum amount of cluster managers.
+  static const int _clusterManagerMaxCount = 3;
+
+  /// Amount of markers to be added to the cluster at once.
+  static const int _markersToBeAddedToClusterCount = 10;
+
+  /// Fully visible alpha value.
+  static const double _fullyVisibleAlpha = 1.0;
+
+  /// Half visible alpha value.
+  static const double _halfVisibleAlpha = 0.5;
+
   /// Google map controller.
   GoogleMapController? controller;
 
@@ -95,7 +107,7 @@ class ClusteringBodyState extends State<ClusteringBody> {
   }
 
   void _addClusterManager() {
-    if (clusterManagers.length == 3) {
+    if (clusterManagers.length == _clusterManagerMaxCount) {
       return;
     }
 
@@ -129,7 +141,7 @@ class ClusteringBodyState extends State<ClusteringBody> {
   }
 
   void _addMarkersToCluster(ClusterManager clusterManager) {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < _markersToBeAddedToClusterCount; i++) {
       final String markerIdVal =
           '${clusterManager.clusterManagerId.value}_marker_id_$_markerIdCounter';
       _markerIdCounter++;
@@ -137,6 +149,7 @@ class ClusteringBodyState extends State<ClusteringBody> {
 
       final int clusterManagerIndex =
           clusterManagers.values.toList().indexOf(clusterManager);
+      const int additionalLongitudeScaleFactor = 2;
       final Marker marker = Marker(
         clusterManagerId: clusterManager.clusterManagerId,
         markerId: markerId,
@@ -144,7 +157,9 @@ class ClusteringBodyState extends State<ClusteringBody> {
           center.latitude + _getRandomOffset(),
           center.longitude +
               _getRandomOffset() +
-              clusterManagerIndex * _scaleFactor * 2,
+              clusterManagerIndex *
+                  _scaleFactor *
+                  additionalLongitudeScaleFactor,
         ),
         infoWindow: InfoWindow(title: markerIdVal, snippet: '*'),
         onTap: () => _onMarkerTapped(markerId),
@@ -171,7 +186,9 @@ class ClusteringBodyState extends State<ClusteringBody> {
       final Marker marker = markers[markerId]!;
       final double current = marker.alpha;
       markers[markerId] = marker.copyWith(
-        alphaParam: current == 1.0 ? 0.5 : 1.0,
+        alphaParam: current == _fullyVisibleAlpha
+            ? _halfVisibleAlpha
+            : _fullyVisibleAlpha,
       );
     }
     setState(() {});
@@ -200,7 +217,7 @@ class ClusteringBodyState extends State<ClusteringBody> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               TextButton(
-                onPressed: clusterManagers.length >= 3
+                onPressed: clusterManagers.length >= _clusterManagerMaxCount
                     ? null
                     : () => _addClusterManager(),
                 child: const Text('Add cluster manager'),
