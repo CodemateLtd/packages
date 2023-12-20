@@ -39,8 +39,11 @@ class ClusteringBodyState extends State<ClusteringBody> {
   /// Starting point from where markers are added.
   static const LatLng center = LatLng(-33.86, 151.1547171);
 
-  /// Scale factor for longitude when placing markers.
-  static const double _scaleFactor = 0.05;
+  /// Marker offset factor for randomizing marker placing.
+  static const double _markerOffsetFactor = 0.05;
+
+  /// Offset for longitude when placing markers to different cluster managers.
+  static const double _clusterManagerLongitudeOffset = 0.1;
 
   /// Maximum amount of cluster managers.
   static const int _clusterManagerMaxCount = 3;
@@ -150,17 +153,18 @@ class ClusteringBodyState extends State<ClusteringBody> {
 
       final int clusterManagerIndex =
           clusterManagers.values.toList().indexOf(clusterManager);
-      const int additionalLongitudeScaleFactor = 2;
+
+      // Add additional offset to longitude for each cluster manager to space
+      // out markers in different cluster managers.
+      final double clusterManagerLongitudeOffset =
+          clusterManagerIndex * _clusterManagerLongitudeOffset;
+
       final Marker marker = Marker(
         clusterManagerId: clusterManager.clusterManagerId,
         markerId: markerId,
         position: LatLng(
           center.latitude + _getRandomOffset(),
-          center.longitude +
-              _getRandomOffset() +
-              clusterManagerIndex *
-                  _scaleFactor *
-                  additionalLongitudeScaleFactor,
+          center.longitude + _getRandomOffset() + clusterManagerLongitudeOffset,
         ),
         infoWindow: InfoWindow(title: markerIdVal, snippet: '*'),
         onTap: () => _onMarkerTapped(markerId),
@@ -171,7 +175,7 @@ class ClusteringBodyState extends State<ClusteringBody> {
   }
 
   double _getRandomOffset() {
-    return (Random().nextDouble() - 0.5) * _scaleFactor;
+    return (Random().nextDouble() - 0.5) * _markerOffsetFactor;
   }
 
   void _remove(MarkerId markerId) {
