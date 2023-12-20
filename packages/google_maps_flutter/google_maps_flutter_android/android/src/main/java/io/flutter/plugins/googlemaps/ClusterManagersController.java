@@ -26,11 +26,17 @@ import java.util.Set;
  * specific cluster managers.
  */
 class ClusterManagersController implements GoogleMap.OnCameraIdleListener, ClusterListener {
+  @NonNull
   private final Context context;
+  @NonNull
   private final HashMap<String, ClusterManager<MarkerBuilder>> clusterManagerIdToManager;
+  @NonNull
   private final MethodChannel methodChannel;
+  @Nullable
   private MarkerManager markerManager;
+  @Nullable
   private GoogleMap googleMap;
+  @Nullable
   private ClusterItemListener clusterItemListener;
 
   ClusterManagersController(MethodChannel methodChannel, Context context) {
