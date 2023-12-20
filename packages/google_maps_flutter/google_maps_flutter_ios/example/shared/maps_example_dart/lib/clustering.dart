@@ -49,7 +49,7 @@ class ClusteringBodyState extends State<ClusteringBody> {
   static const int _clusterManagerMaxCount = 3;
 
   /// Amount of markers to be added to the cluster at once.
-  static const int _markersToBeAddedToClusterCount = 10;
+  static const int _markersToAddToClusterManagerCount = 10;
 
   /// Fully visible alpha value.
   static const double _fullyVisibleAlpha = 1.0;
@@ -145,7 +145,7 @@ class ClusteringBodyState extends State<ClusteringBody> {
   }
 
   void _addMarkersToCluster(ClusterManager clusterManager) {
-    for (int i = 0; i < _markersToBeAddedToClusterCount; i++) {
+    for (int i = 0; i < _markersToAddToClusterManagerCount; i++) {
       final String markerIdVal =
           '${clusterManager.clusterManagerId.value}_marker_id_$_markerIdCounter';
       _markerIdCounter++;
