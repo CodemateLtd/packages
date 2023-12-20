@@ -2,11 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:async/async.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter_ios/google_maps_flutter_ios.dart';
 import 'package:google_maps_flutter_ios/src/utils/cluster_manager.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
@@ -30,8 +26,8 @@ void main() {
         ClusterManager(clusterManagerId: ClusterManagerId('5678'));
     const ClusterManager manager3 =
         ClusterManager(clusterManagerId: ClusterManagerId('9012'));
-    final Object json =
-        serializeClusterManagerSet({manager, manager2, manager3});
+    final Object json = serializeClusterManagerSet(
+        <ClusterManager>{manager, manager2, manager3});
 
     expect(json, <Object>[
       <String, Object>{
