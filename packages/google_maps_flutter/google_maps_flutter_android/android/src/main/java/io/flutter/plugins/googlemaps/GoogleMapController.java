@@ -858,11 +858,12 @@ final class GoogleMapController
 
   @Override
   public void setInitialClusterManagers(Object initialClusterManagers) {
+    if (googleMap == null) {
+      return;
+    }
     ArrayList<?> clusterManagers = (ArrayList<?>) initialClusterManagers;
     this.initialClusterManagers = clusterManagers != null ? new ArrayList<>(clusterManagers) : null;
-    if (googleMap != null) {
-      updateInitialClusterManagers();
-    }
+    updateInitialClusterManagers();
   }
 
   private void updateInitialClusterManagers() {

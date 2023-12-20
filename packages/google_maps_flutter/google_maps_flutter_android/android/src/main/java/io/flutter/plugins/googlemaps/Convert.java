@@ -416,7 +416,7 @@ class Convert {
     }
   }
 
-  /** Returns the dartMarkerId of the interpreted marker. */
+  /** Set the options in the given object to marker options sink. */
   static void interpretMarkerOptions(Object o, MarkerOptionsSink sink) {
     final Map<?, ?> data = toMap(o);
     final Object alpha = data.get("alpha");
@@ -464,11 +464,6 @@ class Convert {
     final Object zIndex = data.get("zIndex");
     if (zIndex != null) {
       sink.setZIndex(toFloat(zIndex));
-    }
-
-    final String markerId = (String) data.get("markerId");
-    if (markerId == null) {
-      throw new IllegalArgumentException("markerId was null");
     }
   }
 
