@@ -48,7 +48,7 @@ class ClusteringBodyState extends State<ClusteringBody> {
   /// Maximum amount of cluster managers.
   static const int _clusterManagerMaxCount = 3;
 
-  /// Amount of markers to be added to the cluster at once.
+  /// Amount of markers to be added to the cluster manager at once.
   static const int _markersToAddToClusterManagerCount = 10;
 
   /// Fully visible alpha value.
