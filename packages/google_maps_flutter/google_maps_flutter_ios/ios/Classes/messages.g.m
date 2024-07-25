@@ -1061,14 +1061,16 @@ void SetUpFGMMapsApiWithSuffix(id<FlutterBinaryMessenger> binaryMessenger,
         binaryMessenger:binaryMessenger
                   codec:FGMGetMessagesCodec()];
     if (api) {
-      NSCAssert([api respondsToSelector:@selector(animateCameraWithUpdate:error:)],
-                @"FGMMapsApi api (%@) doesn't respond to @selector(animateCameraWithUpdate:error:)",
+      NSCAssert([api respondsToSelector:@selector(animateCameraWithUpdate:duration:error:)],
+                @"FGMMapsApi api (%@) doesn't respond to "
+                @"@selector(animateCameraWithUpdate:duration:error:)",
                 api);
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray<id> *args = message;
         FGMPlatformCameraUpdate *arg_cameraUpdate = GetNullableObjectAtIndex(args, 0);
+        NSNumber *arg_duration = GetNullableObjectAtIndex(args, 1);
         FlutterError *error;
-        [api animateCameraWithUpdate:arg_cameraUpdate error:&error];
+        [api animateCameraWithUpdate:arg_cameraUpdate duration:arg_duration error:&error];
         callback(wrapResult(nil, error));
       }];
     } else {

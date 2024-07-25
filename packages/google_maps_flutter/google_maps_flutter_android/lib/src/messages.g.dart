@@ -986,7 +986,8 @@ class MapsApi {
   }
 
   /// Moves the camera according to [cameraUpdate], animating the update.
-  Future<void> animateCamera(PlatformCameraUpdate cameraUpdate) async {
+  Future<void> animateCamera(
+      PlatformCameraUpdate cameraUpdate, int? duration) async {
     final String __pigeon_channelName =
         'dev.flutter.pigeon.google_maps_flutter_android.MapsApi.animateCamera$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel =
@@ -995,8 +996,8 @@ class MapsApi {
       pigeonChannelCodec,
       binaryMessenger: __pigeon_binaryMessenger,
     );
-    final List<Object?>? __pigeon_replyList =
-        await __pigeon_channel.send(<Object?>[cameraUpdate]) as List<Object?>?;
+    final List<Object?>? __pigeon_replyList = await __pigeon_channel
+        .send(<Object?>[cameraUpdate, duration]) as List<Object?>?;
     if (__pigeon_replyList == null) {
       throw _createConnectionError(__pigeon_channelName);
     } else if (__pigeon_replyList.length > 1) {

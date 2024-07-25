@@ -296,8 +296,8 @@ abstract class MapsApi {
   void moveCamera(PlatformCameraUpdate cameraUpdate);
 
   /// Moves the camera according to [cameraUpdate], animating the update.
-  @ObjCSelector('animateCameraWithUpdate:')
-  void animateCamera(PlatformCameraUpdate cameraUpdate);
+  @ObjCSelector('animateCameraWithUpdate:duration:')
+  void animateCamera(PlatformCameraUpdate cameraUpdate, int? duration);
 
   /// Gets the current map zoom level.
   @ObjCSelector('currentZoomLevel')

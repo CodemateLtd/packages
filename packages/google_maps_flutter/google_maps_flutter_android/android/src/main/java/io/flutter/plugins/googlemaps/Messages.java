@@ -1914,7 +1914,7 @@ public class Messages {
     /** Moves the camera according to [cameraUpdate] immediately, with no animation. */
     void moveCamera(@NonNull PlatformCameraUpdate cameraUpdate);
     /** Moves the camera according to [cameraUpdate], animating the update. */
-    void animateCamera(@NonNull PlatformCameraUpdate cameraUpdate);
+    void animateCamera(@NonNull PlatformCameraUpdate cameraUpdate, @Nullable Long duration);
     /** Gets the current map zoom level. */
     @NonNull
     Double getZoomLevel();
@@ -2327,8 +2327,10 @@ public class Messages {
                 ArrayList<Object> wrapped = new ArrayList<Object>();
                 ArrayList<Object> args = (ArrayList<Object>) message;
                 PlatformCameraUpdate cameraUpdateArg = (PlatformCameraUpdate) args.get(0);
+                Number durationArg = (Number) args.get(1);
                 try {
-                  api.animateCamera(cameraUpdateArg);
+                  api.animateCamera(
+                      cameraUpdateArg, (durationArg == null) ? null : durationArg.longValue());
                   wrapped.add(0, null);
                 } catch (Throwable exception) {
                   ArrayList<Object> wrappedError = wrapError(exception);

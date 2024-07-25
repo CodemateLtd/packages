@@ -287,7 +287,7 @@ abstract class MapsApi {
   void moveCamera(PlatformCameraUpdate cameraUpdate);
 
   /// Moves the camera according to [cameraUpdate], animating the update.
-  void animateCamera(PlatformCameraUpdate cameraUpdate);
+  void animateCamera(PlatformCameraUpdate cameraUpdate, int? duration);
 
   /// Gets the current map zoom level.
   double getZoomLevel();

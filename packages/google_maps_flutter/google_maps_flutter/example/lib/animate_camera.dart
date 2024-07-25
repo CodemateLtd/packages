@@ -73,6 +73,25 @@ class AnimateCameraState extends State<AnimateCamera> {
                 TextButton(
                   onPressed: () {
                     mapController?.animateCamera(
+                      CameraUpdate.newCameraPosition(
+                        const CameraPosition(
+                          bearing: 270.0,
+                          target: LatLng(51.5160895, -0.1294527),
+                          tilt: 30.0,
+                          zoom: 17.0,
+                        ),
+                      ),
+                      duration: 5000,
+                    );
+                  },
+                  child: const Text(
+                    'newCameraPosition\nwith 5 second duration',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    mapController?.animateCamera(
                       CameraUpdate.newLatLng(
                         const LatLng(56.1725505, 10.1850512),
                       ),
