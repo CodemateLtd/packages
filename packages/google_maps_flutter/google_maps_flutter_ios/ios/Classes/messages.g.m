@@ -1050,7 +1050,8 @@ void SetUpFGMMapsApiWithSuffix(id<FlutterBinaryMessenger> binaryMessenger,
       [channel setMessageHandler:nil];
     }
   }
-  /// Moves the camera according to [cameraUpdate], animating the update.
+  /// Moves the camera according to [cameraUpdate], animating the update using a
+  /// duration in milliseconds if provided.
   {
     FlutterBasicMessageChannel *channel = [[FlutterBasicMessageChannel alloc]
            initWithName:[NSString
@@ -1068,9 +1069,11 @@ void SetUpFGMMapsApiWithSuffix(id<FlutterBinaryMessenger> binaryMessenger,
       [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
         NSArray<id> *args = message;
         FGMPlatformCameraUpdate *arg_cameraUpdate = GetNullableObjectAtIndex(args, 0);
-        NSNumber *arg_duration = GetNullableObjectAtIndex(args, 1);
+        NSNumber *arg_durationMilliSeconds = GetNullableObjectAtIndex(args, 1);
         FlutterError *error;
-        [api animateCameraWithUpdate:arg_cameraUpdate duration:arg_duration error:&error];
+        [api animateCameraWithUpdate:arg_cameraUpdate
+                            duration:arg_durationMilliSeconds
+                               error:&error];
         callback(wrapResult(nil, error));
       }];
     } else {

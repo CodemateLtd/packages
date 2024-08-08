@@ -121,7 +121,7 @@ class FakeGoogleMapsFlutterPlatform extends GoogleMapsFlutterPlatform {
   @override
   Future<void> animateCamera(
     CameraUpdate cameraUpdate, {
-    int? duration,
+    Duration? duration,
     required int mapId,
   }) async {}
 

@@ -925,16 +925,19 @@ class GoogleMapController
   }
 
   @Override
-  public void animateCamera(@NonNull Messages.PlatformCameraUpdate cameraUpdate, Long duration) {
+  public void animateCamera(
+      @NonNull Messages.PlatformCameraUpdate cameraUpdate, @Nullable Long durationMilliSeconds) {
     if (googleMap == null) {
       throw new FlutterError(
           "GoogleMap uninitialized", "animateCamera called prior to map initialization", null);
     }
-    if (duration == null) {
+    if (durationMilliSeconds == null) {
       googleMap.animateCamera(Convert.toCameraUpdate(cameraUpdate.getJson(), density));
     } else {
       googleMap.animateCamera(
-          Convert.toCameraUpdate(cameraUpdate.getJson(), density), Math.toIntExact(duration), null);
+          Convert.toCameraUpdate(cameraUpdate.getJson(), density),
+          durationMilliSeconds.intValue(),
+          null);
     }
   }
 

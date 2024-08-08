@@ -81,7 +81,7 @@ class AnimateCameraState extends State<AnimateCamera> {
                           zoom: 17.0,
                         ),
                       ),
-                      duration: 5000,
+                      duration: const Duration(seconds: 5),
                     );
                   },
                   child: const Text(

@@ -285,9 +285,10 @@ NSObject<FlutterMessageCodec> *FGMGetMessagesCodec(void);
 /// animation.
 - (void)moveCameraWithUpdate:(FGMPlatformCameraUpdate *)cameraUpdate
                        error:(FlutterError *_Nullable *_Nonnull)error;
-/// Moves the camera according to [cameraUpdate], animating the update.
+/// Moves the camera according to [cameraUpdate], animating the update using a
+/// duration in milliseconds if provided.
 - (void)animateCameraWithUpdate:(FGMPlatformCameraUpdate *)cameraUpdate
-                       duration:(nullable NSNumber *)duration
+                       duration:(nullable NSNumber *)durationMilliSeconds
                           error:(FlutterError *_Nullable *_Nonnull)error;
 /// Gets the current map zoom level.
 ///

@@ -680,7 +680,7 @@
 }
 
 - (void)animateCameraWithUpdate:(nonnull FGMPlatformCameraUpdate *)cameraUpdate
-                       duration:(NSNumber *)duration
+                       duration:(NSNumber *)durationMilliSeconds
                           error:(FlutterError *_Nullable __autoreleasing *_Nonnull)error {
   GMSCameraUpdate *update = [FLTGoogleMapJSONConversions cameraUpdateFromArray:cameraUpdate.json];
   if (!update) {
@@ -689,9 +689,9 @@
                                  details:cameraUpdate.json];
     return;
   }
-  if (duration) {
+  if (durationMilliSeconds) {
     [CATransaction begin];
-    [CATransaction setAnimationDuration:[duration doubleValue] / 1000];
+    [CATransaction setAnimationDuration:[durationMilliSeconds doubleValue] / 1000];
     [self.controller.mapView animateWithCameraUpdate:update];
     [CATransaction commit];
   } else {
