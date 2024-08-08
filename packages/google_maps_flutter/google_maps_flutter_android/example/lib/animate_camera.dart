@@ -76,8 +76,8 @@ class AnimateCameraState extends State<AnimateCamera> {
                     mapController?.animateCamera(
                       CameraUpdate.newCameraPosition(
                         const CameraPosition(
-                          bearing: 270.0,
-                          target: LatLng(51.5160895, -0.1294527),
+                          bearing: -270.0,
+                          target: LatLng(51.5287398, -0.2664034),
                           tilt: 30.0,
                           zoom: 17.0,
                         ),
