@@ -127,6 +127,7 @@ class GoogleMapsPlugin extends GoogleMapsFlutterPlatform {
   @override
   Future<void> animateCamera(
     CameraUpdate cameraUpdate, {
+    Duration? duration,
     required int mapId,
   }) async {
     return moveCamera(cameraUpdate, mapId: mapId);
