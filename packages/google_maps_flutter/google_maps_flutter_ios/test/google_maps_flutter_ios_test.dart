@@ -126,14 +126,12 @@ void main() {
     final CameraUpdate update = CameraUpdate.scrollBy(10, 20);
     await maps.animateCamera(update, mapId: mapId);
 
-    final VerificationResult verification = verify(api.animateCamera(captureAny,
-        configuration: captureAnyNamed('configuration')));
+    final VerificationResult verification =
+        verify(api.animateCamera(captureAny, captureAny));
     final PlatformCameraUpdate passedUpdate =
         verification.captured[0] as PlatformCameraUpdate;
     expect(passedUpdate.json, update.toJson());
-    final PlatformCameraUpdateAnimationConfiguration? passedConfiguration =
-        verification.captured[1] as PlatformCameraUpdateAnimationConfiguration?;
-    expect(passedConfiguration, isNull);
+    expect(verification.captured[1], isNull);
   });
 
   test('animateCameraWithConfiguration calls through', () async {
@@ -145,18 +143,20 @@ void main() {
     const CameraUpdateAnimationConfiguration configuration =
         CameraUpdateAnimationConfiguration(duration: Duration(seconds: 1));
     expect(configuration.duration?.inSeconds, 1);
-    await maps.animateCameraWithConfiguration(update,
-        mapId: mapId, configuration: configuration);
+    await maps.animateCameraWithConfiguration(
+      update,
+      configuration,
+      mapId: mapId,
+    );
 
-    final VerificationResult verification = verify(api.animateCamera(captureAny,
-        configuration: captureAnyNamed('configuration')));
+    final VerificationResult verification =
+        verify(api.animateCamera(captureAny, captureAny));
     final PlatformCameraUpdate passedUpdate =
         verification.captured[0] as PlatformCameraUpdate;
     expect(passedUpdate.json, update.toJson());
-    final PlatformCameraUpdateAnimationConfiguration? passedConfiguration =
-        verification.captured[1] as PlatformCameraUpdateAnimationConfiguration?;
-    expect(passedConfiguration?.durationMilliseconds,
-        configuration.duration?.inMilliseconds);
+
+    final int? passedDuration = verification.captured[1] as int?;
+    expect(passedDuration, configuration.duration?.inMilliseconds);
   });
 
   test('getZoomLevel passes values correctly', () async {

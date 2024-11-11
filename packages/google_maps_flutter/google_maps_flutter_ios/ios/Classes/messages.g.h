@@ -30,7 +30,6 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapType) {
 
 @class FGMPlatformCameraPosition;
 @class FGMPlatformCameraUpdate;
-@class FGMPlatformCameraUpdateAnimationConfiguration;
 @class FGMPlatformCircle;
 @class FGMPlatformHeatmap;
 @class FGMPlatformCluster;
@@ -73,12 +72,6 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapType) {
 /// CameraUpdate.toJson, and the native code must interpret it according to the
 /// internal implementation details of the CameraUpdate class.
 @property(nonatomic, strong) id json;
-@end
-
-/// Pigeon representation of a CameraUpdateAnimationConfiguration.
-@interface FGMPlatformCameraUpdateAnimationConfiguration : NSObject
-+ (instancetype)makeWithDurationMilliseconds:(nullable NSNumber *)durationMilliseconds;
-@property(nonatomic, strong, nullable) NSNumber *durationMilliseconds;
 @end
 
 /// Pigeon equivalent of the Circle class.
@@ -383,8 +376,7 @@ NSObject<FlutterMessageCodec> *FGMGetMessagesCodec(void);
 /// Moves the camera according to [cameraUpdate], animating the update using a
 /// duration in milliseconds if provided.
 - (void)animateCameraWithUpdate:(FGMPlatformCameraUpdate *)cameraUpdate
-               andConfiguration:
-                   (nullable FGMPlatformCameraUpdateAnimationConfiguration *)configuration
+                    andDuration:(nullable NSNumber *)durationMilliseconds
                           error:(FlutterError *_Nullable *_Nonnull)error;
 /// Gets the current map zoom level.
 ///

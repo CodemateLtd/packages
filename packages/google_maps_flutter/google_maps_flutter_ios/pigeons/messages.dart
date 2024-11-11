@@ -51,13 +51,6 @@ class PlatformCameraUpdate {
   final Object json;
 }
 
-/// Pigeon representation of a CameraUpdateAnimationConfiguration.
-class PlatformCameraUpdateAnimationConfiguration {
-  PlatformCameraUpdateAnimationConfiguration({this.durationMilliseconds});
-
-  final int? durationMilliseconds;
-}
-
 /// Pigeon equivalent of the Circle class.
 class PlatformCircle {
   PlatformCircle(this.json);
@@ -368,9 +361,9 @@ abstract class MapsApi {
 
   /// Moves the camera according to [cameraUpdate], animating the update using a
   /// duration in milliseconds if provided.
-  @ObjCSelector('animateCameraWithUpdate:andConfiguration:')
-  void animateCamera(PlatformCameraUpdate cameraUpdate,
-      {PlatformCameraUpdateAnimationConfiguration? configuration});
+  @ObjCSelector('animateCameraWithUpdate:andDuration:')
+  void animateCamera(
+      PlatformCameraUpdate cameraUpdate, int? durationMilliseconds);
 
   /// Gets the current map zoom level.
   @ObjCSelector('currentZoomLevel')
