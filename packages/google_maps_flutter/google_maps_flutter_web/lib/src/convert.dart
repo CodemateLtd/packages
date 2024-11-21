@@ -200,6 +200,13 @@ LatLngBounds gmLatLngBoundsTolatLngBounds(gmaps.LatLngBounds latLngBounds) {
   );
 }
 
+gmaps.LatLngBounds _latLngBoundsTogmLatLngBounds(LatLngBounds latLngBounds) {
+  return gmaps.LatLngBounds(
+    _latLngToGmLatLng(latLngBounds.southwest),
+    _latLngToGmLatLng(latLngBounds.northeast),
+  );
+}
+
 CameraPosition _gmViewportToCameraPosition(gmaps.Map map) {
   return CameraPosition(
     target:
@@ -601,8 +608,49 @@ gmaps.PolylineOptions _polylineOptionsFromPolyline(
 //  this.width = 10,
 }
 
+CameraAnimationState _copyCameraAnimationStateWithCameraUpdate(
+    gmaps.Map map, CameraAnimationState state, CameraUpdate update) {
+  return switch (update.updateType) {
+    CameraUpdateType.newCameraPosition => state.copyWith(
+        target: _latLngToGmLatLng(
+            (update as CameraUpdateNewCameraPosition).cameraPosition.target),
+        heading: update.cameraPosition.bearing,
+        tilt: update.cameraPosition.tilt,
+        zoom: update.cameraPosition.zoom,
+      ),
+    CameraUpdateType.newLatLng => state.copyWith(
+        target: _latLngToGmLatLng((update as CameraUpdateNewLatLng).latLng),
+      ),
+    CameraUpdateType.newLatLngBounds => state.copyWith(
+        bounds: _latLngBoundsTogmLatLngBounds(
+            (update as CameraUpdateNewLatLngBounds).bounds),
+        padding: update.padding,
+      ),
+    CameraUpdateType.newLatLngZoom => state.copyWith(
+        target: _latLngToGmLatLng((update as CameraUpdateNewLatLngZoom).latLng),
+        zoom: update.zoom,
+      ),
+    CameraUpdateType.scrollBy => state.copyWith(
+        target: _pixelToLatLng(
+            map, (update as CameraUpdateScrollBy).dx.toInt(), update.dy.toInt(),
+            center: true),
+      ),
+    CameraUpdateType.zoomBy => state.copyWith(
+        target: (update as CameraUpdateZoomBy).focus != null
+            ? _pixelToLatLng(
+                map, update.focus!.dx.toInt(), update.focus!.dy.toInt())
+            : null,
+        zoom: (state.zoom ?? 0) + update.amount),
+    CameraUpdateType.zoomTo =>
+      state.copyWith(zoom: (update as CameraUpdateZoomTo).zoom),
+    CameraUpdateType.zoomIn => state.copyWith(zoom: (state.zoom ?? 0) + 1),
+    CameraUpdateType.zoomOut => state.copyWith(zoom: (state.zoom ?? 0) - 1),
+  };
+}
+
 // Translates a [CameraUpdate] into operations on a [gmaps.Map].
-void _applyCameraUpdate(gmaps.Map map, CameraUpdate update) {
+void _applyCameraUpdate(gmaps.Map map, CameraUpdate update,
+    {required bool animate}) {
   // Casts [value] to a JSON dictionary (string -> nullable object). [value]
   // must be a non-null JSON dictionary.
   Map<String, Object?> asJsonObject(dynamic value) {
@@ -619,39 +667,82 @@ void _applyCameraUpdate(gmaps.Map map, CameraUpdate update) {
     case 'newCameraPosition':
       final Map<String, Object?> position = asJsonObject(json[1]);
       final List<Object?> latLng = asJsonList(position['target']);
-      map.heading = position['bearing']! as num;
-      map.zoom = position['zoom']! as num;
-      map.panTo(
-        gmaps.LatLng(latLng[0]! as num, latLng[1]! as num),
-      );
-      map.tilt = position['tilt']! as num;
+      final gmaps.LatLng center =
+          gmaps.LatLng(latLng[0]! as num, latLng[1]! as num);
+      if (animate) {
+        map.heading = position['bearing']! as num;
+        map.zoom = position['zoom']! as num;
+        map.panTo(center);
+        map.tilt = position['tilt']! as num;
+      } else {
+        map.moveCamera(
+          gmaps.CameraOptions(
+            center: center,
+            heading: position['bearing']! as num,
+            tilt: position['tilt']! as num,
+            zoom: position['zoom']! as num,
+          ),
+        );
+      }
     case 'newLatLng':
       final List<Object?> latLng = asJsonList(json[1]);
-      map.panTo(gmaps.LatLng(latLng[0]! as num, latLng[1]! as num));
+      final gmaps.LatLng center =
+          gmaps.LatLng(latLng[0]! as num, latLng[1]! as num);
+      if (animate) {
+        map.panTo(center);
+      } else {
+        map.center = center;
+      }
     case 'newLatLngZoom':
       final List<Object?> latLng = asJsonList(json[1]);
-      map.zoom = json[2]! as num;
-      map.panTo(gmaps.LatLng(latLng[0]! as num, latLng[1]! as num));
+      final gmaps.LatLng center =
+          gmaps.LatLng(latLng[0]! as num, latLng[1]! as num);
+      if (animate) {
+        map.zoom = json[2]! as num;
+        map.panTo(center);
+      } else {
+        map.moveCamera(
+          gmaps.CameraOptions(
+            center: center,
+            zoom: json[2]! as num,
+          ),
+        );
+      }
     case 'newLatLngBounds':
       final List<Object?> latLngPair = asJsonList(json[1]);
       final List<Object?> latLng1 = asJsonList(latLngPair[0]);
       final List<Object?> latLng2 = asJsonList(latLngPair[1]);
       final double padding = json[2] as double;
-      map.fitBounds(
-        gmaps.LatLngBounds(
-          gmaps.LatLng(latLng1[0]! as num, latLng1[1]! as num),
-          gmaps.LatLng(latLng2[0]! as num, latLng2[1]! as num),
-        ),
-        padding.toJS,
+      final gmaps.LatLngBounds bounds = gmaps.LatLngBounds(
+        gmaps.LatLng(latLng1[0]! as num, latLng1[1]! as num),
+        gmaps.LatLng(latLng2[0]! as num, latLng2[1]! as num),
       );
+      if (animate) {
+        map.panToBounds(
+          bounds,
+          padding.toJS,
+        );
+      } else {
+        map.fitBounds(
+          bounds,
+          padding.toJS,
+        );
+      }
     case 'scrollBy':
-      map.panBy(json[1]! as num, json[2]! as num);
+      if (animate) {
+        map.panBy(json[1]! as num, json[2]! as num);
+      } else {
+        map.moveCamera(
+          gmaps.CameraOptions(
+              center: gmaps.LatLng(
+            map.center.lat + (json[1]! as num),
+            map.center.lng + (json[2]! as num),
+          )),
+        );
+      }
     case 'zoomBy':
       gmaps.LatLng? focusLatLng;
       final double zoomDelta = json[1] as double? ?? 0;
-      // Web only supports integer changes...
-      final int newZoomDelta =
-          zoomDelta < 0 ? zoomDelta.floor() : zoomDelta.ceil();
       if (json.length == 3) {
         final List<Object?> latLng = asJsonList(json[2]);
         // With focus
@@ -663,23 +754,47 @@ void _applyCameraUpdate(gmaps.Map map, CameraUpdate update) {
           // print('Error computing new focus LatLng. JS Error: ' + e.toString());
         }
       }
-      map.zoom = (map.isZoomDefined() ? map.zoom : 0) + newZoomDelta;
-      if (focusLatLng != null) {
-        map.panTo(focusLatLng);
+      if (animate) {
+        map.zoom = (map.isZoomDefined() ? map.zoom : 0) + zoomDelta;
+        if (focusLatLng != null) {
+          map.panTo(focusLatLng);
+        }
+      } else {
+        map.moveCamera(
+          gmaps.CameraOptions(
+              center: focusLatLng,
+              zoom: (map.isZoomDefined() ? map.zoom : 0) + zoomDelta),
+        );
       }
     case 'zoomIn':
-      map.zoom = (map.isZoomDefined() ? map.zoom : 0) + 1;
+      final num zoom = (map.isZoomDefined() ? map.zoom : 0) + 1;
+      if (animate) {
+        map.zoom = zoom;
+      } else {
+        map.moveCamera(gmaps.CameraOptions(zoom: zoom));
+      }
     case 'zoomOut':
-      map.zoom = (map.isZoomDefined() ? map.zoom : 0) - 1;
+      final num zoom = (map.isZoomDefined() ? map.zoom : 0) - 1;
+      if (animate) {
+        map.zoom = zoom;
+      } else {
+        map.moveCamera(gmaps.CameraOptions(zoom: zoom));
+      }
     case 'zoomTo':
-      map.zoom = json[1]! as num;
+      final num zoom = json[1]! as num;
+      if (animate) {
+        map.zoom = zoom;
+      } else {
+        map.moveCamera(gmaps.CameraOptions(zoom: zoom));
+      }
     default:
       throw UnimplementedError('Unimplemented CameraMove: ${json[0]}.');
   }
 }
 
 // original JS by: Byron Singh (https://stackoverflow.com/a/30541162)
-gmaps.LatLng _pixelToLatLng(gmaps.Map map, int x, int y) {
+gmaps.LatLng _pixelToLatLng(gmaps.Map map, int x, int y,
+    {bool center = false}) {
   final gmaps.LatLngBounds? bounds = map.bounds;
   final gmaps.Projection? projection = map.projection;
 
@@ -700,8 +815,13 @@ gmaps.LatLng _pixelToLatLng(gmaps.Map map, int x, int y) {
 
   final int scale = 1 << (zoom.toInt()); // 2 ^ zoom
 
+  final gmaps.Point ref = center
+      ? gmaps.Point(
+          (topRight.x + bottomLeft.x) / 2, (topRight.y + bottomLeft.y) / 2)
+      : gmaps.Point(topRight.x, bottomLeft.y);
+
   final gmaps.Point point =
-      gmaps.Point((x / scale) + bottomLeft.x, (y / scale) + topRight.y);
+      gmaps.Point((x / scale) + ref.x, (y / scale) + ref.y);
 
   return projection.fromPointToLatLng(point)!;
 }

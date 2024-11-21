@@ -13,8 +13,11 @@ typedef DebugCreateMapFunction = gmaps.Map Function(
 @visibleForTesting
 typedef DebugSetOptionsFunction = void Function(gmaps.MapOptions options);
 
+/// Default duration for camera animations.
+const Duration _defaultCameraAnimationDuration = Duration(milliseconds: 300);
+
 /// Encapsulates a [gmaps.Map], its events, and where in the DOM it's rendered.
-class GoogleMapController {
+class GoogleMapController implements TickerProvider {
   /// Initializes the GMap, and the sub-controllers related to it. Wires events.
   GoogleMapController({
     required int mapId,
@@ -70,6 +73,8 @@ class GoogleMapController {
   final Set<ClusterManager> _clusterManagers;
   final Set<Heatmap> _heatmaps;
   Set<TileOverlay> _tileOverlays;
+  late AnimationController _cameraAnimationController;
+  flutter_animation.Animation<CameraAnimationState>? _cameraAnimation;
 
   // The configuration passed by the user, before converting to gmaps.
   // Caching this allows us to re-create the map faithfully when needed.
@@ -212,9 +217,15 @@ class GoogleMapController {
       options.tilt = 0;
     }
 
+    options.isFractionalZoomEnabled = true;
+
     // Create the map...
     final gmaps.Map map = _createMap(_div, options);
     _googleMap = map;
+
+    _cameraAnimationController = AnimationController(
+      vsync: this,
+    );
 
     _attachMapEvents(map);
     _attachGeometryControllers(map);
@@ -437,8 +448,53 @@ class GoogleMapController {
   /// Applies a `cameraUpdate` to the current viewport.
   Future<void> moveCamera(CameraUpdate cameraUpdate) async {
     assert(_googleMap != null, 'Cannot update the camera of a null map.');
+    _cancelCameraAnimation();
+    return _applyCameraUpdate(_googleMap!, cameraUpdate, animate: true);
+  }
 
-    return _applyCameraUpdate(_googleMap!, cameraUpdate);
+  /// Animates a `cameraUpdate` to the current viewport.
+  Future<void> animateCamera(
+    CameraUpdate cameraUpdate, {
+    CameraUpdateAnimationConfiguration? cameraUpdateAnimationConfiguration,
+  }) async {
+    assert(_googleMap != null, 'Cannot update the camera of a null map.');
+    _cancelCameraAnimation();
+
+    final gmaps.Map map = _googleMap!;
+    final CameraAnimationState begin = CameraAnimationState.fromMap(map);
+    final CameraAnimationState end =
+        _copyCameraAnimationStateWithCameraUpdate(map, begin, cameraUpdate);
+
+    _cameraAnimationController.reset();
+    _cameraAnimationController.duration =
+        cameraUpdateAnimationConfiguration?.duration ??
+            _defaultCameraAnimationDuration;
+
+    _cameraAnimation = CameraStateTween(
+      begin: begin,
+      end: end,
+    ).animate(CurvedAnimation(
+      parent: _cameraAnimationController,
+      curve: Curves.linear,
+    ));
+
+    _cameraAnimation!.addListener(_onCameraAnimation);
+
+    // Don't await the animation to complete, as it's a fire-and-forget
+    // operation.
+    unawaited(_cameraAnimationController.forward());
+  }
+
+  void _onCameraAnimation() {
+    if (_googleMap == null) {
+      return;
+    }
+    _cameraAnimation?.value.apply(map: _googleMap!);
+  }
+
+  void _cancelCameraAnimation() {
+    _cameraAnimation?.removeListener(_onCameraAnimation);
+    _cameraAnimationController.stop();
   }
 
   /// Returns the zoom level of the current viewport.
@@ -557,6 +613,7 @@ class GoogleMapController {
   /// You won't be able to call many of the methods on this controller after
   /// calling `dispose`!
   void dispose() {
+    _cameraAnimationController.dispose();
     _widget = null;
     _googleMap = null;
     _circlesController = null;
@@ -567,6 +624,11 @@ class GoogleMapController {
     _clusterManagersController = null;
     _tileOverlaysController = null;
     _streamController.close();
+  }
+
+  @override
+  Ticker createTicker(TickerCallback onTick) {
+    return Ticker(onTick);
   }
 }
 

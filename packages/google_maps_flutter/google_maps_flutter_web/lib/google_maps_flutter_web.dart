@@ -7,11 +7,15 @@ library google_maps_flutter_web;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:js_interop';
+import 'dart:math';
+import 'dart:ui';
 import 'dart:ui_web' as ui_web;
 
 import 'package:collection/collection.dart';
+import 'package:flutter/animation.dart' as flutter_animation;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -20,6 +24,7 @@ import 'package:google_maps/google_maps_visualization.dart' as visualization;
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:sanitize_html/sanitize_html.dart';
 import 'package:stream_transform/stream_transform.dart';
+import 'package:web/web.dart' as web;
 import 'package:web/web.dart';
 
 import 'src/dom_window_extension.dart';
@@ -30,6 +35,7 @@ import 'src/third_party/to_screen_location/to_screen_location.dart';
 import 'src/types.dart';
 import 'src/utils.dart';
 
+part 'src/camera_animation_state.dart';
 part 'src/circle.dart';
 part 'src/circles.dart';
 part 'src/convert.dart';

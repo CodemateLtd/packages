@@ -129,16 +129,30 @@ class GoogleMapsPlugin extends GoogleMapsFlutterPlatform {
     CameraUpdate cameraUpdate, {
     required int mapId,
   }) async {
-    return moveCamera(cameraUpdate, mapId: mapId);
+    return _applyCameraAnimation(cameraUpdate, mapId: mapId);
   }
 
+  /// Applies the given `cameraUpdate` to the current viewport (with animation)
+  /// using provided configuration.
   @override
   Future<void> animateCameraWithConfiguration(
     CameraUpdate cameraUpdate,
     CameraUpdateAnimationConfiguration configuration, {
     required int mapId,
   }) {
-    return animateCamera(cameraUpdate, mapId: mapId);
+    return _applyCameraAnimation(cameraUpdate,
+        configuration: configuration, mapId: mapId);
+  }
+
+  Future<void> _applyCameraAnimation(
+    CameraUpdate cameraUpdate, {
+    CameraUpdateAnimationConfiguration? configuration,
+    required int mapId,
+  }) {
+    return _map(mapId).animateCamera(
+      cameraUpdate,
+      cameraUpdateAnimationConfiguration: configuration,
+    );
   }
 
   /// Applies the given `cameraUpdate` to the current viewport.
