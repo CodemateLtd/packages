@@ -33,6 +33,9 @@ list(APPEND PLUGIN_SOURCES
   "texture_handler.h"
   "texture_handler.cpp"
   "com_heap_ptr.h"
+  "task_runner.h"
+  "task_runner_window.h"
+  "task_runner_window.cpp"
 )
 
 add_library(${PLUGIN_NAME} SHARED
