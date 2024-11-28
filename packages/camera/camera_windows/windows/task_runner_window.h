@@ -25,7 +25,11 @@ class TaskRunnerWindow : public TaskRunner {
  public:
   virtual void EnqueueTask(TaskClosure task);
 
+  // Creates a hidden window and registers a callback that runs
+  // enqueued tasks whenever a message is received.
   TaskRunnerWindow();
+
+  // Destroys the hidden window.
   ~TaskRunnerWindow();
 
  private:

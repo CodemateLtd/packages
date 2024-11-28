@@ -10,8 +10,10 @@ namespace camera_windows {
 
 using TaskClosure = std::function<void()>;
 
+// A task queue for scheduling functions to be executed in a different thread.
 class TaskRunner {
  public:
+  // Schedule a function/closure to be executed.
   virtual void EnqueueTask(TaskClosure task) = 0;
 };
 
