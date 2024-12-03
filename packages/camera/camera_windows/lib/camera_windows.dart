@@ -33,12 +33,6 @@ class CameraWindows extends CameraPlatform {
   final Map<int, HostCameraMessageHandler> hostCameraHandlers =
       <int, HostCameraMessageHandler>{};
 
-  // The stream to receive frames from the native code.
-  StreamSubscription<dynamic>? _platformImageStreamSubscription;
-
-  // The stream for vending frames to platform interface clients.
-  StreamController<CameraImageData>? _frameStreamController;
-
   /// The controller that broadcasts events coming from handleCameraMethodCall
   ///
   /// It is a `broadcast` because multiple controllers will connect to
@@ -133,7 +127,6 @@ class CameraWindows extends CameraPlatform {
 
   @override
   Future<void> dispose(int cameraId) async {
-    await _stopPlatformStream(cameraId);
     await _hostApi.dispose(cameraId);
 
     // Destroy method channel after camera is disposed to be able to handle last messages.
@@ -244,58 +237,18 @@ class CameraWindows extends CameraPlatform {
 
   @override
   Stream<CameraImageData> onStreamedFrameAvailable(int cameraId,
-      {CameraImageStreamOptions? options}) {
-    _installStreamController(
-        onListen: () => _onFrameStreamListen(cameraId),
-        onCancel: () => _onFrameStreamCancel(cameraId));
-    return _frameStreamController!.stream;
-  }
-
-  StreamController<CameraImageData> _installStreamController(
-      {void Function()? onListen, void Function()? onCancel}) {
-    _frameStreamController = StreamController<CameraImageData>(
-      onListen: onListen ?? () {},
-      onPause: _onFrameStreamPauseResume,
-      onResume: _onFrameStreamPauseResume,
-      onCancel: onCancel ?? () {},
-    );
-    return _frameStreamController!;
-  }
-
-  void _onFrameStreamListen(int cameraId) {
-    _startPlatformStream(cameraId);
-  }
-
-  Future<void> _startPlatformStream(int cameraId) async {
+      {CameraImageStreamOptions? options}) async* {
     await _hostApi.startImageStream(cameraId);
-    _startStreamListener(cameraId);
-  }
-
-  void _startStreamListener(int cameraId) {
     final eventChannelName =
         'plugins.flutter.io/camera_windows/imageStream/$cameraId';
-    final EventChannel cameraEventChannel = EventChannel(eventChannelName);
-    _platformImageStreamSubscription =
-        cameraEventChannel.receiveBroadcastStream().listen((dynamic imageData) {
-      _frameStreamController!
-          .add(cameraImageFromPlatformData(imageData as Map<dynamic, dynamic>));
-    });
-  }
-
-  FutureOr<void> _onFrameStreamCancel(int cameraId) async {
-    await _stopPlatformStream(cameraId);
-  }
-
-  Future<void> _stopPlatformStream(int cameraId) async {
-    await _hostApi.stopImageStream(cameraId);
-    await _platformImageStreamSubscription?.cancel();
-    _platformImageStreamSubscription = null;
-    _frameStreamController = null;
-  }
-
-  void _onFrameStreamPauseResume() {
-    throw CameraException('InvalidCall',
-        'Pause and resume are not supported for onStreamedFrameAvailable');
+    final EventChannel imageStreamChannel = EventChannel(eventChannelName);
+    try {
+      await for (final frame in imageStreamChannel.receiveBroadcastStream()) {
+        yield cameraImageFromPlatformData(frame as Map<dynamic, dynamic>);
+      }
+    } finally {
+      await _hostApi.stopImageStream(cameraId);
+    }
   }
 
   @override
