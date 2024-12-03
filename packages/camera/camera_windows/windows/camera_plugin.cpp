@@ -365,11 +365,11 @@ std::optional<FlutterError> CameraPlugin::StartImageStream(int64_t camera_id) {
 
   auto event_channel_handler =
       std::make_unique<flutter::StreamHandlerFunctions<>>(
-          [cc = cc](auto arguments, auto events) {
+          [cc](auto arguments, auto events) {
             cc->StartImageStream(std::move(events));
             return nullptr;
           },
-          [cc = cc](auto arguments) {
+          [cc](auto arguments) {
             cc->StopImageStream();
             return nullptr;
           });
