@@ -359,9 +359,9 @@ std::optional<FlutterError> CameraPlugin::StartImageStream(int64_t camera_id) {
   event_channel_name << "plugins.flutter.io/camera_windows/imageStream/"
                      << camera_id;
 
-  auto frame_event_channel = std::make_unique<flutter::EventChannel<>>(
-      messenger_, event_channel_name.str(),
-      &flutter::StandardMethodCodec::GetInstance());
+  auto frame_event_channel =
+      flutter::EventChannel(messenger_, event_channel_name.str(),
+                            &flutter::StandardMethodCodec::GetInstance());
 
   auto event_channel_handler =
       std::make_unique<flutter::StreamHandlerFunctions<>>(
@@ -374,7 +374,7 @@ std::optional<FlutterError> CameraPlugin::StartImageStream(int64_t camera_id) {
             return nullptr;
           });
 
-  frame_event_channel->SetStreamHandler(std::move(event_channel_handler));
+  frame_event_channel.SetStreamHandler(std::move(event_channel_handler));
 
   return std::nullopt;
 }
