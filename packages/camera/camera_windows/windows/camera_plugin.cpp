@@ -347,7 +347,6 @@ void CameraPlugin::StopVideoRecording(
 }
 
 std::optional<FlutterError> CameraPlugin::StartImageStream(int64_t camera_id) {
-  // check if request already exists
   Camera* camera = GetCameraByCameraId(camera_id);
   if (!camera) {
     return FlutterError("camera_error", "Camera not created");
@@ -381,7 +380,6 @@ std::optional<FlutterError> CameraPlugin::StartImageStream(int64_t camera_id) {
 }
 
 std::optional<FlutterError> CameraPlugin::StopImageStream(int64_t camera_id) {
-  // check if request already exists
   Camera* camera = GetCameraByCameraId(camera_id);
   if (!camera) {
     return FlutterError("camera_error", "Camera not created");
