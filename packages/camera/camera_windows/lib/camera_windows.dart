@@ -237,18 +237,30 @@ class CameraWindows extends CameraPlatform {
 
   @override
   Stream<CameraImageData> onStreamedFrameAvailable(int cameraId,
-      {CameraImageStreamOptions? options}) async* {
-    await _hostApi.startImageStream(cameraId);
-    final eventChannelName =
-        'plugins.flutter.io/camera_windows/imageStream/$cameraId';
-    final EventChannel imageStreamChannel = EventChannel(eventChannelName);
-    try {
-      await for (final frame in imageStreamChannel.receiveBroadcastStream()) {
-        yield cameraImageFromPlatformData(frame as Map<dynamic, dynamic>);
-      }
-    } finally {
-      await _hostApi.stopImageStream(cameraId);
-    }
+      {CameraImageStreamOptions? options}) {
+    late StreamController<CameraImageData> controller;
+
+    controller = StreamController<CameraImageData>(
+        onListen: () async {
+          final eventChannelName = await _hostApi.startImageStream(cameraId);
+          final EventChannel imageStreamChannel =
+              EventChannel(eventChannelName);
+          imageStreamChannel.receiveBroadcastStream().listen((dynamic image) =>
+              controller.add(
+                  cameraImageFromPlatformData(image as Map<dynamic, dynamic>)));
+        },
+        onPause: _onFrameStreamPauseResume,
+        onResume: _onFrameStreamPauseResume,
+        onCancel: () async {
+          await _hostApi.stopImageStream(cameraId);
+        });
+
+    return controller.stream;
+  }
+
+  void _onFrameStreamPauseResume() {
+    throw CameraException('InvalidCall',
+        'Pause and resume are not supported for onStreamedFrameAvailable');
   }
 
   @override
