@@ -124,6 +124,7 @@ class GoogleMap extends StatefulWidget {
     this.heatmaps = const <Heatmap>{},
     this.onCameraMoveStarted,
     this.tileOverlays = const <TileOverlay>{},
+    this.groundOverlays = const <GroundOverlay>{},
     this.onCameraMove,
     this.onCameraIdle,
     this.onTap,
@@ -224,6 +225,9 @@ class GoogleMap extends StatefulWidget {
 
   /// Cluster Managers to be initialized for the map.
   final Set<ClusterManager> clusterManagers;
+
+  /// Ground overlays to be initialized for the map.
+  final Set<GroundOverlay> groundOverlays;
 
   /// Called when the camera starts moving.
   ///
@@ -339,6 +343,8 @@ class _GoogleMapState extends State<GoogleMap> {
   Map<ClusterManagerId, ClusterManager> _clusterManagers =
       <ClusterManagerId, ClusterManager>{};
   Map<HeatmapId, Heatmap> _heatmaps = <HeatmapId, Heatmap>{};
+  Map<GroundOverlayId, GroundOverlay> _groundOverlays =
+      <GroundOverlayId, GroundOverlay>{};
   late MapConfiguration _mapConfiguration;
 
   @override
@@ -399,6 +405,7 @@ class _GoogleMapState extends State<GoogleMap> {
     _updateCircles();
     _updateHeatmaps();
     _updateTileOverlays();
+    _updateGroundOverlays();
   }
 
   Future<void> _updateOptions() async {
@@ -424,6 +431,13 @@ class _GoogleMapState extends State<GoogleMap> {
     unawaited(controller._updateClusterManagers(ClusterManagerUpdates.from(
         _clusterManagers.values.toSet(), widget.clusterManagers)));
     _clusterManagers = keyByClusterManagerId(widget.clusterManagers);
+  }
+
+  Future<void> _updateGroundOverlays() async {
+    final GoogleMapController controller = await _controller.future;
+    unawaited(controller._updateGroundOverlays(GroundOverlayUpdates.from(
+        _groundOverlays.values.toSet(), widget.groundOverlays)));
+    _groundOverlays = keyByGroundOverlayId(widget.groundOverlays);
   }
 
   Future<void> _updatePolygons() async {

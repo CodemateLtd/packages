@@ -849,6 +849,39 @@ class Convert {
     return new Tile(tile.getWidth().intValue(), tile.getHeight().intValue(), tile.getData());
   }
 
+  static String interpretGroundOverlayOptions(
+      Messages.PlatformGroundOverlay groundOverlay,
+      GroundOverlaySink sink,
+      AssetManager assetManager,
+      float density) {
+    sink.setTransparency(groundOverlay.getTransparency().floatValue());
+    sink.setZIndex(groundOverlay.getZIndex().floatValue());
+    sink.setVisible(groundOverlay.getVisible());
+    sink.setAnchor(
+        groundOverlay.getAnchor().getX().floatValue(),
+        groundOverlay.getAnchor().getY().floatValue());
+    sink.setBearing(groundOverlay.getBearing().floatValue());
+    sink.setClickable(groundOverlay.getClickable());
+    sink.setImage(toBitmapDescriptor(groundOverlay.getImage(), assetManager, density));
+    if (groundOverlay.getPosition() != null) {
+      assert groundOverlay.getWidth() != null;
+      if (groundOverlay.getHeight() != null) {
+        sink.setPosition(
+            latLngFromPigeon(groundOverlay.getPosition()),
+            groundOverlay.getWidth().floatValue(),
+            groundOverlay.getHeight().floatValue());
+      } else {
+        sink.setPosition(
+            latLngFromPigeon(groundOverlay.getPosition()),
+            groundOverlay.getWidth().floatValue(),
+            null);
+      }
+    } else if (groundOverlay.getBounds() != null) {
+      sink.setPositionFromBounds(latLngBoundsFromPigeon(groundOverlay.getBounds()));
+    }
+    return groundOverlay.getGroundOverlayId();
+  }
+
   static class BitmapDescriptorFactoryWrapper {
     /**
      * Creates a BitmapDescriptor from the provided asset key using the {@link
