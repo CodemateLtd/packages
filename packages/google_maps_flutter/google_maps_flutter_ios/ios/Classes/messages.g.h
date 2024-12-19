@@ -479,8 +479,7 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapBitmapScaling) {
     initialPolylines:(NSArray<FGMPlatformPolyline *> *)initialPolylines
     initialHeatmaps:(NSArray<FGMPlatformHeatmap *> *)initialHeatmaps
     initialTileOverlays:(NSArray<FGMPlatformTileOverlay *> *)initialTileOverlays
-    initialClusterManagers:(NSArray<FGMPlatformClusterManager *> *)initialClusterManagers
-    markerType:(FGMPlatformMarkerType)markerType;
+    initialClusterManagers:(NSArray<FGMPlatformClusterManager *> *)initialClusterManagers;
 @property(nonatomic, strong) FGMPlatformCameraPosition * initialCameraPosition;
 @property(nonatomic, strong) FGMPlatformMapConfiguration * mapConfiguration;
 @property(nonatomic, copy) NSArray<FGMPlatformCircle *> * initialCircles;
@@ -490,7 +489,6 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapBitmapScaling) {
 @property(nonatomic, copy) NSArray<FGMPlatformHeatmap *> * initialHeatmaps;
 @property(nonatomic, copy) NSArray<FGMPlatformTileOverlay *> * initialTileOverlays;
 @property(nonatomic, copy) NSArray<FGMPlatformClusterManager *> * initialClusterManagers;
-@property(nonatomic, assign) FGMPlatformMarkerType markerType;
 @end
 
 /// Pigeon equivalent of MapConfiguration.
@@ -510,6 +508,7 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapBitmapScaling) {
     indoorViewEnabled:(nullable NSNumber *)indoorViewEnabled
     trafficEnabled:(nullable NSNumber *)trafficEnabled
     buildingsEnabled:(nullable NSNumber *)buildingsEnabled
+    markerType:(nullable FGMPlatformMarkerTypeBox *)markerType
     mapId:(nullable NSString *)mapId
     style:(nullable NSString *)style;
 @property(nonatomic, strong, nullable) NSNumber * compassEnabled;
@@ -527,6 +526,7 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapBitmapScaling) {
 @property(nonatomic, strong, nullable) NSNumber * indoorViewEnabled;
 @property(nonatomic, strong, nullable) NSNumber * trafficEnabled;
 @property(nonatomic, strong, nullable) NSNumber * buildingsEnabled;
+@property(nonatomic, strong, nullable) FGMPlatformMarkerTypeBox * markerType;
 @property(nonatomic, copy, nullable) NSString * mapId;
 @property(nonatomic, copy, nullable) NSString * style;
 @end

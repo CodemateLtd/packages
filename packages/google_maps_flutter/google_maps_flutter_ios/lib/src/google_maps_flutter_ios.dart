@@ -474,8 +474,6 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
       initialClusterManagers: mapObjects.clusterManagers
           .map(_platformClusterManagerFromClusterManager)
           .toList(),
-      markerType:
-          _platformMarkerTypeFromMarkerType(widgetConfiguration.markerType),
     );
 
     return UiKitView(
@@ -526,7 +524,6 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
       widgetConfiguration: MapWidgetConfiguration(
         initialCameraPosition: initialCameraPosition,
         textDirection: textDirection,
-        markerType: markerType,
       ),
       mapObjects: MapObjects(
           markers: markers,
@@ -828,14 +825,6 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
             'Unrecognized type of bitmap ${bitmap.runtimeType}', 'bitmap');
     }
   }
-
-  static PlatformMarkerType _platformMarkerTypeFromMarkerType(
-      MarkerType markerType) {
-    return switch (markerType) {
-      MarkerType.marker => PlatformMarkerType.marker,
-      MarkerType.advancedMarker => PlatformMarkerType.advancedMarker,
-    };
-  }
 }
 
 /// Callback handler for map events from the platform host.
@@ -1105,6 +1094,7 @@ PlatformMapConfiguration _platformMapConfigurationFromOptionsJson(
     indoorViewEnabled: options['indoorEnabled'] as bool?,
     trafficEnabled: options['trafficEnabled'] as bool?,
     buildingsEnabled: options['buildingsEnabled'] as bool?,
+    markerType: _platformMarkerTypeFromIndex(options['markerType'] as int?),
     mapId: options['mapId'] as String?,
     style: options['style'] as String?,
   );
@@ -1170,6 +1160,14 @@ PlatformZoomRange? _platformZoomRangeFromMinMaxZoomPreferenceJson(
   final List<double?> minMaxZoom =
       (zoomPrefsJson as List<Object?>).cast<double?>();
   return PlatformZoomRange(min: minMaxZoom[0], max: minMaxZoom[1]);
+}
+
+PlatformMarkerType _platformMarkerTypeFromIndex(int? index) {
+  return switch (index) {
+    0 => PlatformMarkerType.marker,
+    1 => PlatformMarkerType.advancedMarker,
+    _ => PlatformMarkerType.marker,
+  };
 }
 
 /// Converts platform interface's JointType to Pigeon's PlatformJointType.

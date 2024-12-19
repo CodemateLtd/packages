@@ -962,7 +962,6 @@ class PlatformMapViewCreationParams {
     required this.initialHeatmaps,
     required this.initialTileOverlays,
     required this.initialClusterManagers,
-    required this.markerType,
   });
 
   PlatformCameraPosition initialCameraPosition;
@@ -983,8 +982,6 @@ class PlatformMapViewCreationParams {
 
   List<PlatformClusterManager> initialClusterManagers;
 
-  PlatformMarkerType markerType;
-
   Object encode() {
     return <Object?>[
       initialCameraPosition,
@@ -996,7 +993,6 @@ class PlatformMapViewCreationParams {
       initialHeatmaps,
       initialTileOverlays,
       initialClusterManagers,
-      markerType,
     ];
   }
 
@@ -1012,7 +1008,6 @@ class PlatformMapViewCreationParams {
       initialHeatmaps: (result[6] as List<Object?>?)!.cast<PlatformHeatmap>(),
       initialTileOverlays: (result[7] as List<Object?>?)!.cast<PlatformTileOverlay>(),
       initialClusterManagers: (result[8] as List<Object?>?)!.cast<PlatformClusterManager>(),
-      markerType: result[9]! as PlatformMarkerType,
     );
   }
 }
@@ -1035,6 +1030,7 @@ class PlatformMapConfiguration {
     this.indoorViewEnabled,
     this.trafficEnabled,
     this.buildingsEnabled,
+    this.markerType,
     this.mapId,
     this.style,
   });
@@ -1069,6 +1065,8 @@ class PlatformMapConfiguration {
 
   bool? buildingsEnabled;
 
+  PlatformMarkerType? markerType;
+
   String? mapId;
 
   String? style;
@@ -1090,6 +1088,7 @@ class PlatformMapConfiguration {
       indoorViewEnabled,
       trafficEnabled,
       buildingsEnabled,
+      markerType,
       mapId,
       style,
     ];
@@ -1113,8 +1112,9 @@ class PlatformMapConfiguration {
       indoorViewEnabled: result[12] as bool?,
       trafficEnabled: result[13] as bool?,
       buildingsEnabled: result[14] as bool?,
-      mapId: result[15] as String?,
-      style: result[16] as String?,
+      markerType: result[15] as PlatformMarkerType?,
+      mapId: result[16] as String?,
+      style: result[17] as String?,
     );
   }
 }
