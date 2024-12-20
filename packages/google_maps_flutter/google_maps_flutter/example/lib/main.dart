@@ -27,6 +27,7 @@ import 'place_polyline.dart';
 import 'scrolling_map.dart';
 import 'snapshot.dart';
 import 'tile_overlay.dart';
+import 'ground_overlay.dart';
 
 final List<GoogleMapExampleAppPage> _allPages = <GoogleMapExampleAppPage>[
   const MapUiPage(),
@@ -44,6 +45,7 @@ final List<GoogleMapExampleAppPage> _allPages = <GoogleMapExampleAppPage>[
   const SnapshotPage(),
   const LiteModePage(),
   const TileOverlayPage(),
+  const GroundOverlayPage(),
   const ClusteringPage(),
   const MapIdPage(),
   const HeatmapPage(),
