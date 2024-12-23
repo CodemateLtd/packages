@@ -200,6 +200,12 @@ LatLngBounds gmLatLngBoundsTolatLngBounds(gmaps.LatLngBounds latLngBounds) {
   );
 }
 
+/// Converts a [LatLngBounds] into a [gmaps.LatLngBounds].
+gmaps.LatLngBounds latLngBoundsToGmlatLngBounds(LatLngBounds latLngBounds) {
+  return gmaps.LatLngBounds(_latLngToGmLatLng(latLngBounds.southwest),
+      _latLngToGmLatLng(latLngBounds.northeast));
+}
+
 CameraPosition _gmViewportToCameraPosition(gmaps.Map map) {
   return CameraPosition(
     target:
@@ -676,6 +682,21 @@ void _applyCameraUpdate(gmaps.Map map, CameraUpdate update) {
     default:
       throw UnimplementedError('Unimplemented CameraMove: ${json[0]}.');
   }
+}
+
+String urlFromBitmapDescriptor(BitmapDescriptor bitmapDescriptor) {
+  assert(bitmapDescriptor is MapBitmap);
+  return switch (bitmapDescriptor) {
+    (final BytesMapBitmap bytesMapBitmap) =>
+      _bitmapBlobUrlCache.putIfAbsent(bytesMapBitmap.byteData.hashCode, () {
+        final Blob blob =
+            Blob(<JSUint8Array>[bytesMapBitmap.byteData.toJS].toJS);
+        return URL.createObjectURL(blob as JSObject);
+      }),
+    (final AssetMapBitmap assetMapBitmap) =>
+      ui_web.assetManager.getAssetUrl(assetMapBitmap.assetName),
+    _ => throw UnimplementedError(),
+  };
 }
 
 // original JS by: Byron Singh (https://stackoverflow.com/a/30541162)
