@@ -567,6 +567,17 @@ class _GoogleMapState extends State<GoogleMap> {
     }
   }
 
+  void onGroundOverlayTap(GroundOverlayId groundOverlayId) {
+    final GroundOverlay? groundOverlay = _groundOverlays[groundOverlayId];
+    if (groundOverlay == null) {
+      throw UnknownMapObjectIdError('groundOverlay', groundOverlayId, 'onTap');
+    }
+    final VoidCallback? onTap = groundOverlay.onTap;
+    if (onTap != null) {
+      onTap();
+    }
+  }
+
   void onInfoWindowTap(MarkerId markerId) {
     final Marker? marker = _markers[markerId];
     if (marker == null) {

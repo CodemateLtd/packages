@@ -37,7 +37,7 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
 
   final LatLng _mapCenter = const LatLng(37.422026, -122.085329);
 
-  _GroundOverlayPlacing _placingType = _GroundOverlayPlacing.position;
+  _GroundOverlayPlacing _placingType = _GroundOverlayPlacing.bounds;
 
   // Positions for demonstranting placing ground overlays with position, and
   // changing positions.

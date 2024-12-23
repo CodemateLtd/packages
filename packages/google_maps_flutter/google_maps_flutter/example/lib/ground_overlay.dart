@@ -4,6 +4,7 @@
 
 // ignore_for_file: public_member_api_docs
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -36,7 +37,7 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
 
   final LatLng _mapCenter = const LatLng(37.422026, -122.085329);
 
-  _GroundOverlayPlacing _placingType = _GroundOverlayPlacing.position;
+  _GroundOverlayPlacing _placingType = _GroundOverlayPlacing.bounds;
 
   // Positions for demonstranting placing ground overlays with position, and
   // changing positions.
@@ -163,19 +164,21 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
     });
   }
 
-  void _changePosition() {
+  Future<void> _changePosition() async {
     assert(_groundOverlay != null);
     assert(_placingType == _GroundOverlayPlacing.position);
     setState(() {
       _currentGroundOverlayPos = _currentGroundOverlayPos == _groundOverlayPos1
           ? _groundOverlayPos2
           : _groundOverlayPos1;
-      _groundOverlay =
-          _groundOverlay!.copyWith(positionParam: _currentGroundOverlayPos);
     });
+
+    // Re-add the ground overlay to apply the new position, as the position
+    // cannot be changed after the ground overlay is created on all platforms.
+    await _addGroundOverlay();
   }
 
-  void _changeBounds() {
+  Future<void> _changeBounds() async {
     assert(_groundOverlay != null);
     assert(_placingType == _GroundOverlayPlacing.bounds);
     setState(() {
@@ -183,9 +186,11 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
           _currentGroundOverlayBounds == _groundOverlayBounds1
               ? _groundOverlayBounds2
               : _groundOverlayBounds1;
-      _groundOverlay =
-          _groundOverlay!.copyWith(boundsParam: _currentGroundOverlayBounds);
     });
+
+    // Re-add the ground overlay to apply the new bounds as the bounds cannot be
+    // changed after the ground overlay is created on all platforms.
+    await _addGroundOverlay();
   }
 
   void _toggleVisible() {
@@ -212,7 +217,7 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
           : _GroundOverlayPlacing.position;
     });
 
-    // Re-add the ground overlay to change the positioning.
+    // Re-add the ground overlay to change the positioning type.
     await _addGroundOverlay();
   }
 
@@ -226,7 +231,7 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
     });
     debugPrint(_anchor.toString());
 
-    // Re-add the ground overlay to apply the new anchor as anchor cannot be
+    // Re-add the ground overlay to apply the new anchor as the anchor cannot be
     // changed after the ground overlay is created.
     await _addGroundOverlay();
   }
@@ -273,44 +278,53 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
               child: const Text('change transparency'),
             ),
             TextButton(
-              onPressed: _groundOverlay == null ? null : () => _setBearing(),
+              onPressed:
+                  _groundOverlay == null && kIsWeb ? null : () => _setBearing(),
               child: const Text('change bearing'),
             ),
             TextButton(
-              onPressed: _groundOverlay == null ? null : () => _toggleVisible(),
+              onPressed: _groundOverlay == null && kIsWeb
+                  ? null
+                  : () => _toggleVisible(),
               child: const Text('toggle visible'),
             ),
             TextButton(
-              onPressed: _groundOverlay == null ? null : () => _changeZIndex(),
+              onPressed: _groundOverlay == null && kIsWeb
+                  ? null
+                  : () => _changeZIndex(),
               child: const Text('change zIndex'),
             ),
-            TextButton(
-              onPressed: _groundOverlay == null ? null : () => _changeType(),
-              child: Text(_placingType == _GroundOverlayPlacing.position
-                  ? 'use bounds'
-                  : 'use position'),
-            ),
-            TextButton(
-              onPressed: _placingType != _GroundOverlayPlacing.position ||
-                      _groundOverlay == null
-                  ? null
-                  : () => _changePosition(),
-              child: const Text('change position'),
-            ),
-            TextButton(
-              onPressed: _placingType != _GroundOverlayPlacing.position ||
-                      _groundOverlay == null
-                  ? null
-                  : () => _changeDimensions(),
-              child: const Text('change dimensions'),
-            ),
-            TextButton(
-              onPressed: _placingType != _GroundOverlayPlacing.position ||
-                      _groundOverlay == null
-                  ? null
-                  : () => _changeAnchor(),
-              child: const Text('change anchor'),
-            ),
+            if (!kIsWeb)
+              TextButton(
+                onPressed: _groundOverlay == null ? null : () => _changeType(),
+                child: Text(_placingType == _GroundOverlayPlacing.position
+                    ? 'use bounds'
+                    : 'use position'),
+              ),
+            if (!kIsWeb)
+              TextButton(
+                onPressed: _placingType != _GroundOverlayPlacing.position ||
+                        _groundOverlay == null
+                    ? null
+                    : () => _changePosition(),
+                child: const Text('change position'),
+              ),
+            if (!kIsWeb)
+              TextButton(
+                onPressed: _placingType != _GroundOverlayPlacing.position ||
+                        _groundOverlay == null
+                    ? null
+                    : () => _changeDimensions(),
+                child: const Text('change dimensions'),
+              ),
+            if (!kIsWeb)
+              TextButton(
+                onPressed: _placingType != _GroundOverlayPlacing.position ||
+                        _groundOverlay == null
+                    ? null
+                    : () => _changeAnchor(),
+                child: const Text('change anchor'),
+              ),
             TextButton(
               onPressed: _placingType != _GroundOverlayPlacing.bounds ||
                       _groundOverlay == null
