@@ -191,6 +191,11 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
   }
 
   @override
+  Stream<GroundOverlayTapEvent> onGroundOverlayTap({required int mapId}) {
+    return _events(mapId).whereType<GroundOverlayTapEvent>();
+  }
+
+  @override
   Stream<MapTapEvent> onTap({required int mapId}) {
     return _events(mapId).whereType<MapTapEvent>();
   }
@@ -335,6 +340,24 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
   }
 
   @override
+  Future<void> updateGroundOverlays(
+    GroundOverlayUpdates groundOverlayUpdates, {
+    required int mapId,
+  }) {
+    return _hostApi(mapId).updateGroundOverlays(
+      groundOverlayUpdates.groundOverlaysToAdd
+          .map(_platformGroundOverlayFromGroundOverlay)
+          .toList(),
+      groundOverlayUpdates.groundOverlaysToChange
+          .map(_platformGroundOverlayFromGroundOverlay)
+          .toList(),
+      groundOverlayUpdates.groundOverlayIdsToRemove
+          .map((GroundOverlayId id) => id.value)
+          .toList(),
+    );
+  }
+
+  @override
   Future<void> clearTileCache(
     TileOverlayId tileOverlayId, {
     required int mapId,
@@ -450,26 +473,29 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
   }) {
     final PlatformMapViewCreationParams creationParams =
         PlatformMapViewCreationParams(
-      initialCameraPosition: _platformCameraPositionFromCameraPosition(
-          widgetConfiguration.initialCameraPosition),
-      mapConfiguration: mapConfiguration,
-      initialMarkers:
-          mapObjects.markers.map(_platformMarkerFromMarker).toList(),
-      initialPolygons:
-          mapObjects.polygons.map(_platformPolygonFromPolygon).toList(),
-      initialPolylines:
-          mapObjects.polylines.map(_platformPolylineFromPolyline).toList(),
-      initialCircles:
-          mapObjects.circles.map(_platformCircleFromCircle).toList(),
-      initialHeatmaps:
-          mapObjects.heatmaps.map(_platformHeatmapFromHeatmap).toList(),
-      initialTileOverlays: mapObjects.tileOverlays
-          .map(_platformTileOverlayFromTileOverlay)
-          .toList(),
-      initialClusterManagers: mapObjects.clusterManagers
-          .map(_platformClusterManagerFromClusterManager)
-          .toList(),
-    );
+            initialCameraPosition: _platformCameraPositionFromCameraPosition(
+                widgetConfiguration.initialCameraPosition),
+            mapConfiguration: mapConfiguration,
+            initialMarkers:
+                mapObjects.markers.map(_platformMarkerFromMarker).toList(),
+            initialPolygons:
+                mapObjects.polygons.map(_platformPolygonFromPolygon).toList(),
+            initialPolylines: mapObjects.polylines
+                .map(_platformPolylineFromPolyline)
+                .toList(),
+            initialCircles:
+                mapObjects.circles.map(_platformCircleFromCircle).toList(),
+            initialHeatmaps:
+                mapObjects.heatmaps.map(_platformHeatmapFromHeatmap).toList(),
+            initialTileOverlays: mapObjects.tileOverlays
+                .map(_platformTileOverlayFromTileOverlay)
+                .toList(),
+            initialClusterManagers: mapObjects.clusterManagers
+                .map(_platformClusterManagerFromClusterManager)
+                .toList(),
+            initialGroundOverlays: mapObjects.groundOverlays
+                .map(_platformGroundOverlayFromGroundOverlay)
+                .toList());
 
     return UiKitView(
       viewType: 'plugins.flutter.dev/google_maps_ios',
@@ -590,6 +616,10 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
     return PlatformSize(width: size.width, height: size.height);
   }
 
+  static PlatformDoublePair _platformPairFromOffset(Offset offset) {
+    return PlatformDoublePair(x: offset.dx, y: offset.dy);
+  }
+
   static PlatformCircle _platformCircleFromCircle(Circle circle) {
     return PlatformCircle(
       consumeTapEvents: circle.consumeTapEvents,
@@ -631,6 +661,26 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
       zIndex: marker.zIndex,
       markerId: marker.markerId.value,
       clusterManagerId: marker.clusterManagerId?.value,
+    );
+  }
+
+  static PlatformGroundOverlay _platformGroundOverlayFromGroundOverlay(
+      GroundOverlay groundOverlay) {
+    return PlatformGroundOverlay(
+      groundOverlayId: groundOverlay.groundOverlayId.value,
+      anchor: _platformPairFromOffset(groundOverlay.anchor),
+      image: platformBitmapFromBitmapDescriptor(groundOverlay.image),
+      position: groundOverlay.position != null
+          ? _platformLatLngFromLatLng(groundOverlay.position!)
+          : null,
+      bounds: _platformLatLngBoundsFromLatLngBounds(groundOverlay.bounds),
+      visible: groundOverlay.visible,
+      zIndex: groundOverlay.zIndex,
+      bearing: groundOverlay.bearing,
+      clickable: groundOverlay.clickable,
+      transparency: groundOverlay.transparency,
+      width: groundOverlay.width,
+      height: groundOverlay.height,
     );
   }
 
@@ -940,6 +990,12 @@ class HostMapMessageHandler implements MapsCallbackApi {
   @override
   void onPolylineTap(String polylineId) {
     streamController.add(PolylineTapEvent(mapId, PolylineId(polylineId)));
+  }
+
+  @override
+  void onGroundOverlayTap(String groundOverlayId) {
+    streamController
+        .add(GroundOverlayTapEvent(mapId, GroundOverlayId(groundOverlayId)));
   }
 
   @override
