@@ -408,7 +408,7 @@ class PlatformGroundOverlay {
   final PlatformLatLngBounds? bounds;
   final double? width;
   final double? height;
-  final PlatformDoublePair anchor;
+  final PlatformDoublePair? anchor;
   final double transparency;
   final double bearing;
   final double zIndex;

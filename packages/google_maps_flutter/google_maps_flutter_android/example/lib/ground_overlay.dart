@@ -102,7 +102,7 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
         GroundOverlayId('ground_overlay_$_groundOverlayIndex');
 
     final GroundOverlay groundOverlay = switch (_placingType) {
-      _GroundOverlayPlacing.position => GroundOverlay(
+      _GroundOverlayPlacing.position => GroundOverlay.fromPosition(
           groundOverlayId: id,
           image: assetMapBitmap,
           position: _currentGroundOverlayPos,
@@ -113,7 +113,7 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
             _onGroundOverlayTapped();
           },
         ),
-      _GroundOverlayPlacing.bounds => GroundOverlay(
+      _GroundOverlayPlacing.bounds => GroundOverlay.fromBounds(
           groundOverlayId: id,
           image: assetMapBitmap,
           bounds: _currentGroundOverlayBounds,
@@ -152,31 +152,35 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
     });
   }
 
-  void _changeDimensions() {
+  Future<void> _changeDimensions() async {
     assert(_groundOverlay != null);
     assert(_placingType == _GroundOverlayPlacing.position);
     setState(() {
       _dimensions = _dimensions == const Offset(1000, 1000)
           ? const Offset(1500, 500)
           : const Offset(1000, 1000);
-      _groundOverlay = _groundOverlay!
-          .copyWith(widthParam: _dimensions.dx, heightParam: _dimensions.dy);
     });
+
+    // Re-add the ground overlay to apply the new position, as the position
+    // cannot be changed after the ground overlay is created on all platforms.
+    await _addGroundOverlay();
   }
 
-  void _changePosition() {
+  Future<void> _changePosition() async {
     assert(_groundOverlay != null);
     assert(_placingType == _GroundOverlayPlacing.position);
     setState(() {
       _currentGroundOverlayPos = _currentGroundOverlayPos == _groundOverlayPos1
           ? _groundOverlayPos2
           : _groundOverlayPos1;
-      _groundOverlay =
-          _groundOverlay!.copyWith(positionParam: _currentGroundOverlayPos);
     });
+
+    // Re-add the ground overlay to apply the new position, as the position
+    // cannot be changed after the ground overlay is created on all platforms.
+    await _addGroundOverlay();
   }
 
-  void _changeBounds() {
+  Future<void> _changeBounds() async {
     assert(_groundOverlay != null);
     assert(_placingType == _GroundOverlayPlacing.bounds);
     setState(() {
@@ -184,9 +188,11 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
           _currentGroundOverlayBounds == _groundOverlayBounds1
               ? _groundOverlayBounds2
               : _groundOverlayBounds1;
-      _groundOverlay =
-          _groundOverlay!.copyWith(boundsParam: _currentGroundOverlayBounds);
     });
+
+    // Re-add the ground overlay to apply the new position, as the position
+    // cannot be changed after the ground overlay is created on all platforms.
+    await _addGroundOverlay();
   }
 
   void _toggleVisible() {
@@ -213,7 +219,8 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
           : _GroundOverlayPlacing.position;
     });
 
-    // Re-add the ground overlay to change the positioning.
+    // Re-add the ground overlay to apply the new position, as the position
+    // cannot be changed after the ground overlay is created on all platforms.
     await _addGroundOverlay();
   }
 
