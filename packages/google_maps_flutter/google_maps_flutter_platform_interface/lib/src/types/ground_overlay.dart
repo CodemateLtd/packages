@@ -28,17 +28,38 @@ class GroundOverlayId extends MapsObjectId<GroundOverlay> {
 /// [width] and [height], or [bounds], the bitmapScaling should be set to
 /// [MapBitmapScaling.none], for [image] to avoid unnecessary scaling.
 ///
-/// Example of creating a ground overlay from an asset:
+/// To create a ground overlay use either [GroundOverlay.fromBounds] or
+/// [GroundOverlay.fromPosition] methods.
+///
+/// Example of creating a ground overlay from an asset using
+/// [GroundOverlay.fromBounds] method:
 ///
 /// ```dart
-/// GroundOverlay(
-///   groundOverlayId: const GroundOverlayId('overlay_1'),
+/// GroundOverlay.bounds(
+///   groundOverlayId: const GroundOverlayId('overlay_id'),
 ///   image: await AssetMapBitmap.create(
 ///     createLocalImageConfiguration(context),
 ///     'assets/red_square.png',
 ///     bitmapScaling: MapBitmapScaling.none,
 ///   ),
-///   position: LatLng(37.4219999, -122.0840575),
+///   bounds: LatLngBounds(
+///     southwest: LatLng(37.42, -122.08),
+///     northeast: LatLng(37.43, -122.09),
+///   ),
+/// );
+/// ```
+///
+/// Example of creating a ground overlay from an asset using
+/// [GroundOverlay.fromPosition] method:
+/// ```dart
+/// GroundOverlay.position(
+///   groundOverlayId: const GroundOverlayId('overlay_id'),
+///   image: await AssetMapBitmap.create(
+///     createLocalImageConfiguration(context),
+///     'assets/red_square.png',
+///     bitmapScaling: MapBitmapScaling.none,
+///   ),
+///   position: LatLng(37.42, -122.08),
 ///   width: 100,
 ///   height: 100,
 /// );
@@ -47,14 +68,14 @@ class GroundOverlayId extends MapsObjectId<GroundOverlay> {
 class GroundOverlay implements MapsObject<GroundOverlay> {
   /// Creates an immutable representation of a [GroundOverlay] to
   /// draw on [GoogleMap].
-  const GroundOverlay({
+  const GroundOverlay._({
     required this.groundOverlayId,
     required this.image,
     this.position,
     this.bounds,
     this.width,
     this.height,
-    this.anchor = const Offset(0.5, 0.5),
+    this.anchor,
     this.transparency = 0.0,
     this.bearing = 0.0,
     this.zIndex = 0.0,
@@ -63,14 +84,101 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     this.onTap,
   })  : assert(transparency >= 0.0 && transparency <= 1.0),
         assert(bearing >= 0.0 && bearing <= 360.0),
-        assert(
-            (position == null && bounds != null) ||
-                (position != null && bounds == null),
+        assert((position == null) != (bounds == null),
             'Either position or bounds must be given, but not both'),
         assert(position == null || (width != null && width > 0),
             'Width must be specified and mut be greater than 0 when position is used'),
         assert(position == null || (height == null || height > 0),
             'Height must be null or greater than 0 when position is used');
+
+  /// Creates a [GroundOverlay] to given [bounds] with the given [image].
+  ///
+  /// Example of creating a ground overlay from an asset using
+  /// [GroundOverlay.fromBounds] method:
+  ///
+  /// ```dart
+  /// GroundOverlay.bounds(
+  ///   groundOverlayId: const GroundOverlayId('overlay_id'),
+  ///   image: await AssetMapBitmap.create(
+  ///     createLocalImageConfiguration(context),
+  ///     'assets/red_square.png',
+  ///     bitmapScaling: MapBitmapScaling.none,
+  ///   ),
+  ///   bounds: LatLngBounds(
+  ///     southwest: LatLng(37.42, -122.08),
+  ///     northeast: LatLng(37.43, -122.09),
+  ///   ),
+  /// );
+  factory GroundOverlay.fromBounds({
+    required GroundOverlayId groundOverlayId,
+    required BitmapDescriptor image,
+    required LatLngBounds bounds,
+    double bearing = 0.0,
+    double transparency = 0.0,
+    double zIndex = 0.0,
+    bool visible = true,
+    bool clickable = true,
+    VoidCallback? onTap,
+  }) {
+    return GroundOverlay._(
+      groundOverlayId: groundOverlayId,
+      image: image,
+      bounds: bounds,
+      bearing: bearing,
+      transparency: transparency,
+      zIndex: zIndex,
+      visible: visible,
+      clickable: clickable,
+      onTap: onTap,
+    );
+  }
+
+  /// Creates a [GroundOverlay] to given [position] with the given [image].
+  ///
+  /// Example of creating a ground overlay from an asset using
+  /// [GroundOverlay.fromPosition] method:
+  /// ```dart
+  /// GroundOverlay.position(
+  ///   groundOverlayId: const GroundOverlayId('overlay_id'),
+  ///   image: await AssetMapBitmap.create(
+  ///     createLocalImageConfiguration(context),
+  ///     'assets/red_square.png',
+  ///     bitmapScaling: MapBitmapScaling.none,
+  ///   ),
+  ///   position: LatLng(37.42, -122.08),
+  ///   width: 100,
+  ///   height: 100,
+  /// );
+  /// ```
+  factory GroundOverlay.fromPosition({
+    required GroundOverlayId groundOverlayId,
+    required BitmapDescriptor image,
+    required LatLng position,
+    required double width,
+    double? height,
+    Offset anchor = const Offset(0.5, 0.5),
+    double bearing = 0.0,
+    double transparency = 0.0,
+    double zIndex = 0.0,
+    bool visible = true,
+    bool clickable = true,
+    VoidCallback? onTap,
+  }) {
+    return GroundOverlay._(
+      groundOverlayId: groundOverlayId,
+      image: image,
+      position: position,
+      width: width,
+      height: height,
+      anchor: anchor,
+      bearing: bearing,
+      transparency: transparency,
+      zIndex: zIndex,
+      visible: visible,
+      clickable: clickable,
+      onTap: onTap,
+    );
+  }
 
   /// Uniquely identifies a [GroundOverlay].
   final GroundOverlayId groundOverlayId;
@@ -112,7 +220,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   /// The image point is specified in normalized coordinates: An anchor of
   /// (0.0, 0.0) means the top left corner of the image. An anchor
   /// of (1.0, 1.0) means the bottom right corner of the image.
-  final Offset anchor;
+  final Offset? anchor;
 
   /// The amount that the image should be rotated in a clockwise direction. The
   /// center of the rotation will be the image's anchor.
@@ -153,7 +261,8 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     addIfPresent('bounds', bounds?.toJson());
     addIfPresent('width', width);
     addIfPresent('height', height);
-    addIfPresent('anchor', <Object>[anchor.dx, anchor.dy]);
+    addIfPresent(
+        'anchor', anchor != null ? <Object>[anchor!.dx, anchor!.dy] : null);
     addIfPresent('bearing', bearing);
     addIfPresent('transparency', transparency);
     addIfPresent('zIndex', zIndex);
@@ -163,15 +272,10 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     return json;
   }
 
-  /// Creates a new [GroundOverlay] object whose values are the same as this instance,
-  /// unless overwritten by the specified parameters.
+  /// Creates a new [GroundOverlay] object whose values are the same as this
+  /// instance, unless overwritten by the specified parameters.
   GroundOverlay copyWith({
     BitmapDescriptor? imageParam,
-    LatLng? positionParam,
-    LatLngBounds? boundsParam,
-    double? widthParam,
-    double? heightParam,
-    Offset? anchorParam,
     double? bearingParam,
     double? transparencyParam,
     double? zIndexParam,
@@ -179,20 +283,20 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     bool? clickableParam,
     VoidCallback? onTapParam,
   }) {
-    return GroundOverlay(
+    return GroundOverlay._(
       groundOverlayId: groundOverlayId,
       image: imageParam ?? image,
-      position: positionParam ?? position,
-      bounds: boundsParam ?? bounds,
-      width: widthParam ?? width,
-      height: heightParam ?? height,
-      anchor: anchorParam ?? anchor,
       bearing: bearingParam ?? bearing,
       transparency: transparencyParam ?? transparency,
       zIndex: zIndexParam ?? zIndex,
       visible: visibleParam ?? visible,
       clickable: clickableParam ?? clickable,
       onTap: onTapParam ?? onTap,
+      position: position,
+      bounds: bounds,
+      width: width,
+      height: height,
+      anchor: anchor,
     );
   }
 

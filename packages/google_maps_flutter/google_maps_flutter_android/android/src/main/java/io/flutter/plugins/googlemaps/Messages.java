@@ -3881,16 +3881,13 @@ public class Messages {
       this.height = setterArg;
     }
 
-    private @NonNull PlatformDoublePair anchor;
+    private @Nullable PlatformDoublePair anchor;
 
-    public @NonNull PlatformDoublePair getAnchor() {
+    public @Nullable PlatformDoublePair getAnchor() {
       return anchor;
     }
 
-    public void setAnchor(@NonNull PlatformDoublePair setterArg) {
-      if (setterArg == null) {
-        throw new IllegalStateException("Nonnull field \"anchor\" is null.");
-      }
+    public void setAnchor(@Nullable PlatformDoublePair setterArg) {
       this.anchor = setterArg;
     }
 
@@ -3977,7 +3974,7 @@ public class Messages {
           && Objects.equals(bounds, that.bounds)
           && Objects.equals(width, that.width)
           && Objects.equals(height, that.height)
-          && anchor.equals(that.anchor)
+          && Objects.equals(anchor, that.anchor)
           && transparency.equals(that.transparency)
           && bearing.equals(that.bearing)
           && zIndex.equals(that.zIndex)
@@ -4055,7 +4052,7 @@ public class Messages {
       private @Nullable PlatformDoublePair anchor;
 
       @CanIgnoreReturnValue
-      public @NonNull Builder setAnchor(@NonNull PlatformDoublePair setterArg) {
+      public @NonNull Builder setAnchor(@Nullable PlatformDoublePair setterArg) {
         this.anchor = setterArg;
         return this;
       }

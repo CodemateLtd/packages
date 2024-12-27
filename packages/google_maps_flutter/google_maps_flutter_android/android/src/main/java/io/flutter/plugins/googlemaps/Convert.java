@@ -857,9 +857,11 @@ class Convert {
     sink.setTransparency(groundOverlay.getTransparency().floatValue());
     sink.setZIndex(groundOverlay.getZIndex().floatValue());
     sink.setVisible(groundOverlay.getVisible());
-    sink.setAnchor(
-        groundOverlay.getAnchor().getX().floatValue(),
-        groundOverlay.getAnchor().getY().floatValue());
+    if (groundOverlay.getAnchor() != null) {
+      sink.setAnchor(
+          groundOverlay.getAnchor().getX().floatValue(),
+          groundOverlay.getAnchor().getY().floatValue());
+    }
     sink.setBearing(groundOverlay.getBearing().floatValue());
     sink.setClickable(groundOverlay.getClickable());
     sink.setImage(toBitmapDescriptor(groundOverlay.getImage(), assetManager, density));
