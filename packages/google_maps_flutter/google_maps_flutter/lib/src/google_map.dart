@@ -227,6 +227,22 @@ class GoogleMap extends StatefulWidget {
   final Set<ClusterManager> clusterManagers;
 
   /// Ground overlays to be initialized for the map.
+  ///
+  /// Ground overlay feature support table:
+  /// | Feature                     | Android | iOS | Web |
+  /// |-----------------------------|---------|-----|-----|
+  /// | [GroundOverlay.bounds]      | Yes     | Yes | Yes |
+  /// | [GroundOverlay.position]    | Yes     | Yes | No  |
+  /// | [GroundOverlay.width]       | Yes     | No  | No  |
+  /// | [GroundOverlay.height]      | Yes     | No  | No  |
+  /// | [GroundOverlay.anchor]      | Yes     | Yes | No  |
+  /// | [GroundOverlay.zoomLevel]   | No      | Yes | No  |
+  /// | [GroundOverlay.bearing]     | Yes     | Yes | Yes |
+  /// | [GroundOverlay.transparency]| Yes     | Yes | Yes |
+  /// | [GroundOverlay.zIndex]      | Yes     | Yes | Yes |
+  /// | [GroundOverlay.visible]     | Yes     | Yes | Yes |
+  /// | [GroundOverlay.clickable]   | Yes     | Yes | Yes |
+  /// | [GroundOverlay.onTap]       | Yes     | Yes | Yes |
   final Set<GroundOverlay> groundOverlays;
 
   /// Called when the camera starts moving.
