@@ -970,7 +970,7 @@ class PlatformGroundOverlay {
     this.bounds,
     this.width,
     this.height,
-    required this.anchor,
+    this.anchor,
     required this.transparency,
     required this.bearing,
     required this.zIndex,
@@ -990,7 +990,7 @@ class PlatformGroundOverlay {
 
   double? height;
 
-  PlatformDoublePair anchor;
+  PlatformDoublePair? anchor;
 
   double transparency;
 
@@ -1028,7 +1028,7 @@ class PlatformGroundOverlay {
       bounds: result[3] as PlatformLatLngBounds?,
       width: result[4] as double?,
       height: result[5] as double?,
-      anchor: result[6]! as PlatformDoublePair,
+      anchor: result[6] as PlatformDoublePair?,
       transparency: result[7]! as double,
       bearing: result[8]! as double,
       zIndex: result[9]! as double,

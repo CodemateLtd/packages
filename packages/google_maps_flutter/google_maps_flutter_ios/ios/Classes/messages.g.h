@@ -463,7 +463,7 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapBitmapScaling) {
     bounds:(nullable FGMPlatformLatLngBounds *)bounds
     width:(nullable NSNumber *)width
     height:(nullable NSNumber *)height
-    anchor:(FGMPlatformDoublePair *)anchor
+    anchor:(nullable FGMPlatformDoublePair *)anchor
     transparency:(double )transparency
     bearing:(double )bearing
     zIndex:(double )zIndex
@@ -475,7 +475,7 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapBitmapScaling) {
 @property(nonatomic, strong, nullable) FGMPlatformLatLngBounds * bounds;
 @property(nonatomic, strong, nullable) NSNumber * width;
 @property(nonatomic, strong, nullable) NSNumber * height;
-@property(nonatomic, strong) FGMPlatformDoublePair * anchor;
+@property(nonatomic, strong, nullable) FGMPlatformDoublePair * anchor;
 @property(nonatomic, assign) double  transparency;
 @property(nonatomic, assign) double  bearing;
 @property(nonatomic, assign) double  zIndex;
