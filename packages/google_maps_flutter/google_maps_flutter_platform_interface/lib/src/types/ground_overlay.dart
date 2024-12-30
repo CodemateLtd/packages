@@ -86,8 +86,8 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
         assert(bearing >= 0.0 && bearing <= 360.0),
         assert((position == null) != (bounds == null),
             'Either position or bounds must be given, but not both'),
-        assert(position == null || (width != null && width > 0),
-            'Width must be specified and mut be greater than 0 when position is used'),
+        assert(position == null || (height == null || height > 0),
+            'Width must be null or greater than 0 when position is used'),
         assert(position == null || (height == null || height > 0),
             'Height must be null or greater than 0 when position is used');
 
@@ -154,7 +154,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     required GroundOverlayId groundOverlayId,
     required BitmapDescriptor image,
     required LatLng position,
-    required double width,
+    double? width,
     double? height,
     Offset anchor = const Offset(0.5, 0.5),
     double bearing = 0.0,
