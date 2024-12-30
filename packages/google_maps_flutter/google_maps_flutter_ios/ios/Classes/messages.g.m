@@ -1129,7 +1129,7 @@ static id GetNullableObjectAtIndex(NSArray<id> *array, NSInteger key) {
     bounds:(nullable FGMPlatformLatLngBounds *)bounds
     width:(nullable NSNumber *)width
     height:(nullable NSNumber *)height
-    anchor:(FGMPlatformDoublePair *)anchor
+    anchor:(nullable FGMPlatformDoublePair *)anchor
     transparency:(double )transparency
     bearing:(double )bearing
     zIndex:(double )zIndex

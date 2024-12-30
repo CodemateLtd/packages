@@ -668,7 +668,9 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
       GroundOverlay groundOverlay) {
     return PlatformGroundOverlay(
       groundOverlayId: groundOverlay.groundOverlayId.value,
-      anchor: _platformPairFromOffset(groundOverlay.anchor),
+      anchor: groundOverlay.anchor != null
+          ? _platformPairFromOffset(groundOverlay.anchor!)
+          : null,
       image: platformBitmapFromBitmapDescriptor(groundOverlay.image),
       position: groundOverlay.position != null
           ? _platformLatLngFromLatLng(groundOverlay.position!)
