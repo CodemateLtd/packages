@@ -7,7 +7,9 @@
 
 @interface FLTGoogleMapGroundOverlayController ()
 
+/// The ground overlay this controller handles.
 @property(strong, nonatomic) GMSGroundOverlay *groundOverlay;
+/// The GMSMapView to which the ground overlays are added.
 @property(weak, nonatomic) GMSMapView *mapView;
 
 @end
@@ -314,9 +316,13 @@
 @end
 
 @interface FLTGroundOverlaysController ()
+/// A map from ground overlay id to the controller that manages it.
 @property(strong, nonatomic) NSMutableDictionary<NSString *, FLTGoogleMapGroundOverlayController *> *groundOverlayIdentifierToController;
+/// A callback api for the map interactions.
 @property(strong, nonatomic) FGMMapsCallbackApi *callbackHandler;
+/// Flutter Plugin Registrar used to load images.
 @property(weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
+/// The map view used to generate the controllers.
 @property(weak, nonatomic) GMSMapView *mapView;
 
 @end
