@@ -82,6 +82,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     this.visible = true,
     this.clickable = true,
     this.onTap,
+    this.zoomLevel,
   })  : assert(transparency >= 0.0 && transparency <= 1.0),
         assert(bearing >= 0.0 && bearing <= 360.0),
         assert((position == null) != (bounds == null),
@@ -165,6 +166,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     bool visible = true,
     bool clickable = true,
     VoidCallback? onTap,
+    double? zoomLevel,
   }) {
     return GroundOverlay._(
       groundOverlayId: groundOverlayId,
@@ -179,6 +181,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
       visible: visible,
       clickable: clickable,
       onTap: onTap,
+      zoomLevel: zoomLevel,
     );
   }
 
@@ -245,6 +248,9 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   /// Callbacks to receive tap events for ground overlay placed on this map.
   final VoidCallback? onTap;
 
+  /// Map zoomlevel used when setting ground overlay with position. iOS only.
+  final double? zoomLevel;
+
   /// Converts this object to something serializable in JSON.
   @override
   Object toJson() {
@@ -282,6 +288,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     bool? visibleParam,
     bool? clickableParam,
     VoidCallback? onTapParam,
+    double? zoomLevelParam,
   }) {
     return GroundOverlay._(
       groundOverlayId: groundOverlayId,
@@ -297,6 +304,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
       width: width,
       height: height,
       anchor: anchor,
+      zoomLevel: zoomLevelParam ?? zoomLevel,
     );
   }
 

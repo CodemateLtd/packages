@@ -380,6 +380,7 @@ class PlatformGroundOverlay {
     required this.zIndex,
     required this.visible,
     required this.clickable,
+    required this.zoomLevel,
   });
 
   final String groundOverlayId;
@@ -394,6 +395,7 @@ class PlatformGroundOverlay {
   final double zIndex;
   final bool visible;
   final bool clickable;
+  final double? zoomLevel;
 }
 
 /// Information passed to the platform view creation.
