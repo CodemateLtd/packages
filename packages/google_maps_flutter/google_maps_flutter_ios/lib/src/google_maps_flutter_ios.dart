@@ -683,6 +683,7 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
       transparency: groundOverlay.transparency,
       width: groundOverlay.width,
       height: groundOverlay.height,
+      zoomLevel: groundOverlay.zoomLevel,
     );
   }
 

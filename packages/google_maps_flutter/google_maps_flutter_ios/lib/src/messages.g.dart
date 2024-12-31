@@ -976,6 +976,7 @@ class PlatformGroundOverlay {
     required this.zIndex,
     required this.visible,
     required this.clickable,
+    this.zoomLevel,
   });
 
   String groundOverlayId;
@@ -1002,6 +1003,8 @@ class PlatformGroundOverlay {
 
   bool clickable;
 
+  double? zoomLevel;
+
   Object encode() {
     return <Object?>[
       groundOverlayId,
@@ -1016,6 +1019,7 @@ class PlatformGroundOverlay {
       zIndex,
       visible,
       clickable,
+      zoomLevel,
     ];
   }
 
@@ -1034,6 +1038,7 @@ class PlatformGroundOverlay {
       zIndex: result[9]! as double,
       visible: result[10]! as bool,
       clickable: result[11]! as bool,
+      zoomLevel: result[12] as double?,
     );
   }
 }

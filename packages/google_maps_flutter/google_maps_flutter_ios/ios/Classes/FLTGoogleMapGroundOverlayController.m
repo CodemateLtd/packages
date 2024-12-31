@@ -62,14 +62,17 @@
   self.groundOverlay.bounds = bounds;
 }
 
+- (void)setPositionFromCoordinates:(CLLocationCoordinate2D)coordinates {
+  self.groundOverlay.position = coordinates;
+}
+
 - (void)setIcon:(UIImage *)icon {
   self.groundOverlay.icon = icon;
 }
 
 - (void)updateFromPlatformGroundOverlay:(FGMPlatformGroundOverlay *)groundOverlay
                         registrar:(NSObject<FlutterPluginRegistrar> *)registrar
-                            screenScale:(CGFloat)screenScale{
-  NSAssert(groundOverlay.position == nil, @"Ground overlay position is not supported on iOS");
+                            screenScale:(CGFloat)screenScale {
   [self setConsumeTapEvents:groundOverlay.clickable];
   [self setVisible:groundOverlay.visible];
   [self setZIndex:(int)groundOverlay.zIndex];
@@ -80,7 +83,11 @@
   [self setIcon:image];
   [self setBearing:groundOverlay.bearing];
   [self setTransparency:groundOverlay.transparency];
-  [self setPositionFromBounds:[[GMSCoordinateBounds alloc] initWithCoordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.northeast.latitude, groundOverlay.bounds.northeast.longitude) coordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.southwest.latitude, groundOverlay.bounds.southwest.longitude)]];
+  if (groundOverlay.position == nil) {
+    [self setPositionFromBounds:[[GMSCoordinateBounds alloc] initWithCoordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.northeast.latitude, groundOverlay.bounds.northeast.longitude) coordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.southwest.latitude, groundOverlay.bounds.southwest.longitude)]];
+  } else {
+    [self setPositionFromCoordinates:CLLocationCoordinate2DMake(groundOverlay.position.latitude, groundOverlay.position.longitude)];
+  }
 }
 
 @end
@@ -115,7 +122,21 @@
 - (void)addGroundOverlays:(NSArray<FGMPlatformGroundOverlay *> *)groundOverlaysToAdd {
   for (FGMPlatformGroundOverlay *groundOverlay in groundOverlaysToAdd) {
     NSString *identifier = groundOverlay.groundOverlayId;
-    GMSGroundOverlay *gmsOverlay = [[GMSGroundOverlay alloc] init];
+    GMSGroundOverlay *gmsOverlay;
+    if (groundOverlay.position == nil) {
+      gmsOverlay = [GMSGroundOverlay groundOverlayWithBounds:
+                     [[GMSCoordinateBounds alloc] initWithCoordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.northeast.latitude, groundOverlay.bounds.northeast.longitude) coordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.southwest.latitude, groundOverlay.bounds.southwest.longitude)]
+                  icon: [GoogleMapUtils iconFromBitmap:groundOverlay.image
+                                                                  registrar:self.registrar
+                                                                             screenScale:[self getScreenScale]]];
+    } else {
+      gmsOverlay = [GMSGroundOverlay
+                                      groundOverlayWithPosition:CLLocationCoordinate2DMake(groundOverlay.position.latitude, groundOverlay.position.longitude)
+                                      icon:[GoogleMapUtils iconFromBitmap:groundOverlay.image
+                                                                registrar:self.registrar
+                                                              screenScale:[self getScreenScale]]
+                    zoomLevel:[groundOverlay.zoomLevel doubleValue]];
+    }
     FLTGoogleMapGroundOverlayController *controller = [[FLTGoogleMapGroundOverlayController alloc] initWithGroundOverlay:gmsOverlay identifier:identifier mapView:self.mapView];
     [controller updateFromPlatformGroundOverlay:groundOverlay registrar:self.registrar screenScale:[self getScreenScale]];
     self.groundOverlayIdentifierToController[identifier] = controller;
