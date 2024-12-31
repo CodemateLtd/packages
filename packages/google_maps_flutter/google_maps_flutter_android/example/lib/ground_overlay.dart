@@ -232,7 +232,6 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
           ? const Offset(1.0, 1.0)
           : const Offset(0.5, 0.5);
     });
-    debugPrint(_anchor.toString());
 
     // Re-add the ground overlay to apply the new anchor as anchor cannot be
     // changed after the ground overlay is created.

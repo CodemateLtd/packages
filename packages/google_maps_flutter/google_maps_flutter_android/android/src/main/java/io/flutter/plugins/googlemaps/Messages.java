@@ -7800,6 +7800,9 @@ public class Messages {
     @Nullable
     PlatformTileLayer getTileOverlayInfo(@NonNull String tileOverlayId);
 
+    @Nullable
+    PlatformGroundOverlay getGroundOverlayInfo(@NonNull String groundOverlayId);
+
     @NonNull
     PlatformZoomRange getZoomRange();
 
@@ -8090,6 +8093,31 @@ public class Messages {
                 String tileOverlayIdArg = (String) args.get(0);
                 try {
                   PlatformTileLayer output = api.getTileOverlayInfo(tileOverlayIdArg);
+                  wrapped.add(0, output);
+                } catch (Throwable exception) {
+                  wrapped = wrapError(exception);
+                }
+                reply.reply(wrapped);
+              });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(
+                binaryMessenger,
+                "dev.flutter.pigeon.google_maps_flutter_android.MapsInspectorApi.getGroundOverlayInfo"
+                    + messageChannelSuffix,
+                getCodec());
+        if (api != null) {
+          channel.setMessageHandler(
+              (message, reply) -> {
+                ArrayList<Object> wrapped = new ArrayList<>();
+                ArrayList<Object> args = (ArrayList<Object>) message;
+                String groundOverlayIdArg = (String) args.get(0);
+                try {
+                  PlatformGroundOverlay output = api.getGroundOverlayInfo(groundOverlayIdArg);
                   wrapped.add(0, output);
                 } catch (Throwable exception) {
                   wrapped = wrapError(exception);

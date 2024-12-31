@@ -423,6 +423,7 @@ class _ExampleGoogleMapState extends State<ExampleGoogleMap> {
         polylines: widget.polylines,
         circles: widget.circles,
         clusterManagers: widget.clusterManagers,
+        groundOverlays: widget.groundOverlays,
       ),
       mapConfiguration: _mapConfiguration,
     );
@@ -437,6 +438,7 @@ class _ExampleGoogleMapState extends State<ExampleGoogleMap> {
     _polygons = keyByPolygonId(widget.polygons);
     _polylines = keyByPolylineId(widget.polylines);
     _circles = keyByCircleId(widget.circles);
+    _groundOverlays = keyByGroundOverlayId(widget.groundOverlays);
   }
 
   @override

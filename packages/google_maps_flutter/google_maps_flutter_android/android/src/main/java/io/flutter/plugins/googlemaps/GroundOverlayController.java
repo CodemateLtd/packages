@@ -13,10 +13,12 @@ import com.google.android.gms.maps.model.LatLngBounds;
 class GroundOverlayController implements GroundOverlaySink {
   private final GroundOverlay groundOverlay;
   private final String googleMapsGroundOverlayId;
+  private final boolean isCreatedWithBounds;
 
-  GroundOverlayController(GroundOverlay groundOverlay) {
+  GroundOverlayController(GroundOverlay groundOverlay, boolean isCreatedWithBounds) {
     this.groundOverlay = groundOverlay;
     this.googleMapsGroundOverlayId = groundOverlay.getId();
+    this.isCreatedWithBounds = isCreatedWithBounds;
   }
 
   void remove() {
@@ -77,5 +79,9 @@ class GroundOverlayController implements GroundOverlaySink {
 
   String getGoogleMapsGroundOverlayId() {
     return googleMapsGroundOverlayId;
+  }
+
+  public boolean isCreatedWithBounds() {
+    return isCreatedWithBounds;
   }
 }
