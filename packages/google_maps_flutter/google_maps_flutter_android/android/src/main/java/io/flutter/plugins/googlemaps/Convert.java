@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.CustomCap;
 import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
+import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -882,6 +883,78 @@ class Convert {
       sink.setPositionFromBounds(latLngBoundsFromPigeon(groundOverlay.getBounds()));
     }
     return groundOverlay.getGroundOverlayId();
+  }
+
+  static @NonNull Messages.PlatformGroundOverlay groundOverlayToPigeon(
+      @NonNull GroundOverlay groundOverlay,
+      @NonNull String groundOverlayId,
+      boolean isCreatedWithBounds) {
+
+    // Dummy image is used as image is required field of PlatformGroundOverlay and converting image
+    // back to image descriptor is not currently supported.
+    Messages.PlatformBitmap dummyImage =
+        new Messages.PlatformBitmap.Builder()
+            .setBitmap(
+                new Messages.PlatformBitmapBytesMap.Builder()
+                    .setByteData(new byte[] {0})
+                    .setImagePixelRatio(1.0)
+                    .setBitmapScaling(Messages.PlatformMapBitmapScaling.NONE)
+                    .build())
+            .build();
+
+    Messages.PlatformGroundOverlay.Builder builder =
+        new Messages.PlatformGroundOverlay.Builder()
+            .setGroundOverlayId(groundOverlayId)
+            .setImage(dummyImage)
+            .setWidth((double) groundOverlay.getWidth())
+            .setHeight((double) groundOverlay.getWidth())
+            .setBearing((double) groundOverlay.getBearing())
+            .setTransparency((double) groundOverlay.getTransparency())
+            .setZIndex((double) groundOverlay.getZIndex())
+            .setVisible(groundOverlay.isVisible())
+            .setClickable(groundOverlay.isClickable());
+
+    if (isCreatedWithBounds) {
+      builder.setBounds(Convert.latLngBoundsToPigeon(groundOverlay.getBounds()));
+    } else {
+      builder.setPosition(Convert.latLngToPigeon(groundOverlay.getPosition()));
+    }
+
+    builder.setAnchor(Convert.buildGroundOverlayAnchorForPigeon(groundOverlay));
+    return builder.build();
+  }
+
+  private static @NonNull Messages.PlatformDoublePair buildGroundOverlayAnchorForPigeon(
+      GroundOverlay groundOverlay) {
+    Messages.PlatformDoublePair.Builder anchorBuilder = new Messages.PlatformDoublePair.Builder();
+
+    // Position is overlays anchor point. Calculate normalized anchor point based on position and bounds.
+    LatLng position = groundOverlay.getPosition();
+    LatLngBounds bounds = groundOverlay.getBounds();
+
+    // Calculate normalized latitude
+    double height = bounds.northeast.latitude - bounds.southwest.latitude;
+    double normalizedLatitude = 1.0 - ((position.latitude - bounds.southwest.latitude) / height);
+
+    // Calculate normalized longitude
+    double west = bounds.southwest.longitude;
+    double east = bounds.northeast.longitude;
+    double longitudeOffset = 0;
+    if (west <= east) {
+      longitudeOffset = position.longitude - west;
+    } else {
+      // If bounds cross the antimeridian
+      longitudeOffset = position.longitude - west;
+      if (position.longitude < west) {
+        longitudeOffset += 360;
+      }
+    }
+    double width = (west <= east) ? east - west : 360.0 - (west - east);
+    double normalizedLongitude = longitudeOffset / width;
+
+    anchorBuilder.setX(normalizedLongitude);
+    anchorBuilder.setY(normalizedLatitude);
+    return anchorBuilder.build();
   }
 
   static class BitmapDescriptorFactoryWrapper {
