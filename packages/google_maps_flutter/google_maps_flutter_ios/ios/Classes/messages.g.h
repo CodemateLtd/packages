@@ -468,7 +468,8 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapBitmapScaling) {
     bearing:(double )bearing
     zIndex:(double )zIndex
     visible:(BOOL )visible
-    clickable:(BOOL )clickable;
+    clickable:(BOOL )clickable
+    zoomLevel:(nullable NSNumber *)zoomLevel;
 @property(nonatomic, copy) NSString * groundOverlayId;
 @property(nonatomic, strong) FGMPlatformBitmap * image;
 @property(nonatomic, strong, nullable) FGMPlatformLatLng * position;
@@ -481,6 +482,7 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapBitmapScaling) {
 @property(nonatomic, assign) double  zIndex;
 @property(nonatomic, assign) BOOL  visible;
 @property(nonatomic, assign) BOOL  clickable;
+@property(nonatomic, strong, nullable) NSNumber * zoomLevel;
 @end
 
 /// Information passed to the platform view creation.

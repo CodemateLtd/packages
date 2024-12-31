@@ -1134,7 +1134,8 @@ static id GetNullableObjectAtIndex(NSArray<id> *array, NSInteger key) {
     bearing:(double )bearing
     zIndex:(double )zIndex
     visible:(BOOL )visible
-    clickable:(BOOL )clickable {
+    clickable:(BOOL )clickable
+    zoomLevel:(nullable NSNumber *)zoomLevel {
   FGMPlatformGroundOverlay* pigeonResult = [[FGMPlatformGroundOverlay alloc] init];
   pigeonResult.groundOverlayId = groundOverlayId;
   pigeonResult.image = image;
@@ -1148,6 +1149,7 @@ static id GetNullableObjectAtIndex(NSArray<id> *array, NSInteger key) {
   pigeonResult.zIndex = zIndex;
   pigeonResult.visible = visible;
   pigeonResult.clickable = clickable;
+  pigeonResult.zoomLevel = zoomLevel;
   return pigeonResult;
 }
 + (FGMPlatformGroundOverlay *)fromList:(NSArray<id> *)list {
@@ -1164,6 +1166,7 @@ static id GetNullableObjectAtIndex(NSArray<id> *array, NSInteger key) {
   pigeonResult.zIndex = [GetNullableObjectAtIndex(list, 9) doubleValue];
   pigeonResult.visible = [GetNullableObjectAtIndex(list, 10) boolValue];
   pigeonResult.clickable = [GetNullableObjectAtIndex(list, 11) boolValue];
+  pigeonResult.zoomLevel = GetNullableObjectAtIndex(list, 12);
   return pigeonResult;
 }
 + (nullable FGMPlatformGroundOverlay *)nullableFromList:(NSArray<id> *)list {
@@ -1183,6 +1186,7 @@ static id GetNullableObjectAtIndex(NSArray<id> *array, NSInteger key) {
     @(self.zIndex),
     @(self.visible),
     @(self.clickable),
+    self.zoomLevel ?: [NSNull null],
   ];
 }
 @end
