@@ -1115,6 +1115,20 @@ class GoogleMapController
   }
 
   @Override
+  public @Nullable Messages.PlatformGroundOverlay getGroundOverlayInfo(
+      @NonNull String groundOverlayId) {
+    GroundOverlay groundOverlay = groundOverlaysController.getGroundOverlay(groundOverlayId);
+    if (groundOverlay == null) {
+      return null;
+    }
+
+    return Convert.groundOverlayToPigeon(
+        groundOverlay,
+        groundOverlayId,
+        groundOverlaysController.isCreatedWithBounds(groundOverlayId));
+  }
+
+  @Override
   public @NonNull Messages.PlatformZoomRange getZoomRange() {
     return new Messages.PlatformZoomRange.Builder()
         .setMin((double) Objects.requireNonNull(googleMap).getMinZoomLevel())

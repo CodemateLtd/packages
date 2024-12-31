@@ -80,9 +80,12 @@ class GroundOverlaysController {
             platformGroundOverlay, groundOverlayOptionsBuilder, assetManager, density);
     GroundOverlayOptions options = groundOverlayOptionsBuilder.build();
     final GroundOverlay groundOverlay = googleMap.addGroundOverlay(options);
-    GroundOverlayController groundOverlayController = new GroundOverlayController(groundOverlay);
-    groundOverlayIdToController.put(groundOverlayId, groundOverlayController);
-    googleMapsGroundOverlayIdToDartGroundOverlayId.put(groundOverlay.getId(), groundOverlayId);
+    if (groundOverlay != null) {
+      GroundOverlayController groundOverlayController =
+          new GroundOverlayController(groundOverlay, platformGroundOverlay.getBounds() != null);
+      groundOverlayIdToController.put(groundOverlayId, groundOverlayController);
+      googleMapsGroundOverlayIdToDartGroundOverlayId.put(groundOverlay.getId(), groundOverlayId);
+    }
   }
 
   private void changeGroundOverlay(@NonNull Messages.PlatformGroundOverlay platformGroundOverlay) {
@@ -113,5 +116,17 @@ class GroundOverlaysController {
       return;
     }
     flutterApi.onGroundOverlayTap(groundOverlayId, new NoOpVoidResult());
+  }
+
+  boolean isCreatedWithBounds(String groundOverlayId) {
+    if (groundOverlayId == null) {
+      return false;
+    }
+    GroundOverlayController groundOverlayController =
+        groundOverlayIdToController.get(groundOverlayId);
+    if (groundOverlayController == null) {
+      return false;
+    }
+    return groundOverlayController.isCreatedWithBounds();
   }
 }

@@ -810,6 +810,7 @@ abstract class MapsInspectorApi {
   bool isMyLocationButtonEnabled();
   bool isTrafficEnabled();
   PlatformTileLayer? getTileOverlayInfo(String tileOverlayId);
+  PlatformGroundOverlay? getGroundOverlayInfo(String groundOverlayId);
   PlatformZoomRange getZoomRange();
   List<PlatformCluster> getClusters(String clusterManagerId);
 }

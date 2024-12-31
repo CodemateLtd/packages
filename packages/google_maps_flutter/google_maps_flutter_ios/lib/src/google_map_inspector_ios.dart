@@ -104,6 +104,9 @@ class GoogleMapsInspectorIOS extends GoogleMapsInspectorPlatform {
   }
 
   @override
+  bool supportsGettingGroundOverlayInfo() => false;
+
+  @override
   Future<bool> isCompassEnabled({required int mapId}) async {
     return _inspectorProvider(mapId)!.isCompassEnabled();
   }

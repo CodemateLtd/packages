@@ -117,6 +117,7 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
           groundOverlayId: id,
           image: assetMapBitmap,
           bounds: _currentGroundOverlayBounds,
+          anchor: _anchor,
           onTap: () {
             _onGroundOverlayTapped();
           },
@@ -225,13 +226,11 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
 
   Future<void> _changeAnchor() async {
     assert(_groundOverlay != null);
-    assert(_placingType == _GroundOverlayPlacing.position);
     setState(() {
       _anchor = _groundOverlay!.anchor == const Offset(0.5, 0.5)
           ? const Offset(1.0, 1.0)
           : const Offset(0.5, 0.5);
     });
-    debugPrint(_anchor.toString());
 
     // Re-add the ground overlay to apply the new anchor as the anchor cannot be
     // changed after the ground overlay is created.
@@ -298,6 +297,12 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
             ),
             if (!kIsWeb)
               TextButton(
+                onPressed:
+                    _groundOverlay == null ? null : () => _changeAnchor(),
+                child: const Text('change anchor'),
+              ),
+            if (!kIsWeb)
+              TextButton(
                 onPressed: _groundOverlay == null ? null : () => _changeType(),
                 child: Text(_placingType == _GroundOverlayPlacing.position
                     ? 'use bounds'
@@ -318,14 +323,6 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
                     ? null
                     : () => _changeDimensions(),
                 child: const Text('change dimensions'),
-              ),
-            if (!kIsWeb)
-              TextButton(
-                onPressed: _placingType != _GroundOverlayPlacing.position ||
-                        _groundOverlay == null
-                    ? null
-                    : () => _changeAnchor(),
-                child: const Text('change anchor'),
               ),
             TextButton(
               onPressed: _placingType != _GroundOverlayPlacing.bounds ||

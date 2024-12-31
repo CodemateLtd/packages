@@ -113,6 +113,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     required GroundOverlayId groundOverlayId,
     required BitmapDescriptor image,
     required LatLngBounds bounds,
+    Offset anchor = const Offset(0.5, 0.5),
     double bearing = 0.0,
     double transparency = 0.0,
     double zIndex = 0.0,
@@ -124,6 +125,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
       groundOverlayId: groundOverlayId,
       image: image,
       bounds: bounds,
+      anchor: anchor,
       bearing: bearing,
       transparency: transparency,
       zIndex: zIndex,
@@ -215,11 +217,10 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   /// If [bounds] is specified, [position] must be null.
   final LatLngBounds? bounds;
 
-  /// The icon image point that will be placed at the [position] of the marker.
-  ///
   /// The image point is specified in normalized coordinates: An anchor of
   /// (0.0, 0.0) means the top left corner of the image. An anchor
   /// of (1.0, 1.0) means the bottom right corner of the image.
+  /// Defaults to (0.5, 0.5), which is the center of the image.
   final Offset? anchor;
 
   /// The amount that the image should be rotated in a clockwise direction. The
@@ -275,7 +276,6 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   /// Creates a new [GroundOverlay] object whose values are the same as this
   /// instance, unless overwritten by the specified parameters.
   GroundOverlay copyWith({
-    BitmapDescriptor? imageParam,
     double? bearingParam,
     double? transparencyParam,
     double? zIndexParam,
@@ -285,13 +285,13 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   }) {
     return GroundOverlay._(
       groundOverlayId: groundOverlayId,
-      image: imageParam ?? image,
       bearing: bearingParam ?? bearing,
       transparency: transparencyParam ?? transparency,
       zIndex: zIndexParam ?? zIndex,
       visible: visibleParam ?? visible,
       clickable: clickableParam ?? clickable,
       onTap: onTapParam ?? onTap,
+      image: image,
       position: position,
       bounds: bounds,
       width: width,
