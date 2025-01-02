@@ -129,12 +129,14 @@
     NSString *identifier = groundOverlay.groundOverlayId;
     GMSGroundOverlay *gmsOverlay;
     if (groundOverlay.position == nil) {
+      NSAssert(groundOverlay.bounds != nil, @"If ground overlay is initialized without position, bounds are required");
       gmsOverlay = [GMSGroundOverlay groundOverlayWithBounds:
                      [[GMSCoordinateBounds alloc] initWithCoordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.northeast.latitude, groundOverlay.bounds.northeast.longitude) coordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.southwest.latitude, groundOverlay.bounds.southwest.longitude)]
                   icon: [FGMUtils iconFromBitmap:groundOverlay.image
                                                                   registrar:self.registrar
                                                                              screenScale:[self getScreenScale]]];
     } else {
+      NSAssert(groundOverlay.zoomLevel != nil, @"If ground overlay is initialized with position, zoomLevel is required");
       gmsOverlay = [GMSGroundOverlay
                                       groundOverlayWithPosition:CLLocationCoordinate2DMake(groundOverlay.position.latitude, groundOverlay.position.longitude)
                                       icon:[FGMUtils iconFromBitmap:groundOverlay.image
