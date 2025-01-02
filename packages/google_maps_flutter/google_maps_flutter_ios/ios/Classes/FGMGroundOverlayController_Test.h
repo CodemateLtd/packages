@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "FLTGoogleMapGroundOverlayController.h"
+#import "FGMGroundOverlayController.h"
 
 /// Internal APIs exposed for unit testing
-@interface FLTGoogleMapGroundOverlayController (Test)
+@interface FGMGroundOverlayController (Test)
 
 /// Ground Overlay instance the controller is attached to
 @property(strong, nonatomic) GMSGroundOverlay *groundOverlay;

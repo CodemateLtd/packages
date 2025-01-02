@@ -2,13 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "GoogleMapUtils.h"
+#import "FGMUtils.h"
 
-@interface GoogleMapUtils ()
+@interface FGMUtils ()
 
 @end
 
-@implementation GoogleMapUtils
+@implementation FGMUtils
 
 + (UIImage *)iconFromBitmap:(FGMPlatformBitmap *)platformBitmap
                   registrar:(NSObject<FlutterPluginRegistrar> *)registrar
@@ -62,13 +62,13 @@
       NSNumber *width = bitmapAssetMap.width;
       NSNumber *height = bitmapAssetMap.height;
       if (width || height) {
-        image = [GoogleMapUtils scaledImage:image withScale:screenScale];
-        image = [GoogleMapUtils scaledImage:image
+        image = [FGMUtils scaledImage:image withScale:screenScale];
+        image = [FGMUtils scaledImage:image
                                                        withWidth:width
                                                           height:height
                                                      screenScale:screenScale];
       } else {
-        image = [GoogleMapUtils scaledImage:image
+        image = [FGMUtils scaledImage:image
                                                        withScale:bitmapAssetMap.imagePixelRatio];
       }
     }
@@ -84,13 +84,13 @@
 
         if (width || height) {
           // Before scaling the image, image must be in screenScale.
-          image = [GoogleMapUtils scaledImage:image withScale:screenScale];
-          image = [GoogleMapUtils scaledImage:image
+          image = [FGMUtils scaledImage:image withScale:screenScale];
+          image = [FGMUtils scaledImage:image
                                                          withWidth:width
                                                             height:height
                                                        screenScale:screenScale];
         } else {
-          image = [GoogleMapUtils scaledImage:image
+          image = [FGMUtils scaledImage:image
                                                          withScale:bitmapBytesMap.imagePixelRatio];
         }
       } else {
@@ -164,12 +164,12 @@
 
   // Check if the aspect ratios are approximately equal.
   CGSize originalPixelSize = CGSizeMake(originalPixelWidth, originalPixelHeight);
-  if ([GoogleMapUtils isScalableWithScaleFactorFromSize:originalPixelSize
+  if ([FGMUtils isScalableWithScaleFactorFromSize:originalPixelSize
                                                                       toSize:size]) {
     // Scaled image has close to same aspect ratio,
     // updating image scale instead of resizing image.
     CGFloat factor = originalPixelWidth / size.width;
-    return [GoogleMapUtils scaledImage:image withScale:(image.scale * factor)];
+    return [FGMUtils scaledImage:image withScale:(image.scale * factor)];
   } else {
     // Aspect ratios differ significantly, resize the image.
     UIGraphicsImageRendererFormat *format = [UIGraphicsImageRendererFormat defaultFormat];
@@ -183,7 +183,7 @@
     }];
 
     // Return image with proper scaling.
-    return [GoogleMapUtils scaledImage:newImage withScale:image.scale];
+    return [FGMUtils scaledImage:newImage withScale:image.scale];
   }
 }
 
@@ -218,7 +218,7 @@
 
   CGSize targetSize =
   CGSizeMake(round(targetWidth * screenScale), round(targetHeight * screenScale));
-  return [GoogleMapUtils scaledImage:image withSize:targetSize];
+  return [FGMUtils scaledImage:image withSize:targetSize];
 }
 
 + (BOOL)isScalableWithScaleFactorFromSize:(CGSize)originalSize toSize:(CGSize)targetSize {
