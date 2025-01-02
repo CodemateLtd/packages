@@ -850,6 +850,19 @@ class Convert {
     return new Tile(tile.getWidth().intValue(), tile.getHeight().intValue(), tile.getData());
   }
 
+  /**
+   * Set the options in the given ground overlay object to the given sink.
+   *
+   * @param groundOverlay the object expected to be a PlatformGroundOverlay containing the ground
+   *     overlay options.
+   * @param sink the GroundOverlaySink where the options will be set.
+   * @param assetManager assetManager An instance of Android's AssetManager, which provides access
+   *     to any raw asset files stored in the application's assets directory.
+   * @param density the density of the display, used to calculate pixel dimensions.
+   * @param wrapper the BitmapDescriptorFactoryWrapper to create BitmapDescriptor.
+   * @return the identifier of the ground overlay.
+   * @throws IllegalArgumentException if required fields are missing or invalid.
+   */
   static String interpretGroundOverlayOptions(
       Messages.PlatformGroundOverlay groundOverlay,
       GroundOverlaySink sink,
@@ -886,6 +899,15 @@ class Convert {
     return groundOverlay.getGroundOverlayId();
   }
 
+  /**
+   * Converts a GroundOverlay object to a PlatformGroundOverlay Pigeon object.
+   *
+   * @param groundOverlay the GroundOverlay object to convert.
+   * @param groundOverlayId the identifier of the GroundOverlay.
+   * @param isCreatedWithBounds indicates if the GroundOverlay was created with bounds.
+   * @return the converted PlatformGroundOverlay object.
+   */
+  @VisibleForTesting
   static @NonNull Messages.PlatformGroundOverlay groundOverlayToPigeon(
       @NonNull GroundOverlay groundOverlay,
       @NonNull String groundOverlayId,
@@ -925,6 +947,13 @@ class Convert {
     return builder.build();
   }
 
+  /**
+   * Builds a PlatformDoublePair representing the anchor point for a GroundOverlay.
+   *
+   * @param groundOverlay the GroundOverlay object.
+   * @return the PlatformDoublePair representing the anchor point.
+   */
+  @VisibleForTesting
   private static @NonNull Messages.PlatformDoublePair buildGroundOverlayAnchorForPigeon(
       GroundOverlay groundOverlay) {
     Messages.PlatformDoublePair.Builder anchorBuilder = new Messages.PlatformDoublePair.Builder();
@@ -944,9 +973,9 @@ class Convert {
     if (west <= east) {
       longitudeOffset = position.longitude - west;
     } else {
-      // If bounds cross the antimeridian
       longitudeOffset = position.longitude - west;
       if (position.longitude < west) {
+        // If bounds cross the antimeridian add 360 to the offset.
         longitudeOffset += 360;
       }
     }
