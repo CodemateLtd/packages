@@ -5,8 +5,8 @@
 #import "GoogleMapMarkerController.h"
 
 #import "FGMMarkerUserData.h"
-#import "FLTGoogleMapJSONConversions.h"
 #import "FGMUtils.h"
+#import "FLTGoogleMapJSONConversions.h"
 
 @interface FLTGoogleMapMarkerController ()
 
@@ -114,8 +114,8 @@
   [self setAnchor:FGMGetCGPointForPigeonPoint(platformMarker.anchor)];
   [self setDraggable:platformMarker.draggable];
   UIImage *image = [FGMUtils iconFromBitmap:platformMarker.icon
-                              registrar:registrar
-                            screenScale:screenScale];
+                                  registrar:registrar
+                                screenScale:screenScale];
   [self setIcon:image];
   [self setFlat:platformMarker.flat];
   [self setConsumeTapEvents:platformMarker.consumeTapEvents];
