@@ -23,13 +23,24 @@ class GroundOverlaysController {
   private GoogleMap googleMap;
   private final AssetManager assetManager;
   private final float density;
+  private final Convert.BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper;
 
   GroundOverlaysController(MapsCallbackApi flutterApi, AssetManager assetManager, float density) {
+    this(flutterApi, assetManager, density, new Convert.BitmapDescriptorFactoryWrapper());
+  }
+
+  @VisibleForTesting
+  GroundOverlaysController(
+      MapsCallbackApi flutterApi,
+      AssetManager assetManager,
+      float density,
+      Convert.BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper) {
     this.groundOverlayIdToController = new HashMap<>();
     this.googleMapsGroundOverlayIdToDartGroundOverlayId = new HashMap<>();
     this.flutterApi = flutterApi;
     this.assetManager = assetManager;
     this.density = density;
+    this.bitmapDescriptorFactoryWrapper = bitmapDescriptorFactoryWrapper;
   }
 
   void setGoogleMap(GoogleMap googleMap) {
@@ -77,7 +88,11 @@ class GroundOverlaysController {
     GroundOverlayBuilder groundOverlayOptionsBuilder = new GroundOverlayBuilder();
     String groundOverlayId =
         Convert.interpretGroundOverlayOptions(
-            platformGroundOverlay, groundOverlayOptionsBuilder, assetManager, density);
+            platformGroundOverlay,
+            groundOverlayOptionsBuilder,
+            assetManager,
+            density,
+            bitmapDescriptorFactoryWrapper);
     GroundOverlayOptions options = groundOverlayOptionsBuilder.build();
     final GroundOverlay groundOverlay = googleMap.addGroundOverlay(options);
     if (groundOverlay != null) {
@@ -94,7 +109,11 @@ class GroundOverlaysController {
         groundOverlayIdToController.get(groundOverlayId);
     if (groundOverlayController != null) {
       Convert.interpretGroundOverlayOptions(
-          platformGroundOverlay, groundOverlayController, assetManager, density);
+          platformGroundOverlay,
+          groundOverlayController,
+          assetManager,
+          density,
+          bitmapDescriptorFactoryWrapper);
     }
   }
 
