@@ -8,7 +8,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface GoogleMapUtils: NSObject
+@interface FGMUtils: NSObject
 + (UIImage *)iconFromBitmap:(FGMPlatformBitmap *)platformBitmap
                   registrar:(NSObject<FlutterPluginRegistrar> *)registrar
                 screenScale:(CGFloat)screenScale;

@@ -247,7 +247,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   /// Callbacks to receive tap events for ground overlay placed on this map.
   final VoidCallback? onTap;
 
-  /// Map zoomlevel used when setting ground overlay with position. iOS only.
+  /// Map zoomlevel used when setting ground overlay with position.
   final double? zoomLevel;
 
   /// Converts this object to something serializable in JSON.
@@ -274,6 +274,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     addIfPresent('zIndex', zIndex);
     addIfPresent('visible', visible);
     addIfPresent('clickable', clickable);
+    addIfPresent('zoomLevel', zoomLevel);
 
     return json;
   }
@@ -288,7 +289,6 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     bool? visibleParam,
     bool? clickableParam,
     VoidCallback? onTapParam,
-    double? zoomLevelParam,
   }) {
     return GroundOverlay._(
       groundOverlayId: groundOverlayId,
@@ -304,7 +304,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
       width: width,
       height: height,
       anchor: anchor,
-      zoomLevel: zoomLevelParam ?? zoomLevel,
+      zoomLevel: zoomLevel,
     );
   }
 

@@ -2,20 +2,21 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "FLTGoogleMapGroundOverlayController.h"
+#import "FGMGroundOverlayController.h"
 #import "FLTGoogleMapJSONConversions.h"
-#import "GoogleMapUtils.h"
+#import "FGMUtils.h"
 
-@interface FLTGoogleMapGroundOverlayController ()
+@interface FGMGroundOverlayController ()
 
 /// The ground overlay this controller handles.
 @property(strong, nonatomic) GMSGroundOverlay *groundOverlay;
+
 /// The GMSMapView to which the ground overlays are added.
 @property(weak, nonatomic) GMSMapView *mapView;
 
 @end
 
-@implementation FLTGoogleMapGroundOverlayController
+@implementation FGMGroundOverlayController
 
 - (instancetype)initWithGroundOverlay:(GMSGroundOverlay *)groundOverlay
                            identifier:(NSString *)identifier
@@ -77,7 +78,7 @@
   [self setVisible:groundOverlay.visible];
   [self setZIndex:(int)groundOverlay.zIndex];
   [self setAnchor:CGPointMake(groundOverlay.anchor.x, groundOverlay.anchor.y)];
-  UIImage *image = [GoogleMapUtils iconFromBitmap:groundOverlay.image
+  UIImage *image = [FGMUtils iconFromBitmap:groundOverlay.image
                               registrar:registrar
                             screenScale:screenScale];
   [self setIcon:image];
@@ -93,12 +94,16 @@
 @end
 
 @interface FLTGroundOverlaysController ()
+
 /// A map from ground overlay id to the controller that manages it.
-@property(strong, nonatomic) NSMutableDictionary<NSString *, FLTGoogleMapGroundOverlayController *> *groundOverlayIdentifierToController;
+@property(strong, nonatomic) NSMutableDictionary<NSString *, FGMGroundOverlayController *> *groundOverlayIdentifierToController;
+
 /// A callback api for the map interactions.
 @property(strong, nonatomic) FGMMapsCallbackApi *callbackHandler;
+
 /// Flutter Plugin Registrar used to load images.
 @property(weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
+
 /// The map view used to generate the controllers.
 @property(weak, nonatomic) GMSMapView *mapView;
 
@@ -126,18 +131,18 @@
     if (groundOverlay.position == nil) {
       gmsOverlay = [GMSGroundOverlay groundOverlayWithBounds:
                      [[GMSCoordinateBounds alloc] initWithCoordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.northeast.latitude, groundOverlay.bounds.northeast.longitude) coordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.southwest.latitude, groundOverlay.bounds.southwest.longitude)]
-                  icon: [GoogleMapUtils iconFromBitmap:groundOverlay.image
+                  icon: [FGMUtils iconFromBitmap:groundOverlay.image
                                                                   registrar:self.registrar
                                                                              screenScale:[self getScreenScale]]];
     } else {
       gmsOverlay = [GMSGroundOverlay
                                       groundOverlayWithPosition:CLLocationCoordinate2DMake(groundOverlay.position.latitude, groundOverlay.position.longitude)
-                                      icon:[GoogleMapUtils iconFromBitmap:groundOverlay.image
+                                      icon:[FGMUtils iconFromBitmap:groundOverlay.image
                                                                 registrar:self.registrar
                                                               screenScale:[self getScreenScale]]
                     zoomLevel:[groundOverlay.zoomLevel doubleValue]];
     }
-    FLTGoogleMapGroundOverlayController *controller = [[FLTGoogleMapGroundOverlayController alloc] initWithGroundOverlay:gmsOverlay identifier:identifier mapView:self.mapView];
+    FGMGroundOverlayController *controller = [[FGMGroundOverlayController alloc] initWithGroundOverlay:gmsOverlay identifier:identifier mapView:self.mapView];
     [controller updateFromPlatformGroundOverlay:groundOverlay registrar:self.registrar screenScale:[self getScreenScale]];
     self.groundOverlayIdentifierToController[identifier] = controller;
   }
@@ -146,14 +151,14 @@
 - (void)changeGroundOverlays:(NSArray<FGMPlatformGroundOverlay *> *)groundOverlaysToChange {
   for (FGMPlatformGroundOverlay *groundOverlay in groundOverlaysToChange) {
     NSString *identifier = groundOverlay.groundOverlayId;
-    FLTGoogleMapGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
+    FGMGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
     [controller updateFromPlatformGroundOverlay:groundOverlay registrar:self.registrar screenScale:[self getScreenScale]];
   }
 }
 
 - (void)removeGroundOverlaysWithIdentifiers:(NSArray<NSString *> *)identifiers {
   for (NSString *identifier in identifiers) {
-    FLTGoogleMapGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
+    FGMGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
     if (!controller) {
       continue;
     }
@@ -166,7 +171,7 @@
   if (!identifier) {
     return;
   }
-  FLTGoogleMapGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
+  FGMGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
   if (!controller) {
     return;
   }

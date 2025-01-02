@@ -8,7 +8,7 @@
 @import GoogleMaps;
 
 #import <OCMock/OCMock.h>
-#import <google_maps_flutter_ios/FLTGoogleMapGroundOverlayController_Test.h>
+#import <google_maps_flutter_ios/FGMGroundOverlayController_Test.h>
 #import <google_maps_flutter_ios/messages.g.h>
 #import "PartiallyMockedMapView.h"
 
@@ -20,7 +20,7 @@
 /// Returns GoogleMapGroundOverlayController object instantiated with a mocked map instance
 ///
 ///  @return An object of FLTGoogleMapGroundOverlayController
-- (FLTGoogleMapGroundOverlayController *)groundOverlayControllerWithMockedMap {
+- (FGMGroundOverlayController *)groundOverlayControllerWithMockedMap {
   NSString *imagePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"widegamut"
                                                                          ofType:@"png"
                                                                     inDirectory:@"assets"];
@@ -39,14 +39,14 @@
   PartiallyMockedMapView *mapView = [[PartiallyMockedMapView alloc] initWithOptions:mapViewOptions];
 
 
-  return [[FLTGoogleMapGroundOverlayController alloc]
+  return [[FGMGroundOverlayController alloc]
    initWithGroundOverlay:groundOverlay
    identifier:@"id_1"
    mapView:mapView];
 }
 
 - (void)testUpdatingGroundOverlay {
-  FLTGoogleMapGroundOverlayController *groundOverlayController = [self groundOverlayControllerWithMockedMap];
+  FGMGroundOverlayController *groundOverlayController = [self groundOverlayControllerWithMockedMap];
 
   FGMPlatformLatLng *position = [FGMPlatformLatLng makeWithLatitude:52.4816 longitude:3.1791];
 
