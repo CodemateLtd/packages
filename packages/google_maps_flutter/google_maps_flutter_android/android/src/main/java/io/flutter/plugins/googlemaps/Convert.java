@@ -854,7 +854,8 @@ class Convert {
       Messages.PlatformGroundOverlay groundOverlay,
       GroundOverlaySink sink,
       AssetManager assetManager,
-      float density) {
+      float density,
+      BitmapDescriptorFactoryWrapper wrapper) {
     sink.setTransparency(groundOverlay.getTransparency().floatValue());
     sink.setZIndex(groundOverlay.getZIndex().floatValue());
     sink.setVisible(groundOverlay.getVisible());
@@ -865,7 +866,7 @@ class Convert {
     }
     sink.setBearing(groundOverlay.getBearing().floatValue());
     sink.setClickable(groundOverlay.getClickable());
-    sink.setImage(toBitmapDescriptor(groundOverlay.getImage(), assetManager, density));
+    sink.setImage(toBitmapDescriptor(groundOverlay.getImage(), assetManager, density, wrapper));
     if (groundOverlay.getPosition() != null) {
       assert groundOverlay.getWidth() != null;
       if (groundOverlay.getHeight() != null) {
