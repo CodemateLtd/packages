@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 #import "FGMGroundOverlayController.h"
-#import "FLTGoogleMapJSONConversions.h"
 #import "FGMUtils.h"
+#import "FLTGoogleMapJSONConversions.h"
 
 @interface FGMGroundOverlayController ()
 
@@ -72,22 +72,30 @@
 }
 
 - (void)updateFromPlatformGroundOverlay:(FGMPlatformGroundOverlay *)groundOverlay
-                        registrar:(NSObject<FlutterPluginRegistrar> *)registrar
+                              registrar:(NSObject<FlutterPluginRegistrar> *)registrar
                             screenScale:(CGFloat)screenScale {
   [self setConsumeTapEvents:groundOverlay.clickable];
   [self setVisible:groundOverlay.visible];
   [self setZIndex:(int)groundOverlay.zIndex];
   [self setAnchor:CGPointMake(groundOverlay.anchor.x, groundOverlay.anchor.y)];
   UIImage *image = [FGMUtils iconFromBitmap:groundOverlay.image
-                              registrar:registrar
-                            screenScale:screenScale];
+                                  registrar:registrar
+                                screenScale:screenScale];
   [self setIcon:image];
   [self setBearing:groundOverlay.bearing];
   [self setTransparency:groundOverlay.transparency];
   if (groundOverlay.position == nil) {
-    [self setPositionFromBounds:[[GMSCoordinateBounds alloc] initWithCoordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.northeast.latitude, groundOverlay.bounds.northeast.longitude) coordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.southwest.latitude, groundOverlay.bounds.southwest.longitude)]];
+    [self setPositionFromBounds:[[GMSCoordinateBounds alloc]
+                                    initWithCoordinate:CLLocationCoordinate2DMake(
+                                                           groundOverlay.bounds.northeast.latitude,
+                                                           groundOverlay.bounds.northeast.longitude)
+                                            coordinate:CLLocationCoordinate2DMake(
+                                                           groundOverlay.bounds.southwest.latitude,
+                                                           groundOverlay.bounds.southwest
+                                                               .longitude)]];
   } else {
-    [self setPositionFromCoordinates:CLLocationCoordinate2DMake(groundOverlay.position.latitude, groundOverlay.position.longitude)];
+    [self setPositionFromCoordinates:CLLocationCoordinate2DMake(groundOverlay.position.latitude,
+                                                                groundOverlay.position.longitude)];
   }
 }
 
@@ -96,7 +104,8 @@
 @interface FLTGroundOverlaysController ()
 
 /// A map from ground overlay id to the controller that manages it.
-@property(strong, nonatomic) NSMutableDictionary<NSString *, FGMGroundOverlayController *> *groundOverlayIdentifierToController;
+@property(strong, nonatomic) NSMutableDictionary<NSString *, FGMGroundOverlayController *>
+    *groundOverlayIdentifierToController;
 
 /// A callback api for the map interactions.
 @property(strong, nonatomic) FGMMapsCallbackApi *callbackHandler;
@@ -129,23 +138,38 @@
     NSString *identifier = groundOverlay.groundOverlayId;
     GMSGroundOverlay *gmsOverlay;
     if (groundOverlay.position == nil) {
-      NSAssert(groundOverlay.bounds != nil, @"If ground overlay is initialized without position, bounds are required");
-      gmsOverlay = [GMSGroundOverlay groundOverlayWithBounds:
-                     [[GMSCoordinateBounds alloc] initWithCoordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.northeast.latitude, groundOverlay.bounds.northeast.longitude) coordinate:CLLocationCoordinate2DMake(groundOverlay.bounds.southwest.latitude, groundOverlay.bounds.southwest.longitude)]
-                  icon: [FGMUtils iconFromBitmap:groundOverlay.image
-                                                                  registrar:self.registrar
-                                                                             screenScale:[self getScreenScale]]];
-    } else {
-      NSAssert(groundOverlay.zoomLevel != nil, @"If ground overlay is initialized with position, zoomLevel is required");
+      NSAssert(groundOverlay.bounds != nil,
+               @"If ground overlay is initialized without position, bounds are required");
       gmsOverlay = [GMSGroundOverlay
-                                      groundOverlayWithPosition:CLLocationCoordinate2DMake(groundOverlay.position.latitude, groundOverlay.position.longitude)
-                                      icon:[FGMUtils iconFromBitmap:groundOverlay.image
-                                                                registrar:self.registrar
-                                                              screenScale:[self getScreenScale]]
-                    zoomLevel:[groundOverlay.zoomLevel doubleValue]];
+          groundOverlayWithBounds:
+              [[GMSCoordinateBounds alloc]
+                  initWithCoordinate:CLLocationCoordinate2DMake(
+                                         groundOverlay.bounds.northeast.latitude,
+                                         groundOverlay.bounds.northeast.longitude)
+                          coordinate:CLLocationCoordinate2DMake(
+                                         groundOverlay.bounds.southwest.latitude,
+                                         groundOverlay.bounds.southwest.longitude)]
+                             icon:[FGMUtils iconFromBitmap:groundOverlay.image
+                                                 registrar:self.registrar
+                                               screenScale:[self getScreenScale]]];
+    } else {
+      NSAssert(groundOverlay.zoomLevel != nil,
+               @"If ground overlay is initialized with position, zoomLevel is required");
+      gmsOverlay = [GMSGroundOverlay
+          groundOverlayWithPosition:CLLocationCoordinate2DMake(groundOverlay.position.latitude,
+                                                               groundOverlay.position.longitude)
+                               icon:[FGMUtils iconFromBitmap:groundOverlay.image
+                                                   registrar:self.registrar
+                                                 screenScale:[self getScreenScale]]
+                          zoomLevel:[groundOverlay.zoomLevel doubleValue]];
     }
-    FGMGroundOverlayController *controller = [[FGMGroundOverlayController alloc] initWithGroundOverlay:gmsOverlay identifier:identifier mapView:self.mapView];
-    [controller updateFromPlatformGroundOverlay:groundOverlay registrar:self.registrar screenScale:[self getScreenScale]];
+    FGMGroundOverlayController *controller =
+        [[FGMGroundOverlayController alloc] initWithGroundOverlay:gmsOverlay
+                                                       identifier:identifier
+                                                          mapView:self.mapView];
+    [controller updateFromPlatformGroundOverlay:groundOverlay
+                                      registrar:self.registrar
+                                    screenScale:[self getScreenScale]];
     self.groundOverlayIdentifierToController[identifier] = controller;
   }
 }
@@ -154,7 +178,9 @@
   for (FGMPlatformGroundOverlay *groundOverlay in groundOverlaysToChange) {
     NSString *identifier = groundOverlay.groundOverlayId;
     FGMGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
-    [controller updateFromPlatformGroundOverlay:groundOverlay registrar:self.registrar screenScale:[self getScreenScale]];
+    [controller updateFromPlatformGroundOverlay:groundOverlay
+                                      registrar:self.registrar
+                                    screenScale:[self getScreenScale]];
   }
 }
 
@@ -178,8 +204,8 @@
     return;
   }
   [self.callbackHandler didTapGroundOverlayWithIdentifier:identifier
-                                         completion:^(FlutterError *_Nullable _){
-  }];
+                                               completion:^(FlutterError *_Nullable _){
+                                               }];
 }
 
 - (bool)hasGroundOverlaysWithIdentifier:(NSString *)identifier {

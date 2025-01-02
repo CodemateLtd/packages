@@ -25,10 +25,10 @@
                                                                          ofType:@"png"
                                                                     inDirectory:@"assets"];
   UIImage *wideGamutImage = [UIImage imageWithContentsOfFile:imagePath];
-  GMSGroundOverlay *groundOverlay = [GMSGroundOverlay
-                                     groundOverlayWithPosition:CLLocationCoordinate2DMake(52.4816, 3.1791)
-                                     icon:wideGamutImage
-                                     zoomLevel:14.0];
+  GMSGroundOverlay *groundOverlay =
+      [GMSGroundOverlay groundOverlayWithPosition:CLLocationCoordinate2DMake(52.4816, 3.1791)
+                                             icon:wideGamutImage
+                                        zoomLevel:14.0];
 
   GMSCameraPosition *camera = [[GMSCameraPosition alloc] initWithLatitude:0 longitude:0 zoom:0];
   CGRect frame = CGRectMake(0, 0, 100, 100);
@@ -38,11 +38,9 @@
 
   PartiallyMockedMapView *mapView = [[PartiallyMockedMapView alloc] initWithOptions:mapViewOptions];
 
-
-  return [[FGMGroundOverlayController alloc]
-   initWithGroundOverlay:groundOverlay
-   identifier:@"id_1"
-   mapView:mapView];
+  return [[FGMGroundOverlayController alloc] initWithGroundOverlay:groundOverlay
+                                                        identifier:@"id_1"
+                                                           mapView:mapView];
 }
 
 - (void)testUpdatingGroundOverlay {
@@ -50,28 +48,29 @@
 
   FGMPlatformLatLng *position = [FGMPlatformLatLng makeWithLatitude:52.4816 longitude:3.1791];
 
-  FGMPlatformBitmap *bitmap = [FGMPlatformBitmap makeWithBitmap:[FGMPlatformBitmapDefaultMarker makeWithHue:0]];
-  NSObject<FlutterPluginRegistrar> *mockRegistrar = OCMStrictProtocolMock(@protocol(FlutterPluginRegistrar));
+  FGMPlatformBitmap *bitmap =
+      [FGMPlatformBitmap makeWithBitmap:[FGMPlatformBitmapDefaultMarker makeWithHue:0]];
+  NSObject<FlutterPluginRegistrar> *mockRegistrar =
+      OCMStrictProtocolMock(@protocol(FlutterPluginRegistrar));
 
-  FGMPlatformGroundOverlay *platformGroundOverlay = [FGMPlatformGroundOverlay
-                                                     makeWithGroundOverlayId:@"id_1"
-                                                     image:bitmap
-                                                     position:position
-                                                     bounds:nil
-                                                     width:nil
-                                                     height:nil
-                                                     anchor:nil
-                                                     transparency:0.5
-                                                     bearing:65.0
-                                                     zIndex:2.0
-                                                     visible:true
-                                                     clickable:true
-                                                     zoomLevel:@14.0];
+  FGMPlatformGroundOverlay *platformGroundOverlay =
+      [FGMPlatformGroundOverlay makeWithGroundOverlayId:@"id_1"
+                                                  image:bitmap
+                                               position:position
+                                                 bounds:nil
+                                                  width:nil
+                                                 height:nil
+                                                 anchor:nil
+                                           transparency:0.5
+                                                bearing:65.0
+                                                 zIndex:2.0
+                                                visible:true
+                                              clickable:true
+                                              zoomLevel:@14.0];
 
-  [groundOverlayController
-   updateFromPlatformGroundOverlay:platformGroundOverlay
-   registrar:mockRegistrar
-   screenScale:1.0];
+  [groundOverlayController updateFromPlatformGroundOverlay:platformGroundOverlay
+                                                 registrar:mockRegistrar
+                                               screenScale:1.0];
 
   XCTAssertNotNil(groundOverlayController.groundOverlay.icon);
   XCTAssertEqual(groundOverlayController.groundOverlay.position.latitude, position.latitude);

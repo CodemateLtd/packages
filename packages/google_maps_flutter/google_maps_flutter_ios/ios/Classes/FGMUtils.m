@@ -63,13 +63,9 @@
       NSNumber *height = bitmapAssetMap.height;
       if (width || height) {
         image = [FGMUtils scaledImage:image withScale:screenScale];
-        image = [FGMUtils scaledImage:image
-                                                       withWidth:width
-                                                          height:height
-                                                     screenScale:screenScale];
+        image = [FGMUtils scaledImage:image withWidth:width height:height screenScale:screenScale];
       } else {
-        image = [FGMUtils scaledImage:image
-                                                       withScale:bitmapAssetMap.imagePixelRatio];
+        image = [FGMUtils scaledImage:image withScale:bitmapAssetMap.imagePixelRatio];
       }
     }
   } else if ([bitmap isKindOfClass:[FGMPlatformBitmapBytesMap class]]) {
@@ -86,12 +82,11 @@
           // Before scaling the image, image must be in screenScale.
           image = [FGMUtils scaledImage:image withScale:screenScale];
           image = [FGMUtils scaledImage:image
-                                                         withWidth:width
-                                                            height:height
-                                                       screenScale:screenScale];
+                              withWidth:width
+                                 height:height
+                            screenScale:screenScale];
         } else {
-          image = [FGMUtils scaledImage:image
-                                                         withScale:bitmapBytesMap.imagePixelRatio];
+          image = [FGMUtils scaledImage:image withScale:bitmapBytesMap.imagePixelRatio];
         }
       } else {
         // No scaling, load image from bytes without scale parameter.
@@ -164,8 +159,7 @@
 
   // Check if the aspect ratios are approximately equal.
   CGSize originalPixelSize = CGSizeMake(originalPixelWidth, originalPixelHeight);
-  if ([FGMUtils isScalableWithScaleFactorFromSize:originalPixelSize
-                                                                      toSize:size]) {
+  if ([FGMUtils isScalableWithScaleFactorFromSize:originalPixelSize toSize:size]) {
     // Scaled image has close to same aspect ratio,
     // updating image scale instead of resizing image.
     CGFloat factor = originalPixelWidth / size.width;
@@ -178,9 +172,9 @@
     UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:size
                                                                                format:format];
     UIImage *newImage =
-    [renderer imageWithActions:^(UIGraphicsImageRendererContext *_Nonnull context) {
-      [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
-    }];
+        [renderer imageWithActions:^(UIGraphicsImageRendererContext *_Nonnull context) {
+          [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+        }];
 
     // Return image with proper scaling.
     return [FGMUtils scaledImage:newImage withScale:image.scale];
@@ -217,15 +211,15 @@
   }
 
   CGSize targetSize =
-  CGSizeMake(round(targetWidth * screenScale), round(targetHeight * screenScale));
+      CGSizeMake(round(targetWidth * screenScale), round(targetHeight * screenScale));
   return [FGMUtils scaledImage:image withSize:targetSize];
 }
 
 + (BOOL)isScalableWithScaleFactorFromSize:(CGSize)originalSize toSize:(CGSize)targetSize {
   // Select the scaling factor based on the longer side to have good precision.
   CGFloat scaleFactor = (originalSize.width > originalSize.height)
-  ? (targetSize.width / originalSize.width)
-  : (targetSize.height / originalSize.height);
+                            ? (targetSize.width / originalSize.width)
+                            : (targetSize.height / originalSize.height);
 
   // Calculate the scaled dimensions.
   CGFloat scaledWidth = originalSize.width * scaleFactor;

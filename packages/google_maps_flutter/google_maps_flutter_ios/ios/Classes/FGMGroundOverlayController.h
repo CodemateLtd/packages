@@ -12,8 +12,8 @@
 
 /// Initializes an instance of this class with a GMSGroundOverlay, a map view, and identifier.
 - (instancetype)initWithGroundOverlay:(GMSGroundOverlay *)groundOverlay
-                        identifier:(NSString *)identifier
-                        mapView:(GMSMapView *)mapView;
+                           identifier:(NSString *)identifier
+                              mapView:(GMSMapView *)mapView;
 
 /// Removes this ground overlay from the map.
 - (void)removeGroundOverlay;

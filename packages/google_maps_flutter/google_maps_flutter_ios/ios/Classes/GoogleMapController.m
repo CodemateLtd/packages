@@ -6,11 +6,11 @@
 
 #import "GoogleMapController.h"
 
+#import "FGMGroundOverlayController.h"
 #import "FGMMarkerUserData.h"
 #import "FLTGoogleMapHeatmapController.h"
 #import "FLTGoogleMapJSONConversions.h"
 #import "FLTGoogleMapTileOverlayController.h"
-#import "FGMGroundOverlayController.h"
 #import "messages.g.h"
 
 #pragma mark - Conversion of JSON-like values sent via platform channels. Forward declarations.
@@ -610,7 +610,10 @@
   [self.controller.tileOverlaysController removeTileOverlayWithIdentifiers:idsToRemove];
 }
 
-- (void)updateGroundOverlaysByAdding:(nonnull NSArray<FGMPlatformGroundOverlay *> *)toAdd changing:(nonnull NSArray<FGMPlatformGroundOverlay *> *)toChange removing:(nonnull NSArray<NSString *> *)idsToRemove error:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
+- (void)updateGroundOverlaysByAdding:(nonnull NSArray<FGMPlatformGroundOverlay *> *)toAdd
+                            changing:(nonnull NSArray<FGMPlatformGroundOverlay *> *)toChange
+                            removing:(nonnull NSArray<NSString *> *)idsToRemove
+                               error:(FlutterError *_Nullable __autoreleasing *_Nonnull)error {
   [self.controller.groundOverlaysController addGroundOverlays:toAdd];
   [self.controller.groundOverlaysController changeGroundOverlays:toChange];
   [self.controller.groundOverlaysController removeGroundOverlaysWithIdentifiers:idsToRemove];
