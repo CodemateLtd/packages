@@ -73,7 +73,7 @@ class GoogleMapController {
   final Set<ClusterManager> _clusterManagers;
   final Set<Heatmap> _heatmaps;
   Set<TileOverlay> _tileOverlays;
-  Set<GroundOverlay> _groundOverlays;
+  final Set<GroundOverlay> _groundOverlays;
 
   // The configuration passed by the user, before converting to gmaps.
   // Caching this allows us to re-create the map faithfully when needed.
@@ -147,6 +147,11 @@ class GoogleMapController {
   @visibleForTesting
   ClusterManagersController? get clusterManagersController =>
       _clusterManagersController;
+
+  /// The GroundOverlaysController of this Map. Only for integration testing.
+  @visibleForTesting
+  GroundOverlaysController? get groundOverlayController =>
+      _groundOverlaysController;
 
   /// Overrides certain properties to install mocks defined during testing.
   @visibleForTesting

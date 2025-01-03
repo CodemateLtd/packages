@@ -6,6 +6,10 @@ part of '../google_maps_flutter_web.dart';
 
 /// This class manages all the [GroundOverlayController]s associated to a [GoogleMapController].
 class GroundOverlaysController extends GeometryController {
+  /// Creates a new [GroundOverlaysController] instance.
+  ///
+  /// The [stream] parameter is a required [StreamController] used for
+  /// emitting ground overlay tapevents.
   GroundOverlaysController({
     required StreamController<MapEvent<Object?>> stream,
   })  : _streamController = stream,
@@ -27,7 +31,7 @@ class GroundOverlaysController extends GeometryController {
 
   void _addGroundOverlay(GroundOverlay groundOverlay) {
     assert(groundOverlay.bounds != null,
-        'On Web polatform, bounds must be provided for GroundOverlay');
+        'On Web platform, bounds must be provided for GroundOverlay');
     if (groundOverlay.bounds == null) {
       return;
     }
@@ -39,7 +43,7 @@ class GroundOverlaysController extends GeometryController {
         gmaps.GroundOverlayOptions()
           ..opacity = 1.0 - groundOverlay.transparency
           ..clickable = groundOverlay.clickable
-          ..map = googleMap;
+          ..map = groundOverlay.visible ? googleMap : null;
 
     final gmaps.GroundOverlay overlay = gmaps.GroundOverlay(
         urlFromBitmapDescriptor(groundOverlay.image),
@@ -70,11 +74,10 @@ class GroundOverlaysController extends GeometryController {
     }
 
     assert(groundOverlay.bounds != null,
-        'On Web polatform, bounds must be provided for GroundOverlay');
-    if (groundOverlay.bounds == null) {
-      return;
-    }
+        'On Web platform, bounds must be provided for GroundOverlay');
 
+    controller.groundOverlay.set('clickable', groundOverlay.clickable.toJS);
+    controller.groundOverlay.map = groundOverlay.visible ? googleMap : null;
     controller.groundOverlay.opacity = 1.0 - groundOverlay.transparency;
   }
 
@@ -94,5 +97,13 @@ class GroundOverlaysController extends GeometryController {
   // Handle internal events
   void _onGroundOverlayTap(GroundOverlayId groundOverlayId) {
     _streamController.add(GroundOverlayTapEvent(mapId, groundOverlayId));
+  }
+
+  /// Returns the [GroundOverlay] with the given [GroundOverlayId] for testing
+  /// purposes.
+  gmaps.GroundOverlay? getGroundOverlay(GroundOverlayId groundOverlayId) {
+    final GroundOverlayController? controller =
+        _groundOverlayIdToController.remove(groundOverlayId);
+    return controller?.groundOverlay;
   }
 }

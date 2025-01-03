@@ -117,6 +117,7 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
           groundOverlayId: id,
           image: assetMapBitmap,
           bounds: _currentGroundOverlayBounds,
+          anchor: _anchor,
           onTap: () {
             _onGroundOverlayTapped();
           },
@@ -226,14 +227,13 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
 
   Future<void> _changeAnchor() async {
     assert(_groundOverlay != null);
-    assert(_placingType == _GroundOverlayPlacing.position);
     setState(() {
       _anchor = _groundOverlay!.anchor == const Offset(0.5, 0.5)
           ? const Offset(1.0, 1.0)
           : const Offset(0.5, 0.5);
     });
 
-    // Re-add the ground overlay to apply the new anchor as anchor cannot be
+    // Re-add the ground overlay to apply the new anchor, as anchor cannot be
     // changed after the ground overlay is created.
     await _addGroundOverlay();
   }
@@ -292,6 +292,10 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
               child: const Text('change zIndex'),
             ),
             TextButton(
+              onPressed: _groundOverlay == null ? null : () => _changeAnchor(),
+              child: const Text('change anchor'),
+            ),
+            TextButton(
               onPressed: _groundOverlay == null ? null : () => _changeType(),
               child: Text(_placingType == _GroundOverlayPlacing.position
                   ? 'use bounds'
@@ -310,13 +314,6 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
                   ? null
                   : () => _changeDimensions(),
               child: const Text('change dimensions'),
-            ),
-            TextButton(
-              onPressed: _placingType != _GroundOverlayPlacing.position ||
-                      _groundOverlay == null
-                  ? null
-                  : () => _changeAnchor(),
-              child: const Text('change anchor'),
             ),
             TextButton(
               onPressed: _placingType != _GroundOverlayPlacing.bounds ||

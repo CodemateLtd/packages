@@ -117,11 +117,7 @@ abstract class GoogleMapsInspectorPlatform extends PlatformInterface {
   }
 
   /// If the platform supports getting information about heatmaps.
-  bool supportsGettingHeatmapInfo() {
-    throw UnimplementedError(
-      'supportsGettingHeatmapInfo() has not been implemented.',
-    );
-  }
+  bool supportsGettingHeatmapInfo() => false;
 
   /// Returns information about the heatmap with the given ID.
   ///
