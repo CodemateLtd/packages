@@ -748,6 +748,24 @@ void main() {
     expect((await stream.next).value.value, equals(objectId));
   });
 
+  test('ground overlays send tap events to correct stream', () async {
+    const int mapId = 1;
+    const String objectId = 'object-id';
+
+    final GoogleMapsFlutterIOS maps = GoogleMapsFlutterIOS();
+    final HostMapMessageHandler callbackHandler =
+        maps.ensureHandlerInitialized(mapId);
+
+    final StreamQueue<GroundOverlayTapEvent> stream =
+        StreamQueue<GroundOverlayTapEvent>(
+            maps.onGroundOverlayTap(mapId: mapId));
+
+    // Simulate message from the native side.
+    callbackHandler.onGroundOverlayTap(objectId);
+
+    expect((await stream.next).value.value, equals(objectId));
+  });
+
   test('moveCamera calls through with expected newCameraPosition', () async {
     const int mapId = 1;
     final (GoogleMapsFlutterIOS maps, MockMapsApi api) =

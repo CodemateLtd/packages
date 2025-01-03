@@ -124,6 +124,7 @@ class GoogleMap extends StatefulWidget {
     this.heatmaps = const <Heatmap>{},
     this.onCameraMoveStarted,
     this.tileOverlays = const <TileOverlay>{},
+    this.groundOverlays = const <GroundOverlay>{},
     this.onCameraMove,
     this.onCameraIdle,
     this.onTap,
@@ -224,6 +225,25 @@ class GoogleMap extends StatefulWidget {
 
   /// Cluster Managers to be initialized for the map.
   final Set<ClusterManager> clusterManagers;
+
+  /// Ground overlays to be initialized for the map.
+  ///
+  /// Ground overlay feature support table:
+  /// | Feature                     | Android                 | iOS | Web |
+  /// |-----------------------------|-------------------------|-----|-----|
+  /// | [GroundOverlay.bounds]      | Yes                     | Yes | Yes |
+  /// | [GroundOverlay.position]    | Yes                     | Yes | No  |
+  /// | [GroundOverlay.width]       | Yes (for position only) | No  | No  |
+  /// | [GroundOverlay.height]      | Yes (for position only) | No  | No  |
+  /// | [GroundOverlay.anchor]      | Yes (for position only) | Yes | No  |
+  /// | [GroundOverlay.zoomLevel]   | No                      | Yes | No  |
+  /// | [GroundOverlay.bearing]     | Yes                     | Yes | No  |
+  /// | [GroundOverlay.transparency]| Yes                     | Yes | Yes |
+  /// | [GroundOverlay.zIndex]      | Yes                     | Yes | No  |
+  /// | [GroundOverlay.visible]     | Yes                     | Yes | Yes |
+  /// | [GroundOverlay.clickable]   | Yes                     | Yes | Yes |
+  /// | [GroundOverlay.onTap]       | Yes                     | Yes | Yes |
+  final Set<GroundOverlay> groundOverlays;
 
   /// Called when the camera starts moving.
   ///
@@ -339,6 +359,8 @@ class _GoogleMapState extends State<GoogleMap> {
   Map<ClusterManagerId, ClusterManager> _clusterManagers =
       <ClusterManagerId, ClusterManager>{};
   Map<HeatmapId, Heatmap> _heatmaps = <HeatmapId, Heatmap>{};
+  Map<GroundOverlayId, GroundOverlay> _groundOverlays =
+      <GroundOverlayId, GroundOverlay>{};
   late MapConfiguration _mapConfiguration;
 
   @override
@@ -360,6 +382,7 @@ class _GoogleMapState extends State<GoogleMap> {
         circles: widget.circles,
         clusterManagers: widget.clusterManagers,
         heatmaps: widget.heatmaps,
+        groundOverlays: widget.groundOverlays,
       ),
       mapConfiguration: _mapConfiguration,
     );
@@ -375,6 +398,7 @@ class _GoogleMapState extends State<GoogleMap> {
     _polylines = keyByPolylineId(widget.polylines);
     _circles = keyByCircleId(widget.circles);
     _heatmaps = keyByHeatmapId(widget.heatmaps);
+    _groundOverlays = keyByGroundOverlayId(widget.groundOverlays);
   }
 
   @override
@@ -399,6 +423,7 @@ class _GoogleMapState extends State<GoogleMap> {
     _updateCircles();
     _updateHeatmaps();
     _updateTileOverlays();
+    _updateGroundOverlays();
   }
 
   Future<void> _updateOptions() async {
@@ -424,6 +449,13 @@ class _GoogleMapState extends State<GoogleMap> {
     unawaited(controller._updateClusterManagers(ClusterManagerUpdates.from(
         _clusterManagers.values.toSet(), widget.clusterManagers)));
     _clusterManagers = keyByClusterManagerId(widget.clusterManagers);
+  }
+
+  Future<void> _updateGroundOverlays() async {
+    final GoogleMapController controller = await _controller.future;
+    unawaited(controller._updateGroundOverlays(GroundOverlayUpdates.from(
+        _groundOverlays.values.toSet(), widget.groundOverlays)));
+    _groundOverlays = keyByGroundOverlayId(widget.groundOverlays);
   }
 
   Future<void> _updatePolygons() async {
@@ -548,6 +580,17 @@ class _GoogleMapState extends State<GoogleMap> {
       throw UnknownMapObjectIdError('marker', circleId, 'onTap');
     }
     final VoidCallback? onTap = circle.onTap;
+    if (onTap != null) {
+      onTap();
+    }
+  }
+
+  void onGroundOverlayTap(GroundOverlayId groundOverlayId) {
+    final GroundOverlay? groundOverlay = _groundOverlays[groundOverlayId];
+    if (groundOverlay == null) {
+      throw UnknownMapObjectIdError('groundOverlay', groundOverlayId, 'onTap');
+    }
+    final VoidCallback? onTap = groundOverlay.onTap;
     if (onTap != null) {
       onTap();
     }

@@ -6,6 +6,7 @@
 
 #import "GoogleMapController.h"
 
+#import "FGMGroundOverlayController.h"
 #import "FGMMarkerUserData.h"
 #import "FLTGoogleMapHeatmapController.h"
 #import "FLTGoogleMapJSONConversions.h"
@@ -129,6 +130,7 @@
 // The controller that handles heatmaps
 @property(nonatomic, strong) FLTHeatmapsController *heatmapsController;
 @property(nonatomic, strong) FLTTileOverlaysController *tileOverlaysController;
+@property(nonatomic, strong) FLTGroundOverlaysController *groundOverlaysController;
 // The resulting error message, if any, from the last attempt to set the map style.
 // This is used to provide access to errors after the fact, since the map style is generally set at
 // creation time and there's no mechanism to return non-fatal error details during platform view
@@ -204,6 +206,10 @@
         [[FLTTileOverlaysController alloc] initWithMapView:_mapView
                                            callbackHandler:_dartCallbackHandler
                                                  registrar:registrar];
+    _groundOverlaysController =
+        [[FLTGroundOverlaysController alloc] initWithMapView:_mapView
+                                             callbackHandler:_dartCallbackHandler
+                                                   registrar:registrar];
     [_clusterManagersController addClusterManagers:creationParameters.initialClusterManagers];
     [_markersController addMarkers:creationParameters.initialMarkers];
     [_polygonsController addPolygons:creationParameters.initialPolygons];
@@ -423,6 +429,8 @@
     [self.polygonsController didTapPolygonWithIdentifier:overlayId];
   } else if ([self.circlesController hasCircleWithIdentifier:overlayId]) {
     [self.circlesController didTapCircleWithIdentifier:overlayId];
+  } else if ([self.groundOverlaysController hasGroundOverlaysWithIdentifier:overlayId]) {
+    [self.groundOverlaysController didTapGroundOverlayWithIdentifier:overlayId];
   }
 }
 
@@ -600,6 +608,15 @@
   [self.controller.tileOverlaysController addTileOverlays:toAdd];
   [self.controller.tileOverlaysController changeTileOverlays:toChange];
   [self.controller.tileOverlaysController removeTileOverlayWithIdentifiers:idsToRemove];
+}
+
+- (void)updateGroundOverlaysByAdding:(nonnull NSArray<FGMPlatformGroundOverlay *> *)toAdd
+                            changing:(nonnull NSArray<FGMPlatformGroundOverlay *> *)toChange
+                            removing:(nonnull NSArray<NSString *> *)idsToRemove
+                               error:(FlutterError *_Nullable __autoreleasing *_Nonnull)error {
+  [self.controller.groundOverlaysController addGroundOverlays:toAdd];
+  [self.controller.groundOverlaysController changeGroundOverlays:toChange];
+  [self.controller.groundOverlaysController removeGroundOverlaysWithIdentifiers:idsToRemove];
 }
 
 - (nullable FGMPlatformLatLng *)
