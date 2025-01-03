@@ -278,23 +278,23 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
                   _groundOverlay == null ? null : () => _changeTransparency(),
               child: const Text('change transparency'),
             ),
-            TextButton(
-              onPressed:
-                  _groundOverlay == null && kIsWeb ? null : () => _setBearing(),
-              child: const Text('change bearing'),
-            ),
-            TextButton(
-              onPressed: _groundOverlay == null && kIsWeb
-                  ? null
-                  : () => _toggleVisible(),
-              child: const Text('toggle visible'),
-            ),
-            TextButton(
-              onPressed: _groundOverlay == null && kIsWeb
-                  ? null
-                  : () => _changeZIndex(),
-              child: const Text('change zIndex'),
-            ),
+            if (!kIsWeb)
+              TextButton(
+                onPressed: _groundOverlay == null ? null : () => _setBearing(),
+                child: const Text('change bearing'),
+              ),
+            if (!kIsWeb)
+              TextButton(
+                onPressed:
+                    _groundOverlay == null ? null : () => _toggleVisible(),
+                child: const Text('toggle visible'),
+              ),
+            if (!kIsWeb)
+              TextButton(
+                onPressed:
+                    _groundOverlay == null ? null : () => _changeZIndex(),
+                child: const Text('change zIndex'),
+              ),
             if (!kIsWeb)
               TextButton(
                 onPressed:

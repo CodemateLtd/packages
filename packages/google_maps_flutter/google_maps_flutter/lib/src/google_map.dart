@@ -237,9 +237,9 @@ class GoogleMap extends StatefulWidget {
   /// | [GroundOverlay.height]      | Yes (for position only) | No  | No  |
   /// | [GroundOverlay.anchor]      | Yes (for position only) | Yes | No  |
   /// | [GroundOverlay.zoomLevel]   | No                      | Yes | No  |
-  /// | [GroundOverlay.bearing]     | Yes                     | Yes | Yes |
+  /// | [GroundOverlay.bearing]     | Yes                     | Yes | No  |
   /// | [GroundOverlay.transparency]| Yes                     | Yes | Yes |
-  /// | [GroundOverlay.zIndex]      | Yes                     | Yes | Yes |
+  /// | [GroundOverlay.zIndex]      | Yes                     | Yes | No  |
   /// | [GroundOverlay.visible]     | Yes                     | Yes | Yes |
   /// | [GroundOverlay.clickable]   | Yes                     | Yes | Yes |
   /// | [GroundOverlay.onTap]       | Yes                     | Yes | Yes |

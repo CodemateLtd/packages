@@ -375,6 +375,7 @@ class GoogleMapsPlugin extends GoogleMapsFlutterPlatform {
     GoogleMapsInspectorPlatform.instance = GoogleMapsInspectorWeb(
       (int mapId) => _map(mapId).configuration,
       (int mapId) => _map(mapId).clusterManagersController,
+      (int mapId) => _map(mapId).groundOverlayController,
     );
   }
 }
