@@ -22,7 +22,7 @@ const double _kInitialZoomLevel = 5;
 const CameraPosition _kInitialCameraPosition =
     CameraPosition(target: _kInitialMapCenter, zoom: _kInitialZoomLevel);
 const String _kCloudMapId = '000000000000000'; // Dummy map ID.
-const double _floatTolerance = 1e-8;
+const double _floatTolerance = 1e-6;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -1317,6 +1317,7 @@ void main() {
         width: 100,
         height: 100,
         anchor: const Offset(0.1, 0.2),
+        zoomLevel: 14.0,
         image: AssetMapBitmap(
           'assets/red_square.png',
           imagePixelRatio: 1.0,

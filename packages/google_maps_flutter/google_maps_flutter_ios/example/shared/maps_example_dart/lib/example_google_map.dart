@@ -415,7 +415,7 @@ class _ExampleGoogleMapState extends State<ExampleGoogleMap> {
         polylines: widget.polylines,
         circles: widget.circles,
         clusterManagers: widget.clusterManagers,
-        groundOverlays: widget.groundOverlays
+        groundOverlays: widget.groundOverlays,
       ),
       mapConfiguration: _mapConfiguration,
     );

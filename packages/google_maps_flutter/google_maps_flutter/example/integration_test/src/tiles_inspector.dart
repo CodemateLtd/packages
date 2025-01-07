@@ -509,6 +509,7 @@ void runTests() {
       transparency: 0.7,
       bearing: 10,
       zIndex: 10,
+      zoomLevel: 14.0,
     );
 
     void expectGroundOverlayEquals(
@@ -549,6 +550,12 @@ void runTests() {
         expect(response.width, source.width);
         expect(response.height, source.height);
       }
+
+      // Only iOS supports zoomLevel
+      if (isIOS) {
+        expect(response.zoomLevel, source.zoomLevel);
+      }
+
       // Only Android (using position) and iOS supports `anchor`
       if ((isAndroid && source.position != null) || isIOS) {
         expect(

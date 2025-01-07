@@ -53,5 +53,5 @@
 - (bool)hasGroundOverlaysWithIdentifier:(NSString *)identifier;
 
 /// Returns FGMPlatformGroundOverlay for id.
-- (FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)identifier;
+- (nullable FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)identifier;
 @end

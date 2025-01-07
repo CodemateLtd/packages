@@ -113,45 +113,54 @@ FGMPlatformCluster *FGMGetPigeonCluster(GMUStaticCluster *cluster,
                      markerIds:markerIDs];
 }
 
-FGMPlatformGroundOverlay *FGMGetPigeonGroundOverlay(GMSGroundOverlay *groundOverlay, NSString *overlayId, BOOL isCreatedWithBounds, NSNumber *zoomLevel) {
-
-  /// Dummy image is used as image is required field of FGMPlatformGroundOverlay and converting image
-  /// back to bitmap image is not currently supported.
-  FGMPlatformBitmap *mockImage = [FGMPlatformBitmap makeWithBitmap:[FGMPlatformBitmapDefaultMarker makeWithHue:0]];
+FGMPlatformGroundOverlay *FGMGetPigeonGroundOverlay(GMSGroundOverlay *groundOverlay,
+                                                    NSString *overlayId, BOOL isCreatedWithBounds,
+                                                    NSNumber *zoomLevel) {
+  /// Dummy image is used as image is required field of FGMPlatformGroundOverlay and converting
+  /// image back to bitmap image is not currently supported.
+  FGMPlatformBitmap *mockImage =
+      [FGMPlatformBitmap makeWithBitmap:[FGMPlatformBitmapDefaultMarker makeWithHue:0]];
   if (isCreatedWithBounds) {
     return [FGMPlatformGroundOverlay
-            makeWithGroundOverlayId:overlayId
-            image:mockImage
-            position:nil
-            bounds:[FGMPlatformLatLngBounds
-                    makeWithNortheast:[FGMPlatformLatLng makeWithLatitude:groundOverlay.bounds.northEast.latitude longitude:groundOverlay.bounds.northEast.longitude]
-                    southwest:[FGMPlatformLatLng makeWithLatitude:groundOverlay.bounds.southWest.latitude longitude: groundOverlay.bounds.southWest.longitude]]
-            width:nil
-            height:nil
-            anchor:[FGMPlatformDoublePair makeWithX:groundOverlay.anchor.x y:groundOverlay.anchor.y]
-            transparency:groundOverlay.opacity
-            bearing:groundOverlay.opacity
-            zIndex:groundOverlay.zIndex
-            visible: groundOverlay.map != nil
-            clickable:groundOverlay.isTappable
-            zoomLevel:zoomLevel
-    ];
+        makeWithGroundOverlayId:overlayId
+                          image:mockImage
+                       position:nil
+                         bounds:[FGMPlatformLatLngBounds
+                                    makeWithNortheast:[FGMPlatformLatLng
+                                                          makeWithLatitude:groundOverlay.bounds
+                                                                               .northEast.latitude
+                                                                 longitude:groundOverlay.bounds
+                                                                               .northEast.longitude]
+                                            southwest:[FGMPlatformLatLng
+                                                          makeWithLatitude:groundOverlay.bounds
+                                                                               .southWest.latitude
+                                                                 longitude:groundOverlay.bounds
+                                                                               .southWest
+                                                                               .longitude]]
+                         anchor:[FGMPlatformDoublePair makeWithX:groundOverlay.anchor.x
+                                                               y:groundOverlay.anchor.y]
+                   transparency:1.0f - groundOverlay.opacity
+                        bearing:groundOverlay.bearing
+                         zIndex:groundOverlay.zIndex
+                        visible:groundOverlay.map != nil
+                      clickable:groundOverlay.isTappable
+                      zoomLevel:zoomLevel];
   } else {
     return [FGMPlatformGroundOverlay
-            makeWithGroundOverlayId:overlayId
-            image:mockImage
-            position:[FGMPlatformLatLng makeWithLatitude:groundOverlay.position.latitude longitude: groundOverlay.position.longitude]
-            bounds:nil
-            width:nil
-            height:nil
-            anchor:[FGMPlatformDoublePair makeWithX:groundOverlay.anchor.x y:groundOverlay.anchor.y]
-            transparency:groundOverlay.opacity
-            bearing:groundOverlay.opacity
-            zIndex:groundOverlay.zIndex
-            visible: groundOverlay.map != nil
-            clickable:groundOverlay.isTappable
-            zoomLevel:zoomLevel
-    ];
+        makeWithGroundOverlayId:overlayId
+                          image:mockImage
+                       position:[FGMPlatformLatLng
+                                    makeWithLatitude:groundOverlay.position.latitude
+                                           longitude:groundOverlay.position.longitude]
+                         bounds:nil
+                         anchor:[FGMPlatformDoublePair makeWithX:groundOverlay.anchor.x
+                                                               y:groundOverlay.anchor.y]
+                   transparency:1.0f - groundOverlay.opacity
+                        bearing:groundOverlay.bearing
+                         zIndex:groundOverlay.zIndex
+                        visible:groundOverlay.map != nil
+                      clickable:groundOverlay.isTappable
+                      zoomLevel:zoomLevel];
   }
 }
 

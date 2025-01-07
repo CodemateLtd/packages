@@ -59,7 +59,10 @@ extern FGMPlatformCluster *FGMGetPigeonCluster(GMUStaticCluster *cluster,
                                                NSString *clusterManagerIdentifier);
 
 /// Converts a GMSGroundOverlay to its Pigeon representation.
-extern FGMPlatformGroundOverlay *FGMGetPigeonGroundOverlay(GMSGroundOverlay *groundOverlay, NSString *overlayId, BOOL isCreatedWithBounds, NSNumber *zoomLevel);
+extern FGMPlatformGroundOverlay *FGMGetPigeonGroundOverlay(GMSGroundOverlay *groundOverlay,
+                                                           NSString *overlayId,
+                                                           BOOL isCreatedWithBounds,
+                                                           NSNumber *zoomLevel);
 
 /// Creates a GMSCameraUpdate from its Pigeon equivalent.
 extern GMSCameraUpdate *_Nullable FGMGetCameraUpdateForPigeonCameraUpdate(

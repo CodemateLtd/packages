@@ -83,7 +83,7 @@
   [self setIcon:image];
   [self setBearing:groundOverlay.bearing];
   [self setTransparency:groundOverlay.transparency];
-  if (groundOverlay.position == nil) {
+  if (_isCreatedWithBounds) {
     [self setPositionFromBounds:[[GMSCoordinateBounds alloc]
                                     initWithCoordinate:CLLocationCoordinate2DMake(
                                                            groundOverlay.bounds.northeast.latitude,
@@ -228,9 +228,13 @@
   return self.mapView.traitCollection.displayScale;
 }
 
-- (FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)identifier {
+- (nullable FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)identifier {
   FGMGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
-  return FGMGetPigeonGroundOverlay(controller.groundOverlay, identifier, controller.isCreatedWithBounds, controller.zoomLevel);
+  if (!controller) {
+    return nil;
+  }
+  return FGMGetPigeonGroundOverlay(controller.groundOverlay, identifier,
+                                   controller.isCreatedWithBounds, controller.zoomLevel);
 }
 
 @end

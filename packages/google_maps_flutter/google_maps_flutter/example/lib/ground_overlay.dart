@@ -106,8 +106,9 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
           groundOverlayId: id,
           image: assetMapBitmap,
           position: _currentGroundOverlayPos,
-          width: _dimensions.dx,
-          height: _dimensions.dy,
+          width: _dimensions.dx, // Android only
+          height: _dimensions.dy, // Android only
+          zoomLevel: 14.0, // iOS only
           anchor: _anchor,
           onTap: () {
             _onGroundOverlayTapped();

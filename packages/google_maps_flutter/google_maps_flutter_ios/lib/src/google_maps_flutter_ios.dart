@@ -681,8 +681,6 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
       bearing: groundOverlay.bearing,
       clickable: groundOverlay.clickable,
       transparency: groundOverlay.transparency,
-      width: groundOverlay.width,
-      height: groundOverlay.height,
       zoomLevel: groundOverlay.zoomLevel,
     );
   }
