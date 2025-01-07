@@ -40,7 +40,8 @@
 
   return [[FGMGroundOverlayController alloc] initWithGroundOverlay:groundOverlay
                                                         identifier:@"id_1"
-                                                           mapView:mapView];
+                                                           mapView:mapView
+                                               isCreatedWithBounds:NO];
 }
 
 - (void)testUpdatingGroundOverlay {

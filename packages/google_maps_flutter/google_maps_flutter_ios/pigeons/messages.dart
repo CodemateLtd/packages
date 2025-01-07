@@ -798,6 +798,8 @@ abstract class MapsInspectorApi {
   bool isTrafficEnabled();
   @ObjCSelector('tileOverlayWithIdentifier:')
   PlatformTileLayer? getTileOverlayInfo(String tileOverlayId);
+  @ObjCSelector('groundOverlayWithIdentifier:')
+  PlatformGroundOverlay? getGroundOverlayInfo(String groundOverlayId);
   @ObjCSelector('heatmapWithIdentifier:')
   PlatformHeatmap? getHeatmapInfo(String heatmapId);
   @ObjCSelector('zoomRange')

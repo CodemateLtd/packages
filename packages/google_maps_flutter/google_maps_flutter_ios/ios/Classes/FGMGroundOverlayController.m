@@ -8,9 +8,6 @@
 
 @interface FGMGroundOverlayController ()
 
-/// The ground overlay this controller handles.
-@property(strong, nonatomic) GMSGroundOverlay *groundOverlay;
-
 /// The GMSMapView to which the ground overlays are added.
 @property(weak, nonatomic) GMSMapView *mapView;
 
@@ -20,12 +17,14 @@
 
 - (instancetype)initWithGroundOverlay:(GMSGroundOverlay *)groundOverlay
                            identifier:(NSString *)identifier
-                              mapView:(GMSMapView *)mapView {
+                              mapView:(GMSMapView *)mapView
+                  isCreatedWithBounds:(BOOL)isCreatedWithBounds {
   self = [super init];
   if (self) {
     _groundOverlay = groundOverlay;
     _mapView = mapView;
     _groundOverlay.userData = @[ identifier ];
+    _isCreatedWithBounds = isCreatedWithBounds;
   }
   return self;
 }
@@ -137,7 +136,9 @@
   for (FGMPlatformGroundOverlay *groundOverlay in groundOverlaysToAdd) {
     NSString *identifier = groundOverlay.groundOverlayId;
     GMSGroundOverlay *gmsOverlay;
+    BOOL isCreatedWithBounds = NO;
     if (groundOverlay.position == nil) {
+      isCreatedWithBounds = YES;
       NSAssert(groundOverlay.bounds != nil,
                @"If ground overlay is initialized without position, bounds are required");
       gmsOverlay = [GMSGroundOverlay
@@ -166,7 +167,9 @@
     FGMGroundOverlayController *controller =
         [[FGMGroundOverlayController alloc] initWithGroundOverlay:gmsOverlay
                                                        identifier:identifier
-                                                          mapView:self.mapView];
+                                                          mapView:self.mapView
+                                              isCreatedWithBounds:isCreatedWithBounds];
+    controller.zoomLevel = groundOverlay.zoomLevel;
     [controller updateFromPlatformGroundOverlay:groundOverlay
                                       registrar:self.registrar
                                     screenScale:[self getScreenScale]];
@@ -223,6 +226,11 @@
   // should be done under the context of the following issue:
   // https://github.com/flutter/flutter/issues/125496.
   return self.mapView.traitCollection.displayScale;
+}
+
+- (FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)identifier {
+  FGMGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
+  return FGMGetPigeonGroundOverlay(controller.groundOverlay, identifier, controller.isCreatedWithBounds, controller.zoomLevel);
 }
 
 @end

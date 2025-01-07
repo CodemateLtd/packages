@@ -839,4 +839,8 @@
                                        max:@(self.controller.mapView.maxZoom)];
 }
 
+- (nullable FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)groundOverlayId error:(FlutterError * _Nullable __autoreleasing *)error {
+  return [self.controller.groundOverlaysController groundOverlayWithIdentifier:groundOverlayId];
+}
+
 @end
