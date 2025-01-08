@@ -747,7 +747,7 @@ void main() {
       imagePixelRatio: 1.0,
     );
 
-    final GroundOverlay object3 = GroundOverlay.fromPosition(
+    final GroundOverlay groundOverlay = GroundOverlay.fromPosition(
         groundOverlayId: const GroundOverlayId('1'),
         position: const LatLng(10, 20),
         // Assert should be thrown because width is not set for position-based
@@ -759,8 +759,19 @@ void main() {
     expect(
       () async => maps.updateGroundOverlays(
           GroundOverlayUpdates.from(
-              const <GroundOverlay>{}, <GroundOverlay>{object3}),
+              const <GroundOverlay>{}, <GroundOverlay>{groundOverlay}),
           mapId: mapId),
+      throwsAssertionError,
+    );
+
+    expect(
+      () async => maps.buildViewWithConfiguration(1, (int _) {},
+          widgetConfiguration: const MapWidgetConfiguration(
+            initialCameraPosition: CameraPosition(target: LatLng(0, 0)),
+            textDirection: TextDirection.ltr,
+          ),
+          mapObjects:
+              MapObjects(groundOverlays: <GroundOverlay>{groundOverlay})),
       throwsAssertionError,
     );
   });

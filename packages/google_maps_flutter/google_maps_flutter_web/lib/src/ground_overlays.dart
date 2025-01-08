@@ -9,7 +9,7 @@ class GroundOverlaysController extends GeometryController {
   /// Creates a new [GroundOverlaysController] instance.
   ///
   /// The [stream] parameter is a required [StreamController] used for
-  /// emitting ground overlay tapevents.
+  /// emitting ground overlay tap events.
   GroundOverlaysController({
     required StreamController<MapEvent<Object?>> stream,
   })  : _streamController = stream,
@@ -94,7 +94,6 @@ class GroundOverlaysController extends GeometryController {
     }
   }
 
-  // Handle internal events
   void _onGroundOverlayTap(GroundOverlayId groundOverlayId) {
     _streamController.add(GroundOverlayTapEvent(mapId, groundOverlayId));
   }

@@ -10,14 +10,12 @@ class GroundOverlayController {
   /// [gmaps.GroundOverlay] object.
   GroundOverlayController({
     required gmaps.GroundOverlay groundOverlay,
-    VoidCallback? onTap,
+    required VoidCallback onTap,
   }) {
     _groundOverlay = groundOverlay;
-    if (onTap != null) {
-      _groundOverlay.onClick.listen((gmaps.MapMouseEvent event) {
-        onTap.call();
-      });
-    }
+    _groundOverlay.onClick.listen((gmaps.MapMouseEvent event) {
+      onTap.call();
+    });
   }
 
   /// The [GroundOverlay] providing data for this controller.
