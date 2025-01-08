@@ -283,12 +283,10 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
                 onPressed: _groundOverlay == null ? null : () => _setBearing(),
                 child: const Text('change bearing'),
               ),
-            if (!kIsWeb)
-              TextButton(
-                onPressed:
-                    _groundOverlay == null ? null : () => _toggleVisible(),
-                child: const Text('toggle visible'),
-              ),
+            TextButton(
+              onPressed: _groundOverlay == null ? null : () => _toggleVisible(),
+              child: const Text('toggle visible'),
+            ),
             if (!kIsWeb)
               TextButton(
                 onPressed:

@@ -87,10 +87,12 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
         assert(bearing >= 0.0 && bearing <= 360.0),
         assert((position == null) != (bounds == null),
             'Either position or bounds must be given, but not both'),
-        assert(position == null || (height == null || height > 0),
+        assert(position == null || (width == null || width > 0),
             'Width must be null or greater than 0 when position is used'),
         assert(position == null || (height == null || height > 0),
-            'Height must be null or greater than 0 when position is used');
+            'Height must be null or greater than 0 when position is used'),
+        assert(image is MapBitmap,
+            'Image should be a MapBitmap. Use AssetMapBitmap or BytesMapBitmap to create one.');
 
   /// Creates a [GroundOverlay] to given [bounds] with the given [image].
   ///
@@ -328,10 +330,24 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
         transparency == other.transparency &&
         zIndex == other.zIndex &&
         visible == other.visible &&
-        clickable == other.clickable;
+        clickable == other.clickable &&
+        zoomLevel == other.zoomLevel;
   }
 
   @override
-  int get hashCode => Object.hash(groundOverlayId, image, position, bounds,
-      width, height, anchor, bearing, transparency, zIndex, visible, clickable);
+  int get hashCode => Object.hash(
+        groundOverlayId,
+        image,
+        position,
+        bounds,
+        width,
+        height,
+        anchor,
+        bearing,
+        transparency,
+        zIndex,
+        visible,
+        clickable,
+        zoomLevel,
+      );
 }
