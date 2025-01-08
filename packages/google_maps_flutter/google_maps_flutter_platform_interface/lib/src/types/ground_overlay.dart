@@ -19,10 +19,10 @@ class GroundOverlayId extends MapsObjectId<GroundOverlay> {
 ///
 /// A ground overlay is an image that is fixed to a map. Unlike markers, ground
 /// overlays are oriented against the Earth's surface rather than the screen,
-/// so rotating, tilting or zooming the map will change the orientation of the
-/// image. Ground overlays are useful when you wish to fix a single image at
-/// one area on the map. If you want to add extensive imagery that covers a
-/// large portion of the map, you should consider a [TileOverlay].
+/// so rotating, tilting, or zooming the map will change the orientation of the
+/// image. Ground overlays are useful for fixing a single image at one area on
+/// the map. For adding extensive imagery that covers a large portion of the
+/// map, a [TileOverlay] should be considered.
 ///
 /// As ground overlay is automatically scaled to fit to the given [position],
 /// [width] and [height], or [bounds], the bitmapScaling should be set to
@@ -39,7 +39,7 @@ class GroundOverlayId extends MapsObjectId<GroundOverlay> {
 ///   groundOverlayId: const GroundOverlayId('overlay_id'),
 ///   image: await AssetMapBitmap.create(
 ///     createLocalImageConfiguration(context),
-///     'assets/red_square.png',
+///     'assets/images/ground_overlay.png',
 ///     bitmapScaling: MapBitmapScaling.none,
 ///   ),
 ///   bounds: LatLngBounds(
@@ -56,7 +56,7 @@ class GroundOverlayId extends MapsObjectId<GroundOverlay> {
 ///   groundOverlayId: const GroundOverlayId('overlay_id'),
 ///   image: await AssetMapBitmap.create(
 ///     createLocalImageConfiguration(context),
-///     'assets/red_square.png',
+///     'assets/images/ground_overlay.png',
 ///     bitmapScaling: MapBitmapScaling.none,
 ///   ),
 ///   position: LatLng(37.42, -122.08),
@@ -104,7 +104,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   ///   groundOverlayId: const GroundOverlayId('overlay_id'),
   ///   image: await AssetMapBitmap.create(
   ///     createLocalImageConfiguration(context),
-  ///     'assets/red_square.png',
+  ///     'assets/images/ground_overlay.png',
   ///     bitmapScaling: MapBitmapScaling.none,
   ///   ),
   ///   bounds: LatLngBounds(
@@ -147,7 +147,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   ///   groundOverlayId: const GroundOverlayId('overlay_id'),
   ///   image: await AssetMapBitmap.create(
   ///     createLocalImageConfiguration(context),
-  ///     'assets/red_square.png',
+  ///     'assets/images/ground_overlay.png',
   ///     bitmapScaling: MapBitmapScaling.none,
   ///   ),
   ///   position: LatLng(37.42, -122.08),
