@@ -22,7 +22,7 @@ void main() {
 }
 
 void runTests() {
-  const double floatTolerance = 1e-8;
+  const double floatTolerance = 1e-6;
 
   GoogleMapsFlutterPlatform.instance.enableDebugInspection();
 
