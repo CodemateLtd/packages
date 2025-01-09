@@ -130,7 +130,6 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
   }
 
   void _onGroundOverlayTapped() {
-    //_changeBounds();
     _changePosition();
   }
 

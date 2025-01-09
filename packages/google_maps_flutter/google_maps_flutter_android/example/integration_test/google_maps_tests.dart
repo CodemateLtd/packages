@@ -1500,7 +1500,6 @@ void googleMapsTests() {
 
       expect(response.width, source.width);
       expect(response.height, source.height);
-      // Only Android (using position) and iOS supports `anchor`
       if (source.position != null) {
         expect(
           response.anchor?.dx,

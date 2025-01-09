@@ -229,20 +229,20 @@ class GoogleMap extends StatefulWidget {
   /// Ground overlays to be initialized for the map.
   ///
   /// Ground overlay feature support table:
-  /// | Feature                     | Android                 | iOS | Web |
-  /// |-----------------------------|-------------------------|-----|-----|
-  /// | [GroundOverlay.bounds]      | Yes                     | Yes | Yes |
-  /// | [GroundOverlay.position]    | Yes                     | Yes | No  |
-  /// | [GroundOverlay.width]       | Yes (for position only) | No  | No  |
-  /// | [GroundOverlay.height]      | Yes (for position only) | No  | No  |
-  /// | [GroundOverlay.anchor]      | Yes (for position only) | Yes | No  |
-  /// | [GroundOverlay.zoomLevel]   | No                      | Yes | No  |
-  /// | [GroundOverlay.bearing]     | Yes                     | Yes | No  |
-  /// | [GroundOverlay.transparency]| Yes                     | Yes | Yes |
-  /// | [GroundOverlay.zIndex]      | Yes                     | Yes | No  |
-  /// | [GroundOverlay.visible]     | Yes                     | Yes | Yes |
-  /// | [GroundOverlay.clickable]   | Yes                     | Yes | Yes |
-  /// | [GroundOverlay.onTap]       | Yes                     | Yes | Yes |
+  /// | Feature                     | Android                 | iOS                     | Web |
+  /// |-----------------------------|-------------------------|-------------------------|-----|
+  /// | [GroundOverlay.bounds]      | Yes                     | Yes                     | Yes |
+  /// | [GroundOverlay.position]    | Yes                     | Yes                     | No  |
+  /// | [GroundOverlay.width]       | Yes (for position only) | No                      | No  |
+  /// | [GroundOverlay.height]      | Yes (for position only) | No                      | No  |
+  /// | [GroundOverlay.anchor]      | Yes (for position only) | Yes                     | No  |
+  /// | [GroundOverlay.zoomLevel]   | No                      | Yes (for position only) | No  |
+  /// | [GroundOverlay.bearing]     | Yes                     | Yes                     | No  |
+  /// | [GroundOverlay.transparency]| Yes                     | Yes                     | Yes |
+  /// | [GroundOverlay.zIndex]      | Yes                     | Yes                     | No  |
+  /// | [GroundOverlay.visible]     | Yes                     | Yes                     | Yes |
+  /// | [GroundOverlay.clickable]   | Yes                     | Yes                     | Yes |
+  /// | [GroundOverlay.onTap]       | Yes                     | Yes                     | Yes |
   final Set<GroundOverlay> groundOverlays;
 
   /// Called when the camera starts moving.
