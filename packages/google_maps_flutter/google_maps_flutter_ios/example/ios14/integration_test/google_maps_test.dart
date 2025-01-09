@@ -4,8 +4,6 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -1347,22 +1345,15 @@ void main() {
 
       expect(response.clickable, source.clickable);
       expect(response.zIndex, source.zIndex);
-
-      // Only iOS supports zoomLevel
-      if (Platform.isIOS) {
-        expect(response.zoomLevel, source.zoomLevel);
-      }
-      // Only Android (using position) and iOS supports `anchor`
-      if ((Platform.isAndroid && source.position != null) || Platform.isIOS) {
-        expect(
-          response.anchor?.dx,
-          moreOrLessEquals(source.anchor!.dx, epsilon: _floatTolerance),
-        );
-        expect(
-          response.anchor?.dy,
-          moreOrLessEquals(source.anchor!.dy, epsilon: _floatTolerance),
-        );
-      }
+      expect(response.zoomLevel, source.zoomLevel);
+      expect(
+        response.anchor?.dx,
+        moreOrLessEquals(source.anchor!.dx, epsilon: _floatTolerance),
+      );
+      expect(
+        response.anchor?.dy,
+        moreOrLessEquals(source.anchor!.dy, epsilon: _floatTolerance),
+      );
     }
 
     testWidgets('set ground overlays correctly', (WidgetTester tester) async {

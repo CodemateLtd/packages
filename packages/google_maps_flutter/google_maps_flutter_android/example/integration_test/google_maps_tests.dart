@@ -4,7 +4,6 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -996,7 +995,7 @@ void googleMapsTests() {
   },
       // TODO(cyanglaz): un-skip the test when we can test this on CI with API key enabled.
       // https://github.com/flutter/flutter/issues/57057
-      skip: Platform.isAndroid);
+      skip: true);
 
   testWidgets(
     'set tileOverlay correctly',
@@ -1499,13 +1498,10 @@ void googleMapsTests() {
       expect(response.clickable, source.clickable);
       expect(response.zIndex, source.zIndex);
 
-      // Only Android supports width and height
-      if (Platform.isAndroid) {
-        expect(response.width, source.width);
-        expect(response.height, source.height);
-      }
+      expect(response.width, source.width);
+      expect(response.height, source.height);
       // Only Android (using position) and iOS supports `anchor`
-      if ((Platform.isAndroid && source.position != null) || Platform.isIOS) {
+      if (source.position != null) {
         expect(
           response.anchor?.dx,
           moreOrLessEquals(source.anchor!.dx, epsilon: _floatTolerance),
