@@ -17,10 +17,10 @@
 
 @implementation GoogleMapsGroundOverlayControllerTests
 
-/// Returns GoogleMapGroundOverlayController object instantiated with a mocked map instance
+/// Returns GoogleMapGroundOverlayController object instantiated with position and a mocked map instance
 ///
 ///  @return An object of FLTGoogleMapGroundOverlayController
-- (FGMGroundOverlayController *)groundOverlayControllerWithMockedMap {
+- (FGMGroundOverlayController *)groundOverlayControllerWithPositionWithMockedMap {
   NSString *imagePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"widegamut"
                                                                          ofType:@"png"
                                                                     inDirectory:@"assets"];
@@ -44,8 +44,35 @@
                                                isCreatedWithBounds:NO];
 }
 
-- (void)testUpdatingGroundOverlay {
-  FGMGroundOverlayController *groundOverlayController = [self groundOverlayControllerWithMockedMap];
+/// Returns GoogleMapGroundOverlayController object instantiated with bounds and a mocked map instance
+///
+///  @return An object of FLTGoogleMapGroundOverlayController
+- (FGMGroundOverlayController *)groundOverlayControllerWithBoundsWithMockedMap {
+  NSString *imagePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"widegamut"
+                                                                         ofType:@"png"
+                                                                    inDirectory:@"assets"];
+  UIImage *wideGamutImage = [UIImage imageWithContentsOfFile:imagePath];
+  GMSGroundOverlay *groundOverlay =
+    [GMSGroundOverlay groundOverlayWithBounds:[[GMSCoordinateBounds alloc] initWithCoordinate:CLLocationCoordinate2DMake(10, 20)
+                                                                                   coordinate:CLLocationCoordinate2DMake(30, 40)]
+                                         icon:wideGamutImage];
+
+  GMSCameraPosition *camera = [[GMSCameraPosition alloc] initWithLatitude:0 longitude:0 zoom:0];
+  CGRect frame = CGRectMake(0, 0, 100, 100);
+  GMSMapViewOptions *mapViewOptions = [[GMSMapViewOptions alloc] init];
+  mapViewOptions.frame = frame;
+  mapViewOptions.camera = camera;
+
+  PartiallyMockedMapView *mapView = [[PartiallyMockedMapView alloc] initWithOptions:mapViewOptions];
+
+  return [[FGMGroundOverlayController alloc] initWithGroundOverlay:groundOverlay
+                                                        identifier:@"id_1"
+                                                           mapView:mapView
+                                               isCreatedWithBounds:YES];
+}
+
+- (void)testUpdatingGroundOverlayWithPosition {
+  FGMGroundOverlayController *groundOverlayController = [self groundOverlayControllerWithPositionWithMockedMap];
 
   FGMPlatformLatLng *position = [FGMPlatformLatLng makeWithLatitude:52.4816 longitude:3.1791];
 
@@ -59,8 +86,6 @@
                                                   image:bitmap
                                                position:position
                                                  bounds:nil
-                                                  width:nil
-                                                 height:nil
                                                  anchor:nil
                                            transparency:0.5
                                                 bearing:65.0
@@ -76,6 +101,43 @@
   XCTAssertNotNil(groundOverlayController.groundOverlay.icon);
   XCTAssertEqual(groundOverlayController.groundOverlay.position.latitude, position.latitude);
   XCTAssertEqual(groundOverlayController.groundOverlay.position.longitude, position.longitude);
+  XCTAssertEqual(groundOverlayController.groundOverlay.opacity, platformGroundOverlay.transparency);
+  XCTAssertEqual(groundOverlayController.groundOverlay.bearing, platformGroundOverlay.bearing);
+}
+
+- (void)testUpdatingGroundOverlayWithBounds {
+  FGMGroundOverlayController *groundOverlayController = [self groundOverlayControllerWithBoundsWithMockedMap];
+
+  FGMPlatformLatLngBounds *bounds = [FGMPlatformLatLngBounds makeWithNortheast:[FGMPlatformLatLng makeWithLatitude:54.4816 longitude:5.1791]
+                                                                     southwest:[FGMPlatformLatLng makeWithLatitude:52.4816 longitude:3.1791]];
+
+  FGMPlatformBitmap *bitmap =
+  [FGMPlatformBitmap makeWithBitmap:[FGMPlatformBitmapDefaultMarker makeWithHue:0]];
+  NSObject<FlutterPluginRegistrar> *mockRegistrar =
+  OCMStrictProtocolMock(@protocol(FlutterPluginRegistrar));
+
+  FGMPlatformGroundOverlay *platformGroundOverlay =
+  [FGMPlatformGroundOverlay makeWithGroundOverlayId:@"id_1"
+                                              image:bitmap
+                                           position:nil
+                                             bounds:bounds
+                                             anchor:nil
+                                       transparency:0.5
+                                            bearing:65.0
+                                             zIndex:2.0
+                                            visible:true
+                                          clickable:true
+                                          zoomLevel:nil];
+
+  [groundOverlayController updateFromPlatformGroundOverlay:platformGroundOverlay
+                                                 registrar:mockRegistrar
+                                               screenScale:1.0];
+
+  XCTAssertNotNil(groundOverlayController.groundOverlay.icon);
+  XCTAssertEqual(groundOverlayController.groundOverlay.bounds.northEast.latitude, bounds.northeast.latitude);
+  XCTAssertEqual(groundOverlayController.groundOverlay.bounds.northEast.longitude, bounds.northeast.longitude);
+  XCTAssertEqual(groundOverlayController.groundOverlay.bounds.southWest.latitude, bounds.southwest.latitude);
+  XCTAssertEqual(groundOverlayController.groundOverlay.bounds.southWest.longitude, bounds.southwest.longitude);
   XCTAssertEqual(groundOverlayController.groundOverlay.opacity, platformGroundOverlay.transparency);
   XCTAssertEqual(groundOverlayController.groundOverlay.bearing, platformGroundOverlay.bearing);
 }

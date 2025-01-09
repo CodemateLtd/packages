@@ -52,6 +52,6 @@
 /// Returns true if a ground overlay with the given identifier exists on the map.
 - (bool)hasGroundOverlaysWithIdentifier:(NSString *)identifier;
 
-/// Returns FGMPlatformGroundOverlay for id.
+/// Returns FGMPlatformGroundOverlay for identifier.
 - (nullable FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)identifier;
 @end

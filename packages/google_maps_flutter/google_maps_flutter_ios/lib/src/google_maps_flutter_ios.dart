@@ -349,7 +349,7 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
             (GroundOverlay groundOverlay) =>
                 groundOverlay.position == null ||
                 groundOverlay.zoomLevel != null),
-        'On ios zoom level must be set when position is set for ground overlays.');
+        'On iOS zoom level must be set when position is set for ground overlays.');
 
     return _hostApi(mapId).updateGroundOverlays(
       groundOverlayUpdates.groundOverlaysToAdd
@@ -481,7 +481,7 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
     assert(
         mapObjects.groundOverlays.every((GroundOverlay groundOverlay) =>
             groundOverlay.position == null || groundOverlay.zoomLevel != null),
-        'On ios zoom level must be set when position is set for ground overlays.');
+        'On iOS zoom level must be set when position is set for ground overlays.');
 
     final PlatformMapViewCreationParams creationParams =
         PlatformMapViewCreationParams(
