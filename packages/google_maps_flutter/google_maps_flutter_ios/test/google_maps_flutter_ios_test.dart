@@ -714,8 +714,7 @@ void main() {
       expect(firstAdded.transparency, object3.transparency);
       expect(
           firstAdded.image.bitmap.runtimeType,
-          GoogleMapsFlutterIOS.platformBitmapFromBitmapDescriptor(
-                  object3.image)
+          GoogleMapsFlutterIOS.platformBitmapFromBitmapDescriptor(object3.image)
               .bitmap
               .runtimeType);
     }
