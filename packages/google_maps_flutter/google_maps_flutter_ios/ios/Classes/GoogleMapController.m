@@ -217,6 +217,7 @@
     [_circlesController addCircles:creationParameters.initialCircles];
     [_heatmapsController addHeatmaps:creationParameters.initialHeatmaps];
     [_tileOverlaysController addTileOverlays:creationParameters.initialTileOverlays];
+    [_groundOverlaysController addGroundOverlays:creationParameters.initialGroundOverlays];
 
     // Invoke clustering after markers are added.
     [_clusterManagersController invokeClusteringForEachClusterManager];
@@ -837,6 +838,12 @@
     (FlutterError *_Nullable __autoreleasing *_Nonnull)error {
   return [FGMPlatformZoomRange makeWithMin:@(self.controller.mapView.minZoom)
                                        max:@(self.controller.mapView.maxZoom)];
+}
+
+- (nullable FGMPlatformGroundOverlay *)
+    groundOverlayWithIdentifier:(NSString *)groundOverlayId
+                          error:(FlutterError *_Nullable __autoreleasing *)error {
+  return [self.controller.groundOverlaysController groundOverlayWithIdentifier:groundOverlayId];
 }
 
 @end

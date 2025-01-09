@@ -344,6 +344,13 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
     GroundOverlayUpdates groundOverlayUpdates, {
     required int mapId,
   }) {
+    assert(
+        groundOverlayUpdates.groundOverlaysToAdd.every(
+            (GroundOverlay groundOverlay) =>
+                groundOverlay.position == null ||
+                groundOverlay.zoomLevel != null),
+        'On iOS zoom level must be set when position is set for ground overlays.');
+
     return _hostApi(mapId).updateGroundOverlays(
       groundOverlayUpdates.groundOverlaysToAdd
           .map(_platformGroundOverlayFromGroundOverlay)
@@ -471,6 +478,11 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
     required MapWidgetConfiguration widgetConfiguration,
     MapObjects mapObjects = const MapObjects(),
   }) {
+    assert(
+        mapObjects.groundOverlays.every((GroundOverlay groundOverlay) =>
+            groundOverlay.position == null || groundOverlay.zoomLevel != null),
+        'On iOS zoom level must be set when position is set for ground overlays.');
+
     final PlatformMapViewCreationParams creationParams =
         PlatformMapViewCreationParams(
       initialCameraPosition: _platformCameraPositionFromCameraPosition(
@@ -681,8 +693,6 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
       bearing: groundOverlay.bearing,
       clickable: groundOverlay.clickable,
       transparency: groundOverlay.transparency,
-      width: groundOverlay.width,
-      height: groundOverlay.height,
       zoomLevel: groundOverlay.zoomLevel,
     );
   }

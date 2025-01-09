@@ -10,10 +10,20 @@
 /// Controller of a single ground overlay  on the map.
 @interface FGMGroundOverlayController : NSObject
 
+/// The ground overlay this controller handles.
+@property(strong, nonatomic) GMSGroundOverlay *groundOverlay;
+
+/// Whether ground overlay is created with bounds or position.
+@property(nonatomic, assign) BOOL isCreatedWithBounds;
+
+/// Zoom level when ground overlay is initialized with position.
+@property(nonatomic, strong, nullable) NSNumber *zoomLevel;
+
 /// Initializes an instance of this class with a GMSGroundOverlay, a map view, and identifier.
 - (instancetype)initWithGroundOverlay:(GMSGroundOverlay *)groundOverlay
                            identifier:(NSString *)identifier
-                              mapView:(GMSMapView *)mapView;
+                              mapView:(GMSMapView *)mapView
+                  isCreatedWithBounds:(BOOL)isCreatedWithBounds;
 
 /// Removes this ground overlay from the map.
 - (void)removeGroundOverlay;
@@ -41,4 +51,7 @@
 
 /// Returns true if a ground overlay with the given identifier exists on the map.
 - (bool)hasGroundOverlaysWithIdentifier:(NSString *)identifier;
+
+/// Returns FGMPlatformGroundOverlay for identifier.
+- (nullable FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)identifier;
 @end

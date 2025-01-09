@@ -372,8 +372,6 @@ class PlatformGroundOverlay {
     required this.image,
     required this.position,
     required this.bounds,
-    required this.width,
-    required this.height,
     required this.anchor,
     required this.transparency,
     required this.bearing,
@@ -387,8 +385,6 @@ class PlatformGroundOverlay {
   final PlatformBitmap image;
   final PlatformLatLng? position;
   final PlatformLatLngBounds? bounds;
-  final double? width;
-  final double? height;
   final PlatformDoublePair? anchor;
   final double transparency;
   final double bearing;
@@ -798,6 +794,8 @@ abstract class MapsInspectorApi {
   bool isTrafficEnabled();
   @ObjCSelector('tileOverlayWithIdentifier:')
   PlatformTileLayer? getTileOverlayInfo(String tileOverlayId);
+  @ObjCSelector('groundOverlayWithIdentifier:')
+  PlatformGroundOverlay? getGroundOverlayInfo(String groundOverlayId);
   @ObjCSelector('heatmapWithIdentifier:')
   PlatformHeatmap? getHeatmapInfo(String heatmapId);
   @ObjCSelector('zoomRange')
