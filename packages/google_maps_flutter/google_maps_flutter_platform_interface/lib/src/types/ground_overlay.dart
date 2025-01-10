@@ -240,19 +240,19 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   /// The default bearing is 0, i.e., the image is aligned so that up is north.
   final double bearing;
 
-  /// The transparency of the ground overlay. The default transparency is 0 (opaque).
+  /// The transparency of the ground overlay. The default is 0 (opaque).
   final double transparency;
 
   /// The tile overlay's zIndex, i.e., the order in which it will be drawn where
-  /// overlays with larger values are drawn above those with lower values
-  /// The default visibility is 0.0.
+  /// overlays with larger values are drawn above those with lower values.
+  /// The default is 0.0.
   final double zIndex;
 
-  /// The visibility for the tile overlay. The default visibility is true.
+  /// The visibility for the tile overlay. The default is true.
   final bool visible;
 
   /// Controls if click events are handled for this ground overlay.
-  /// The default visibility is true.
+  /// The default is true.
   final bool clickable;
 
   /// Callbacks to receive tap events for ground overlay placed on this map.

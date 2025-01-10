@@ -62,8 +62,8 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
   // Index to be used as identifier for the ground overlay.
   // If position is changed to bounds and vice versa, the ground overlay will
   // be removed and added again with the new type. Also anchor can be given only
-  // when the ground overlay is created with position and cannot be change after
-  // the ground overlay is created.
+  // when the ground overlay is created with position and cannot be changed
+  // after the ground overlay is created.
   int _groundOverlayIndex = 0;
 
   @override
@@ -76,11 +76,6 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
   // ignore: use_setters_to_change_properties
   void _onMapCreated(GoogleMapController controller) {
     this.controller = controller;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   void _removeGroundOverlay() {

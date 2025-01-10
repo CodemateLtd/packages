@@ -19,7 +19,7 @@ class GroundOverlaysController extends GeometryController {
   final Map<GroundOverlayId, GroundOverlayController>
       _groundOverlayIdToController;
 
-  // The stream over which polylines broadcast their events
+  // The stream over which ground overlays broadcast their events
   final StreamController<MapEvent<Object?>> _streamController;
 
   /// Adds new [GroundOverlay]s to this controller.
@@ -98,8 +98,8 @@ class GroundOverlaysController extends GeometryController {
     _streamController.add(GroundOverlayTapEvent(mapId, groundOverlayId));
   }
 
-  /// Returns the [GroundOverlay] with the given [GroundOverlayId] for testing
-  /// purposes.
+  /// Returns the [GroundOverlay] with the given [GroundOverlayId].
+  /// Only used for testing.
   gmaps.GroundOverlay? getGroundOverlay(GroundOverlayId groundOverlayId) {
     final GroundOverlayController? controller =
         _groundOverlayIdToController.remove(groundOverlayId);

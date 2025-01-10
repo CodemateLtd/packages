@@ -856,8 +856,8 @@ class Convert {
    * @param groundOverlay the object expected to be a PlatformGroundOverlay containing the ground
    *     overlay options.
    * @param sink the GroundOverlaySink where the options will be set.
-   * @param assetManager An instance of Android's AssetManager, which provides access
-   *     to any raw asset files stored in the application's assets directory.
+   * @param assetManager An instance of Android's AssetManager, which provides access to any raw
+   *     asset files stored in the application's assets directory.
    * @param density the density of the display, used to calculate pixel dimensions.
    * @param wrapper the BitmapDescriptorFactoryWrapper to create BitmapDescriptor.
    * @return the identifier of the ground overlay.
@@ -962,11 +962,11 @@ class Convert {
     LatLng position = groundOverlay.getPosition();
     LatLngBounds bounds = groundOverlay.getBounds();
 
-    // Calculate normalized latitude
+    // Calculate normalized latitude.
     double height = bounds.northeast.latitude - bounds.southwest.latitude;
     double normalizedLatitude = 1.0 - ((position.latitude - bounds.southwest.latitude) / height);
 
-    // Calculate normalized longitude
+    // Calculate normalized longitude.
     double west = bounds.southwest.longitude;
     double east = bounds.northeast.longitude;
     double longitudeOffset = 0;
