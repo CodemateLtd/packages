@@ -856,7 +856,7 @@ class Convert {
    * @param groundOverlay the object expected to be a PlatformGroundOverlay containing the ground
    *     overlay options.
    * @param sink the GroundOverlaySink where the options will be set.
-   * @param assetManager assetManager An instance of Android's AssetManager, which provides access
+   * @param assetManager An instance of Android's AssetManager, which provides access
    *     to any raw asset files stored in the application's assets directory.
    * @param density the density of the display, used to calculate pixel dimensions.
    * @param wrapper the BitmapDescriptorFactoryWrapper to create BitmapDescriptor.
