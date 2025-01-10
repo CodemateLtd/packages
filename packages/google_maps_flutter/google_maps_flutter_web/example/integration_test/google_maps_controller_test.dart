@@ -392,8 +392,8 @@ void main() {
           GroundOverlay.fromBounds(
             groundOverlayId: const GroundOverlayId('bounds_1'),
             bounds: LatLngBounds(
-              northeast: const LatLng(0, 0),
-              southwest: const LatLng(100, 100),
+              northeast: const LatLng(100, 0),
+              southwest: const LatLng(0, 100),
             ),
             image: AssetMapBitmap(
               'assets/red_square.png',
@@ -921,8 +921,8 @@ void main() {
           ..debugSetOverrides(groundOverlays: mock);
 
         final LatLngBounds bounds = LatLngBounds(
-          southwest: const LatLng(0, 0),
-          northeast: const LatLng(100, 100),
+          northeast: const LatLng(100, 0),
+          southwest: const LatLng(0, 100),
         );
         const LatLng position = LatLng(50, 50);
         final AssetMapBitmap image = AssetMapBitmap(
