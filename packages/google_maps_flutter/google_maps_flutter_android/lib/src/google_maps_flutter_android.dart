@@ -538,7 +538,7 @@ class GoogleMapsFlutterAndroid extends GoogleMapsFlutterPlatform {
     assert(
         mapObjects.groundOverlays.every((GroundOverlay groundOverlay) =>
             groundOverlay.position == null || groundOverlay.width != null),
-        'On android width must be set when position is set for ground overlays.');
+        'On Android width must be set when position is set for ground overlays.');
 
     final PlatformMapViewCreationParams creationParams =
         PlatformMapViewCreationParams(
