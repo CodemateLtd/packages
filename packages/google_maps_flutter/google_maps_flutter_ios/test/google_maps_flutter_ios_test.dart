@@ -620,18 +620,21 @@ void main() {
     final AssetMapBitmap image = AssetMapBitmap(
       'assets/red_square.png',
       imagePixelRatio: 1.0,
+      bitmapScaling: MapBitmapScaling.none,
     );
 
     final GroundOverlay object1 = GroundOverlay.fromBounds(
-        groundOverlayId: const GroundOverlayId('1'),
-        bounds: LatLngBounds(
-            southwest: const LatLng(10, 20), northeast: const LatLng(30, 40)),
-        image: image);
+      groundOverlayId: const GroundOverlayId('1'),
+      bounds: LatLngBounds(
+          southwest: const LatLng(10, 20), northeast: const LatLng(30, 40)),
+      image: image,
+    );
     final GroundOverlay object2old = GroundOverlay.fromBounds(
-        groundOverlayId: const GroundOverlayId('2'),
-        bounds: LatLngBounds(
-            southwest: const LatLng(10, 20), northeast: const LatLng(30, 40)),
-        image: image);
+      groundOverlayId: const GroundOverlayId('2'),
+      bounds: LatLngBounds(
+          southwest: const LatLng(10, 20), northeast: const LatLng(30, 40)),
+      image: image,
+    );
     final GroundOverlay object2new = object2old.copyWith(
       visibleParam: false,
       bearingParam: 10,
@@ -640,11 +643,12 @@ void main() {
       zIndexParam: 100,
     );
     final GroundOverlay object3 = GroundOverlay.fromPosition(
-        groundOverlayId: const GroundOverlayId('3'),
-        position: const LatLng(10, 20),
-        width: 100,
-        image: image,
-        zoomLevel: 14.0);
+      groundOverlayId: const GroundOverlayId('3'),
+      position: const LatLng(10, 20),
+      width: 100,
+      image: image,
+      zoomLevel: 14.0,
+    );
     await maps.updateGroundOverlays(
         GroundOverlayUpdates.from(<GroundOverlay>{object1, object2old},
             <GroundOverlay>{object2new, object3}),
@@ -733,13 +737,14 @@ void main() {
     );
 
     final GroundOverlay object3 = GroundOverlay.fromPosition(
-        groundOverlayId: const GroundOverlayId('1'),
-        position: const LatLng(10, 20),
-        // Assert should be thrown because zoomLevel is not set for position-based
-        // ground overlay on iOS.
-        // ignore: avoid_redundant_argument_values
-        zoomLevel: null,
-        image: image);
+      groundOverlayId: const GroundOverlayId('1'),
+      position: const LatLng(10, 20),
+      // Assert should be thrown because zoomLevel is not set for position-based
+      // ground overlay on iOS.
+      // ignore: avoid_redundant_argument_values
+      zoomLevel: null,
+      image: image,
+    );
 
     expect(
       () async => maps.updateGroundOverlays(

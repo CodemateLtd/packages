@@ -489,6 +489,7 @@ void runTests() {
       image: AssetMapBitmap(
         'assets/red_square.png',
         imagePixelRatio: 1.0,
+        bitmapScaling: MapBitmapScaling.none,
       ),
       transparency: 0.7,
       bearing: 10,
@@ -504,6 +505,7 @@ void runTests() {
       image: AssetMapBitmap(
         'assets/red_square.png',
         imagePixelRatio: 1.0,
+        bitmapScaling: MapBitmapScaling.none,
       ),
       transparency: 0.7,
       bearing: 10,

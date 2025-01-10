@@ -1459,6 +1459,7 @@ void googleMapsTests() {
       image: AssetMapBitmap(
         'assets/red_square.png',
         imagePixelRatio: 1.0,
+        bitmapScaling: MapBitmapScaling.none,
       ),
     );
 
@@ -1471,6 +1472,7 @@ void googleMapsTests() {
         image: AssetMapBitmap(
           'assets/red_square.png',
           imagePixelRatio: 1.0,
+          bitmapScaling: MapBitmapScaling.none,
         ));
 
     void expectGroundOverlayEquals(

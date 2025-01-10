@@ -99,7 +99,10 @@ class GoogleMapsInspectorWeb extends GoogleMapsInspectorPlatform {
 
     return GroundOverlay.fromBounds(
         groundOverlayId: groundOverlayId,
-        image: BytesMapBitmap(Uint8List.fromList(<int>[0])),
+        image: BytesMapBitmap(
+          Uint8List.fromList(<int>[0]),
+          bitmapScaling: MapBitmapScaling.none,
+        ),
         bounds: gmLatLngBoundsTolatLngBounds(groundOverlay.bounds),
         transparency: 1.0 - groundOverlay.opacity,
         visible: groundOverlay.map != null,

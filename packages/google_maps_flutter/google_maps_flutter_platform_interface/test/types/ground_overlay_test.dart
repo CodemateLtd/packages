@@ -18,6 +18,7 @@ void main() {
     final BitmapDescriptor kImage = AssetMapBitmap(
       'assets/asset.png',
       imagePixelRatio: 1.0,
+      bitmapScaling: MapBitmapScaling.none,
     );
     const Offset kAnchor = Offset(0.3, 0.7);
     const double kBearing = 45.0;
@@ -386,6 +387,23 @@ void main() {
         () => GroundOverlay.fromPosition(
           groundOverlayId: kID,
           image: BitmapDescriptor.defaultMarker,
+          position: kPosition,
+          width: 100,
+          height: 100,
+        ),
+        throwsAssertionError,
+      );
+
+      // Image bitMapScaling must be MapBitmapScaling.none.
+      expect(
+        () => GroundOverlay.fromPosition(
+          groundOverlayId: kID,
+          image: AssetMapBitmap(
+            'assets/asset.png',
+            imagePixelRatio: 1.0,
+            // ignore: avoid_redundant_argument_values
+            bitmapScaling: MapBitmapScaling.auto,
+          ),
           position: kPosition,
           width: 100,
           height: 100,

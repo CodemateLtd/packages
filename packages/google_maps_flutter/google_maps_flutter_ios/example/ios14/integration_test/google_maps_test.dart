@@ -1306,6 +1306,7 @@ void main() {
       image: AssetMapBitmap(
         'assets/red_square.png',
         imagePixelRatio: 1.0,
+        bitmapScaling: MapBitmapScaling.none,
       ),
     );
 
@@ -1319,6 +1320,7 @@ void main() {
         image: AssetMapBitmap(
           'assets/red_square.png',
           imagePixelRatio: 1.0,
+          bitmapScaling: MapBitmapScaling.none,
         ));
 
     void expectGroundOverlayEquals(

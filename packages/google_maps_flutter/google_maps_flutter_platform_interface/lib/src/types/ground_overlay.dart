@@ -25,8 +25,8 @@ class GroundOverlayId extends MapsObjectId<GroundOverlay> {
 /// map, a [TileOverlay] should be considered.
 ///
 /// As ground overlay is automatically scaled to fit to the given [position],
-/// [width] and [height], or [bounds], the bitmapScaling should be set to
-/// [MapBitmapScaling.none], for [image] to avoid unnecessary scaling.
+/// [width] and [height], or [bounds], the bitmapScaling must be set to
+/// [MapBitmapScaling.none] for [image].
 ///
 /// To create a ground overlay use either [GroundOverlay.fromBounds] or
 /// [GroundOverlay.fromPosition] methods.
@@ -62,20 +62,21 @@ class GroundOverlayId extends MapsObjectId<GroundOverlay> {
 ///   position: LatLng(37.42, -122.08),
 ///   width: 100,
 ///   height: 100,
+///   zoomLevel: 14,
 /// );
 /// ```
 @immutable
 class GroundOverlay implements MapsObject<GroundOverlay> {
   /// Creates an immutable representation of a [GroundOverlay] to
   /// draw on [GoogleMap].
-  const GroundOverlay._({
+  GroundOverlay._({
     required this.groundOverlayId,
     required this.image,
     this.position,
     this.bounds,
     this.width,
     this.height,
-    this.anchor,
+    this.anchor = const Offset(0.5, 0.5),
     this.transparency = 0.0,
     this.bearing = 0.0,
     this.zIndex = 0.0,
@@ -92,7 +93,10 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
         assert(position == null || (height == null || height > 0),
             'Height must be null or greater than 0 when position is used'),
         assert(image is MapBitmap,
-            'Image should be a MapBitmap. Use AssetMapBitmap or BytesMapBitmap to create one.');
+            'The provided image must be an instance of MapBitmap. Use AssetMapBitmap or BytesMapBitmap to create a valid MapBitmap instance.'),
+        assert(
+            image is MapBitmap && image.bitmapScaling == MapBitmapScaling.none,
+            'The provided image must have its bitmapScaling property set to MapBitmapScaling.none.');
 
   /// Creates a [GroundOverlay] to given [bounds] with the given [image].
   ///
@@ -153,6 +157,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   ///   position: LatLng(37.42, -122.08),
   ///   width: 100,
   ///   height: 100,
+  ///   zoomLevel: 14,
   /// );
   /// ```
   factory GroundOverlay.fromPosition({
@@ -200,6 +205,8 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   ///
   /// To create ground overlay from raw PNG data use [BytesMapBitmap]
   /// or [BitmapDescriptor.bytes].
+  ///
+  /// [MapBitmap.bitmapScaling] must be set to [MapBitmapScaling.none].
   final BitmapDescriptor image;
 
   /// Geographical location to which the anchor will be fixed and the [width] of
@@ -238,19 +245,25 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
 
   /// The tile overlay's zIndex, i.e., the order in which it will be drawn where
   /// overlays with larger values are drawn above those with lower values
+  /// The default visibility is 0.0.
   final double zIndex;
 
   /// The visibility for the tile overlay. The default visibility is true.
   final bool visible;
 
   /// Controls if click events are handled for this ground overlay.
-  /// Default is true.
+  /// The default visibility is true.
   final bool clickable;
 
   /// Callbacks to receive tap events for ground overlay placed on this map.
   final VoidCallback? onTap;
 
-  /// Map zoomlevel used when setting ground overlay with position.
+  /// The map zoom level used when setting a ground overlay with a specific
+  /// position.
+  ///
+  /// This parameter determines how the [GroundOverlay.image] is rendered on the
+  /// map when using [GroundOverlay.position]. The image is scaled as if its
+  /// actual size corresponds to the camera pixels at the specified `zoomLevel`.
   final double? zoomLevel;
 
   /// Converts this object to something serializable in JSON.

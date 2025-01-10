@@ -228,21 +228,27 @@ class GoogleMap extends StatefulWidget {
 
   /// Ground overlays to be initialized for the map.
   ///
-  /// Ground overlay feature support table:
-  /// | Feature                     | Android                 | iOS                     | Web |
-  /// |-----------------------------|-------------------------|-------------------------|-----|
-  /// | [GroundOverlay.bounds]      | Yes                     | Yes                     | Yes |
-  /// | [GroundOverlay.position]    | Yes                     | Yes                     | No  |
-  /// | [GroundOverlay.width]       | Yes (for position only) | No                      | No  |
-  /// | [GroundOverlay.height]      | Yes (for position only) | No                      | No  |
-  /// | [GroundOverlay.anchor]      | Yes (for position only) | Yes                     | No  |
-  /// | [GroundOverlay.zoomLevel]   | No                      | Yes (for position only) | No  |
-  /// | [GroundOverlay.bearing]     | Yes                     | Yes                     | No  |
-  /// | [GroundOverlay.transparency]| Yes                     | Yes                     | Yes |
-  /// | [GroundOverlay.zIndex]      | Yes                     | Yes                     | No  |
-  /// | [GroundOverlay.visible]     | Yes                     | Yes                     | Yes |
-  /// | [GroundOverlay.clickable]   | Yes                     | Yes                     | Yes |
-  /// | [GroundOverlay.onTap]       | Yes                     | Yes                     | Yes |
+  /// Support table for Ground Overlay features:
+  /// | Feature                     | Android                  | iOS                      | Web |
+  /// |-----------------------------|--------------------------|--------------------------|-----|
+  /// | [GroundOverlay.image]       | Yes                      | Yes                      | Yes |
+  /// | [GroundOverlay.bounds]      | Yes                      | Yes                      | Yes |
+  /// | [GroundOverlay.position]    | Yes                      | Yes                      | No  |
+  /// | [GroundOverlay.width]       | Yes (with position only) | No                       | No  |
+  /// | [GroundOverlay.height]      | Yes (with position only) | No                       | No  |
+  /// | [GroundOverlay.anchor]      | Yes                      | Yes                      | No  |
+  /// | [GroundOverlay.zoomLevel]   | No                       | Yes (with position only) | No  |
+  /// | [GroundOverlay.bearing]     | Yes                      | Yes                      | No  |
+  /// | [GroundOverlay.transparency]| Yes                      | Yes                      | Yes |
+  /// | [GroundOverlay.zIndex]      | Yes                      | Yes                      | No  |
+  /// | [GroundOverlay.visible]     | Yes                      | Yes                      | Yes |
+  /// | [GroundOverlay.clickable]   | Yes                      | Yes                      | Yes |
+  /// | [GroundOverlay.onTap]       | Yes                      | Yes                      | Yes |
+  ///
+  /// - On Android, [GroundOverlay.width] is required if [GroundOverlay.position] is set.
+  /// - On iOS, [GroundOverlay.zoomLevel] is required if [GroundOverlay.position] is set.
+  /// - [GroundOverlay.image] must be a [MapBitmap]. You can use [AssetMapBitmap] or [BytesMapBitmap].
+  ///   Additionally, [MapBitmap.bitmapScaling] must be set to [MapBitmapScaling.none].
   final Set<GroundOverlay> groundOverlays;
 
   /// Called when the camera starts moving.

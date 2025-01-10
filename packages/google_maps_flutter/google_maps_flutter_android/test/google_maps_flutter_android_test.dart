@@ -633,6 +633,7 @@ void main() {
     final AssetMapBitmap image = AssetMapBitmap(
       'assets/red_square.png',
       imagePixelRatio: 1.0,
+      bitmapScaling: MapBitmapScaling.none,
     );
 
     final GroundOverlay object1 = GroundOverlay.fromBounds(
@@ -653,10 +654,11 @@ void main() {
       zIndexParam: 100,
     );
     final GroundOverlay object3 = GroundOverlay.fromPosition(
-        groundOverlayId: const GroundOverlayId('3'),
-        position: const LatLng(10, 20),
-        width: 100,
-        image: image);
+      groundOverlayId: const GroundOverlayId('3'),
+      position: const LatLng(10, 20),
+      width: 100,
+      image: image,
+    );
     await maps.updateGroundOverlays(
         GroundOverlayUpdates.from(<GroundOverlay>{object1, object2old},
             <GroundOverlay>{object2new, object3}),
@@ -748,13 +750,14 @@ void main() {
     );
 
     final GroundOverlay groundOverlay = GroundOverlay.fromPosition(
-        groundOverlayId: const GroundOverlayId('1'),
-        position: const LatLng(10, 20),
-        // Assert should be thrown because width is not set for position-based
-        // ground overlay on Android.
-        // ignore: avoid_redundant_argument_values
-        width: null,
-        image: image);
+      groundOverlayId: const GroundOverlayId('1'),
+      position: const LatLng(10, 20),
+      // Assert should be thrown because width is not set for position-based
+      // ground overlay on Android.
+      // ignore: avoid_redundant_argument_values
+      width: null,
+      image: image,
+    );
 
     expect(
       () async => maps.updateGroundOverlays(
