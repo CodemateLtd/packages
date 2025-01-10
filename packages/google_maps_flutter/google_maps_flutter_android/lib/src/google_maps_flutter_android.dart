@@ -362,7 +362,7 @@ class GoogleMapsFlutterAndroid extends GoogleMapsFlutterPlatform {
         groundOverlayUpdates.groundOverlaysToAdd.every(
             (GroundOverlay groundOverlay) =>
                 groundOverlay.position == null || groundOverlay.width != null),
-        'On android width must be set when position is set for ground overlays.');
+        'On Android width must be set when position is set for ground overlays.');
 
     return _hostApi(mapId).updateGroundOverlays(
       groundOverlayUpdates.groundOverlaysToAdd
