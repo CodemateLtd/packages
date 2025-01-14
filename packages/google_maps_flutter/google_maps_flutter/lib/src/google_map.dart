@@ -245,10 +245,13 @@ class GoogleMap extends StatefulWidget {
   /// | [GroundOverlay.clickable]   | Yes                      | Yes                      | Yes |
   /// | [GroundOverlay.onTap]       | Yes                      | Yes                      | Yes |
   ///
-  /// - On Android, [GroundOverlay.width] is required if [GroundOverlay.position] is set.
-  /// - On iOS, [GroundOverlay.zoomLevel] is required if [GroundOverlay.position] is set.
-  /// - [GroundOverlay.image] must be a [MapBitmap]. You can use [AssetMapBitmap] or [BytesMapBitmap].
-  ///   Additionally, [MapBitmap.bitmapScaling] must be set to [MapBitmapScaling.none].
+  /// - On Android, [GroundOverlay.width] is required if
+  ///   [GroundOverlay.position] is set.
+  /// - On iOS, [GroundOverlay.zoomLevel] is required if
+  ///   [GroundOverlay.position] is set.
+  /// - [GroundOverlay.image] must be a [MapBitmap]. See [AssetMapBitmap] and
+  ///   [BytesMapBitmap]. [MapBitmap.bitmapScaling] must be set to
+  ///   [MapBitmapScaling.none].
   final Set<GroundOverlay> groundOverlays;
 
   /// Called when the camera starts moving.
