@@ -257,11 +257,11 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             TextButton(
-              onPressed: _addGroundOverlay,
+              onPressed: _groundOverlay == null ? _addGroundOverlay : null,
               child: const Text('Add'),
             ),
             TextButton(
-              onPressed: _removeGroundOverlay,
+              onPressed: _groundOverlay != null ? _removeGroundOverlay : null,
               child: const Text('Remove'),
             ),
           ],
@@ -310,7 +310,7 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
                     : () => _changePosition(),
                 child: const Text('change position'),
               ),
-            if (!kIsWeb)
+            if (defaultTargetPlatform == TargetPlatform.android)
               TextButton(
                 onPressed: _placingType != _GroundOverlayPlacing.position ||
                         _groundOverlay == null
