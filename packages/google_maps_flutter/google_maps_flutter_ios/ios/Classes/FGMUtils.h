@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIImage *)iconFromBitmap:(FGMPlatformBitmap *)platformBitmap
                   registrar:(NSObject<FlutterPluginRegistrar> *)registrar
                 screenScale:(CGFloat)screenScale;
++ (BOOL)isScalableWithScaleFactorFromSize:(CGSize)originalSize toSize:(CGSize)targetSize;
 @end
 
 NS_ASSUME_NONNULL_END
