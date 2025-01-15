@@ -32,9 +32,6 @@ class GroundOverlaysController extends GeometryController {
   void _addGroundOverlay(GroundOverlay groundOverlay) {
     assert(groundOverlay.bounds != null,
         'On Web platform, bounds must be provided for GroundOverlay');
-    if (groundOverlay.bounds == null) {
-      return;
-    }
 
     final gmaps.LatLngBounds bounds =
         latLngBoundsToGmlatLngBounds(groundOverlay.bounds!);
@@ -46,9 +43,7 @@ class GroundOverlaysController extends GeometryController {
           ..map = groundOverlay.visible ? googleMap : null;
 
     final gmaps.GroundOverlay overlay = gmaps.GroundOverlay(
-        urlFromBitmapDescriptor(groundOverlay.image),
-        bounds,
-        groundOverlayOptions);
+        urlFromMapBitmap(groundOverlay.image), bounds, groundOverlayOptions);
 
     final GroundOverlayController controller = GroundOverlayController(
       groundOverlay: overlay,
