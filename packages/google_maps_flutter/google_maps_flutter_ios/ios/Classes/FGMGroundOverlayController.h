@@ -11,7 +11,7 @@
 @interface FGMGroundOverlayController : NSObject
 
 /// The ground overlay this controller handles.
-@property(strong, nonatomic) GMSGroundOverlay * _Nonnull groundOverlay;
+@property(strong, nonatomic) GMSGroundOverlay *_Nonnull groundOverlay;
 
 /// Whether ground overlay is created with bounds or position.
 @property(nonatomic, assign) BOOL isCreatedWithBounds;
@@ -20,10 +20,10 @@
 @property(nonatomic, strong, nullable) NSNumber *zoomLevel;
 
 /// Initializes an instance of this class with a GMSGroundOverlay, a map view, and identifier.
-- (instancetype _Nullable )initWithGroundOverlay:(GMSGroundOverlay *_Nonnull)groundOverlay
-                           identifier:(NSString *_Nonnull)identifier
-                              mapView:(GMSMapView *_Nonnull)mapView
-                  isCreatedWithBounds:(BOOL)isCreatedWithBounds;
+- (instancetype _Nullable)initWithGroundOverlay:(GMSGroundOverlay *_Nonnull)groundOverlay
+                                     identifier:(NSString *_Nonnull)identifier
+                                        mapView:(GMSMapView *_Nonnull)mapView
+                            isCreatedWithBounds:(BOOL)isCreatedWithBounds;
 
 /// Removes this ground overlay from the map.
 - (void)removeGroundOverlay;
@@ -33,9 +33,9 @@
 @interface FLTGroundOverlaysController : NSObject
 
 /// Initializes the controller with a GMSMapView, callback handler and registrar.
-- (instancetype _Nullable )initWithMapView:(GMSMapView *_Nonnull)mapView
-                           callbackHandler:(FGMMapsCallbackApi *_Nonnull)callbackHandler
-                                 registrar:(NSObject<FlutterPluginRegistrar> *_Nonnull)registrar;
+- (instancetype _Nullable)initWithMapView:(GMSMapView *_Nonnull)mapView
+                          callbackHandler:(FGMMapsCallbackApi *_Nonnull)callbackHandler
+                                registrar:(NSObject<FlutterPluginRegistrar> *_Nonnull)registrar;
 
 /// Adds ground overlays to the map.
 - (void)addGroundOverlays:(NSArray<FGMPlatformGroundOverlay *> *_Nonnull)groundOverlaysToAdd;
