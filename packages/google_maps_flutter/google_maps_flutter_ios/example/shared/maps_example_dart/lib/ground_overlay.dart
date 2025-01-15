@@ -257,11 +257,11 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             TextButton(
-              onPressed: _addGroundOverlay,
+              onPressed: _groundOverlay == null ? _addGroundOverlay : null,
               child: const Text('Add'),
             ),
             TextButton(
-              onPressed: _removeGroundOverlay,
+              onPressed: _groundOverlay != null ? _removeGroundOverlay : null,
               child: const Text('Remove'),
             ),
           ],
