@@ -92,10 +92,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
             'Width must be null or greater than 0 when position is used'),
         assert(position == null || (height == null || height > 0),
             'Height must be null or greater than 0 when position is used'),
-        assert(image is MapBitmap,
-            'The provided image must be an instance of MapBitmap. Use AssetMapBitmap or BytesMapBitmap to create a valid MapBitmap instance.'),
-        assert(
-            image is MapBitmap && image.bitmapScaling == MapBitmapScaling.none,
+        assert(image.bitmapScaling == MapBitmapScaling.none,
             'The provided image must have its bitmapScaling property set to MapBitmapScaling.none.');
 
   /// Creates a [GroundOverlay] to given [bounds] with the given [image].
@@ -118,7 +115,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   /// );
   factory GroundOverlay.fromBounds({
     required GroundOverlayId groundOverlayId,
-    required BitmapDescriptor image,
+    required MapBitmap image,
     required LatLngBounds bounds,
     Offset anchor = const Offset(0.5, 0.5),
     double bearing = 0.0,
@@ -162,7 +159,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   /// ```
   factory GroundOverlay.fromPosition({
     required GroundOverlayId groundOverlayId,
-    required BitmapDescriptor image,
+    required MapBitmap image,
     required LatLng position,
     double? width,
     double? height,
@@ -207,7 +204,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   /// or [BitmapDescriptor.bytes].
   ///
   /// [MapBitmap.bitmapScaling] must be set to [MapBitmapScaling.none].
-  final BitmapDescriptor image;
+  final MapBitmap image;
 
   /// Geographical location to which the anchor will be fixed and the [width] of
   /// the overlay (in meters). The [anchor] is, by default, 50% from the top of

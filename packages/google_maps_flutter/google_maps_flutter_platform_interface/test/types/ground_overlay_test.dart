@@ -15,7 +15,7 @@ void main() {
       northeast: const LatLng(37.43, -122.09),
     );
     const LatLng kPosition = LatLng(37.42, -122.08);
-    final BitmapDescriptor kImage = AssetMapBitmap(
+    final MapBitmap kMapBitmap = AssetMapBitmap(
       'assets/asset.png',
       imagePixelRatio: 1.0,
       bitmapScaling: MapBitmapScaling.none,
@@ -33,13 +33,13 @@ void main() {
     test('fromBounds constructor defaults', () {
       final GroundOverlay groundOverlay = GroundOverlay.fromBounds(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         bounds: kBounds,
       );
 
       expect(groundOverlay.groundOverlayId, kID);
       expect(groundOverlay.bounds, kBounds);
-      expect(groundOverlay.image, kImage);
+      expect(groundOverlay.image, kMapBitmap);
       expect(groundOverlay.anchor, const Offset(0.5, 0.5));
       expect(groundOverlay.bearing, 0.0);
       expect(groundOverlay.transparency, 0.0);
@@ -52,7 +52,7 @@ void main() {
     test('fromBounds construct with values', () {
       final GroundOverlay groundOverlay = GroundOverlay.fromBounds(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         bounds: kBounds,
         anchor: kAnchor,
         bearing: kBearing,
@@ -64,7 +64,7 @@ void main() {
 
       expect(groundOverlay.groundOverlayId, kID);
       expect(groundOverlay.bounds, kBounds);
-      expect(groundOverlay.image, kImage);
+      expect(groundOverlay.image, kMapBitmap);
       expect(groundOverlay.anchor, kAnchor);
       expect(groundOverlay.bearing, kBearing);
       expect(groundOverlay.transparency, kTransparency);
@@ -76,7 +76,7 @@ void main() {
     test('fromPosition constructor defaults', () {
       final GroundOverlay groundOverlay = GroundOverlay.fromPosition(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         position: kPosition,
         width: 100,
         height: 100,
@@ -84,7 +84,7 @@ void main() {
 
       expect(groundOverlay.groundOverlayId, kID);
       expect(groundOverlay.position, kPosition);
-      expect(groundOverlay.image, kImage);
+      expect(groundOverlay.image, kMapBitmap);
       expect(groundOverlay.width, 100);
       expect(groundOverlay.height, 100);
       expect(groundOverlay.anchor, const Offset(0.5, 0.5));
@@ -99,7 +99,7 @@ void main() {
     test('fromPosition construct with values', () {
       final GroundOverlay groundOverlay = GroundOverlay.fromPosition(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         position: kPosition,
         width: kWidth,
         height: kHeight,
@@ -114,7 +114,7 @@ void main() {
 
       expect(groundOverlay.groundOverlayId, kID);
       expect(groundOverlay.position, kPosition);
-      expect(groundOverlay.image, kImage);
+      expect(groundOverlay.image, kMapBitmap);
       expect(groundOverlay.width, kWidth);
       expect(groundOverlay.height, kHeight);
       expect(groundOverlay.anchor, kAnchor);
@@ -129,7 +129,7 @@ void main() {
     test('copyWith fromPosition', () {
       final GroundOverlay groundOverlay1 = GroundOverlay.fromPosition(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         position: kPosition,
         width: 100,
         height: 100,
@@ -161,7 +161,7 @@ void main() {
     test('copyWith fromBounds', () {
       final GroundOverlay groundOverlay1 = GroundOverlay.fromBounds(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         bounds: kBounds,
       );
 
@@ -191,7 +191,7 @@ void main() {
     test('fromPosition clone', () {
       final GroundOverlay groundOverlay1 = GroundOverlay.fromPosition(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         position: kPosition,
         width: 100,
         height: 100,
@@ -205,7 +205,7 @@ void main() {
     test('fromBounds clone', () {
       final GroundOverlay groundOverlay1 = GroundOverlay.fromBounds(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         bounds: kBounds,
       );
 
@@ -217,7 +217,7 @@ void main() {
     test('==', () {
       final GroundOverlay groundOverlayPosition1 = GroundOverlay.fromPosition(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         position: kPosition,
         width: kWidth,
         height: kHeight,
@@ -232,7 +232,7 @@ void main() {
 
       final GroundOverlay groundOverlayPosition2 = GroundOverlay.fromPosition(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         position: kPosition,
         width: kWidth,
         height: kHeight,
@@ -247,7 +247,7 @@ void main() {
 
       final GroundOverlay groundOverlayPosition3 = GroundOverlay.fromPosition(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         position: kPosition,
         width: kWidth,
         height: kHeight,
@@ -262,7 +262,7 @@ void main() {
 
       final GroundOverlay groundOverlayBounds1 = GroundOverlay.fromBounds(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         bounds: kBounds,
         anchor: kAnchor,
         bearing: kBearing,
@@ -274,7 +274,7 @@ void main() {
 
       final GroundOverlay groundOverlayBounds2 = GroundOverlay.fromBounds(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         bounds: kBounds,
         anchor: kAnchor,
         bearing: kBearing,
@@ -286,7 +286,7 @@ void main() {
 
       final GroundOverlay groundOverlayBounds3 = GroundOverlay.fromBounds(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         bounds: kBounds,
         anchor: kAnchor,
         bearing: kBearing,
@@ -306,7 +306,7 @@ void main() {
     test('hashCode', () {
       final GroundOverlay groundOverlay = GroundOverlay.fromPosition(
         groundOverlayId: kID,
-        image: kImage,
+        image: kMapBitmap,
         position: kPosition,
       );
 
@@ -318,7 +318,7 @@ void main() {
       expect(
         () => GroundOverlay.fromBounds(
           groundOverlayId: kID,
-          image: kImage,
+          image: kMapBitmap,
           bounds: kBounds,
           transparency: -0.1,
         ),
@@ -329,7 +329,7 @@ void main() {
       expect(
         () => GroundOverlay.fromBounds(
           groundOverlayId: kID,
-          image: kImage,
+          image: kMapBitmap,
           bounds: kBounds,
           transparency: 1.1,
         ),
@@ -340,7 +340,7 @@ void main() {
       expect(
         () => GroundOverlay.fromBounds(
           groundOverlayId: kID,
-          image: kImage,
+          image: kMapBitmap,
           bounds: kBounds,
           bearing: -1.0,
         ),
@@ -351,7 +351,7 @@ void main() {
       expect(
         () => GroundOverlay.fromBounds(
           groundOverlayId: kID,
-          image: kImage,
+          image: kMapBitmap,
           bounds: kBounds,
           bearing: 361.0,
         ),
@@ -362,7 +362,7 @@ void main() {
       expect(
         () => GroundOverlay.fromPosition(
           groundOverlayId: kID,
-          image: kImage,
+          image: kMapBitmap,
           position: kPosition,
           width: 100,
           height: -1,
@@ -374,21 +374,9 @@ void main() {
       expect(
         () => GroundOverlay.fromPosition(
           groundOverlayId: kID,
-          image: kImage,
+          image: kMapBitmap,
           position: kPosition,
           width: -1,
-          height: 100,
-        ),
-        throwsAssertionError,
-      );
-
-      // Image must be MapBitmap.
-      expect(
-        () => GroundOverlay.fromPosition(
-          groundOverlayId: kID,
-          image: BitmapDescriptor.defaultMarker,
-          position: kPosition,
-          width: 100,
           height: 100,
         ),
         throwsAssertionError,
