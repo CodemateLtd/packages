@@ -226,6 +226,25 @@ class MockMapsApi extends _i1.Mock implements _i2.MapsApi {
       ) as _i4.Future<void>);
 
   @override
+  _i4.Future<void> updateGroundOverlays(
+    List<_i2.PlatformGroundOverlay>? toAdd,
+    List<_i2.PlatformGroundOverlay>? toChange,
+    List<String>? idsToRemove,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateGroundOverlays,
+          [
+            toAdd,
+            toChange,
+            idsToRemove,
+          ],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
   _i4.Future<_i2.PlatformPoint> getScreenCoordinate(
           _i2.PlatformLatLng? latLng) =>
       (super.noSuchMethod(
