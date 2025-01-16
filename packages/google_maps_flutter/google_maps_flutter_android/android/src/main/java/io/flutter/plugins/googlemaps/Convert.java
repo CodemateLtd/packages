@@ -907,7 +907,6 @@ class Convert {
    * @param isCreatedWithBounds indicates if the GroundOverlay was created with bounds.
    * @return the converted PlatformGroundOverlay object.
    */
-  @VisibleForTesting
   static @NonNull Messages.PlatformGroundOverlay groundOverlayToPigeon(
       @NonNull GroundOverlay groundOverlay,
       @NonNull String groundOverlayId,
