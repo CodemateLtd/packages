@@ -734,6 +734,7 @@ void main() {
     final AssetMapBitmap image = AssetMapBitmap(
       'assets/red_square.png',
       imagePixelRatio: 1.0,
+      bitmapScaling: MapBitmapScaling.none,
     );
 
     final GroundOverlay object3 = GroundOverlay.fromPosition(
