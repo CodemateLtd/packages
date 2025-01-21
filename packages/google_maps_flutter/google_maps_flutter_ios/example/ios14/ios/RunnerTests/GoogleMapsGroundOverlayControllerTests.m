@@ -7,8 +7,9 @@
 @import XCTest;
 @import GoogleMaps;
 
-#import <OCMock/OCMock.h>
 #import <google_maps_flutter_ios/FGMGroundOverlayController_Test.h>
+
+#import <OCMock/OCMock.h>
 #import <google_maps_flutter_ios/messages.g.h>
 #import "PartiallyMockedMapView.h"
 
@@ -18,10 +19,10 @@
 @implementation GoogleMapsGroundOverlayControllerTests
 
 /// Returns GoogleMapGroundOverlayController object instantiated with position and a mocked map
-/// instance
+/// instance.
 ///
 /// @return An object of FLTGoogleMapGroundOverlayController
-- (FGMGroundOverlayController *)groundOverlayControllerWithPositionWithMockedMap {
++ (FGMGroundOverlayController *)groundOverlayControllerWithPositionWithMockedMap {
   NSString *imagePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"widegamut"
                                                                          ofType:@"png"
                                                                     inDirectory:@"assets"];
@@ -46,10 +47,10 @@
 }
 
 /// Returns GoogleMapGroundOverlayController object instantiated with bounds and a mocked map
-/// instance
+/// instance.
 ///
 /// @return An object of FLTGoogleMapGroundOverlayController
-- (FGMGroundOverlayController *)groundOverlayControllerWithBoundsWithMockedMap {
++ (FGMGroundOverlayController *)groundOverlayControllerWithBoundsWithMockedMap {
   NSString *imagePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"widegamut"
                                                                          ofType:@"png"
                                                                     inDirectory:@"assets"];
@@ -76,7 +77,7 @@
 
 - (void)testUpdatingGroundOverlayWithPosition {
   FGMGroundOverlayController *groundOverlayController =
-      [self groundOverlayControllerWithPositionWithMockedMap];
+      [GoogleMapsGroundOverlayControllerTests groundOverlayControllerWithPositionWithMockedMap];
 
   FGMPlatformLatLng *position = [FGMPlatformLatLng makeWithLatitude:52.4816 longitude:3.1791];
 
@@ -111,7 +112,7 @@
 
 - (void)testUpdatingGroundOverlayWithBounds {
   FGMGroundOverlayController *groundOverlayController =
-      [self groundOverlayControllerWithBoundsWithMockedMap];
+      [GoogleMapsGroundOverlayControllerTests groundOverlayControllerWithBoundsWithMockedMap];
 
   FGMPlatformLatLngBounds *bounds = [FGMPlatformLatLngBounds
       makeWithNortheast:[FGMPlatformLatLng makeWithLatitude:54.4816 longitude:5.1791]

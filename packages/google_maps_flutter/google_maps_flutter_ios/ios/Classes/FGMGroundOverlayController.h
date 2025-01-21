@@ -7,22 +7,24 @@
 
 #import "messages.g.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Controller of a single ground overlay  on the map.
 @interface FGMGroundOverlayController : NSObject
 
 /// The ground overlay this controller handles.
-@property(strong, nonatomic) GMSGroundOverlay *_Nonnull groundOverlay;
+@property(strong, nonatomic) GMSGroundOverlay *groundOverlay;
 
 /// Whether ground overlay is created with bounds or position.
-@property(nonatomic, assign) BOOL isCreatedWithBounds;
+@property(nonatomic, assign, getter=isCreatedWithBounds) BOOL createdWithBounds;
 
 /// Zoom level when ground overlay is initialized with position.
 @property(nonatomic, strong, nullable) NSNumber *zoomLevel;
 
 /// Initializes an instance of this class with a GMSGroundOverlay, a map view, and identifier.
-- (instancetype _Nullable)initWithGroundOverlay:(GMSGroundOverlay *_Nonnull)groundOverlay
-                                     identifier:(NSString *_Nonnull)identifier
-                                        mapView:(GMSMapView *_Nonnull)mapView
+- (instancetype _Nullable)initWithGroundOverlay:(GMSGroundOverlay *)groundOverlay
+                                     identifier:(NSString *)identifier
+                                        mapView:(GMSMapView *)mapView
                             isCreatedWithBounds:(BOOL)isCreatedWithBounds;
 
 /// Removes this ground overlay from the map.
@@ -33,25 +35,27 @@
 @interface FLTGroundOverlaysController : NSObject
 
 /// Initializes the controller with a GMSMapView, callback handler and registrar.
-- (instancetype _Nullable)initWithMapView:(GMSMapView *_Nonnull)mapView
-                          callbackHandler:(FGMMapsCallbackApi *_Nonnull)callbackHandler
-                                registrar:(NSObject<FlutterPluginRegistrar> *_Nonnull)registrar;
+- (instancetype _Nullable)initWithMapView:(GMSMapView *)mapView
+                          callbackHandler:(FGMMapsCallbackApi *)callbackHandler
+                                registrar:(NSObject<FlutterPluginRegistrar> *)registrar;
 
 /// Adds ground overlays to the map.
-- (void)addGroundOverlays:(NSArray<FGMPlatformGroundOverlay *> *_Nonnull)groundOverlaysToAdd;
+- (void)addGroundOverlays:(NSArray<FGMPlatformGroundOverlay *> *)groundOverlaysToAdd;
 
 /// Updates ground overlays on the map.
-- (void)changeGroundOverlays:(NSArray<FGMPlatformGroundOverlay *> *_Nonnull)groundOverlaysToChange;
+- (void)changeGroundOverlays:(NSArray<FGMPlatformGroundOverlay *> *)groundOverlaysToChange;
 
 /// Removes ground overlays from the map.
-- (void)removeGroundOverlaysWithIdentifiers:(NSArray<NSString *> *_Nonnull)identifiers;
+- (void)removeGroundOverlaysWithIdentifiers:(NSArray<NSString *> *)identifiers;
 
 /// Called when a ground overlay is tapped on the map.
-- (void)didTapGroundOverlayWithIdentifier:(NSString *_Nonnull)identifier;
+- (void)didTapGroundOverlayWithIdentifier:(NSString *)identifier;
 
 /// Returns true if a ground overlay with the given identifier exists on the map.
-- (bool)hasGroundOverlaysWithIdentifier:(NSString *_Nonnull)identifier;
+- (bool)hasGroundOverlaysWithIdentifier:(NSString *)identifier;
 
 /// Returns FGMPlatformGroundOverlay for identifier.
-- (nullable FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *_Nonnull)identifier;
+- (nullable FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)identifier;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -3,7 +3,8 @@
 // found in the LICENSE file.
 
 #import "FGMGroundOverlayController.h"
-#import "FGMUtils.h"
+
+#import "FGMImageUtils.h"
 #import "FLTGoogleMapJSONConversions.h"
 
 @interface FGMGroundOverlayController ()
@@ -24,7 +25,7 @@
     _groundOverlay = groundOverlay;
     _mapView = mapView;
     _groundOverlay.userData = @[ identifier ];
-    _isCreatedWithBounds = isCreatedWithBounds;
+    _createdWithBounds = isCreatedWithBounds;
   }
   return self;
 }
@@ -77,13 +78,11 @@
   [self setVisible:groundOverlay.visible];
   [self setZIndex:(int)groundOverlay.zIndex];
   [self setAnchor:CGPointMake(groundOverlay.anchor.x, groundOverlay.anchor.y)];
-  UIImage *image = [FGMUtils iconFromBitmap:groundOverlay.image
-                                  registrar:registrar
-                                screenScale:screenScale];
+  UIImage *image = IconFromBitmap(groundOverlay.image, registrar, screenScale);
   [self setIcon:image];
   [self setBearing:groundOverlay.bearing];
   [self setTransparency:groundOverlay.transparency];
-  if (_isCreatedWithBounds) {
+  if ([self isCreatedWithBounds]) {
     [self setPositionFromBounds:[[GMSCoordinateBounds alloc]
                                     initWithCoordinate:CLLocationCoordinate2DMake(
                                                            groundOverlay.bounds.northeast.latitude,
@@ -104,7 +103,7 @@
 
 /// A map from ground overlay id to the controller that manages it.
 @property(strong, nonatomic) NSMutableDictionary<NSString *, FGMGroundOverlayController *>
-    *groundOverlayIdentifierToController;
+    *groundOverlayControllerByIdentifier;
 
 /// A callback api for the map interactions.
 @property(strong, nonatomic) FGMMapsCallbackApi *callbackHandler;
@@ -126,7 +125,7 @@
   if (self) {
     _callbackHandler = callbackHandler;
     _mapView = mapView;
-    _groundOverlayIdentifierToController = [[NSMutableDictionary alloc] init];
+    _groundOverlayControllerByIdentifier = [[NSMutableDictionary alloc] init];
     _registrar = registrar;
   }
   return self;
@@ -150,18 +149,14 @@
                           coordinate:CLLocationCoordinate2DMake(
                                          groundOverlay.bounds.southwest.latitude,
                                          groundOverlay.bounds.southwest.longitude)]
-                             icon:[FGMUtils iconFromBitmap:groundOverlay.image
-                                                 registrar:self.registrar
-                                               screenScale:[self getScreenScale]]];
+                             icon:IconFromBitmap(groundOverlay.image, self.registrar, [self getScreenScale])];
     } else {
       NSAssert(groundOverlay.zoomLevel != nil,
                @"If ground overlay is initialized with position, zoomLevel is required");
       gmsOverlay = [GMSGroundOverlay
           groundOverlayWithPosition:CLLocationCoordinate2DMake(groundOverlay.position.latitude,
                                                                groundOverlay.position.longitude)
-                               icon:[FGMUtils iconFromBitmap:groundOverlay.image
-                                                   registrar:self.registrar
-                                                 screenScale:[self getScreenScale]]
+                               icon:IconFromBitmap(groundOverlay.image, self.registrar, [self getScreenScale])
                           zoomLevel:[groundOverlay.zoomLevel doubleValue]];
     }
     FGMGroundOverlayController *controller =
@@ -173,14 +168,14 @@
     [controller updateFromPlatformGroundOverlay:groundOverlay
                                       registrar:self.registrar
                                     screenScale:[self getScreenScale]];
-    self.groundOverlayIdentifierToController[identifier] = controller;
+    self.groundOverlayControllerByIdentifier[identifier] = controller;
   }
 }
 
 - (void)changeGroundOverlays:(NSArray<FGMPlatformGroundOverlay *> *)groundOverlaysToChange {
   for (FGMPlatformGroundOverlay *groundOverlay in groundOverlaysToChange) {
     NSString *identifier = groundOverlay.groundOverlayId;
-    FGMGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
+    FGMGroundOverlayController *controller = self.groundOverlayControllerByIdentifier[identifier];
     [controller updateFromPlatformGroundOverlay:groundOverlay
                                       registrar:self.registrar
                                     screenScale:[self getScreenScale]];
@@ -189,12 +184,12 @@
 
 - (void)removeGroundOverlaysWithIdentifiers:(NSArray<NSString *> *)identifiers {
   for (NSString *identifier in identifiers) {
-    FGMGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
+    FGMGroundOverlayController *controller = self.groundOverlayControllerByIdentifier[identifier];
     if (!controller) {
       continue;
     }
     [controller removeGroundOverlay];
-    [self.groundOverlayIdentifierToController removeObjectForKey:identifier];
+    [self.groundOverlayControllerByIdentifier removeObjectForKey:identifier];
   }
 }
 
@@ -202,7 +197,7 @@
   if (!identifier) {
     return;
   }
-  FGMGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
+  FGMGroundOverlayController *controller = self.groundOverlayControllerByIdentifier[identifier];
   if (!controller) {
     return;
   }
@@ -212,10 +207,7 @@
 }
 
 - (bool)hasGroundOverlaysWithIdentifier:(NSString *)identifier {
-  if (!identifier) {
-    return false;
-  }
-  return self.groundOverlayIdentifierToController[identifier] != nil;
+  return self.groundOverlayControllerByIdentifier[identifier] != nil;
 }
 
 - (CGFloat)getScreenScale {
@@ -229,7 +221,7 @@
 }
 
 - (nullable FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)identifier {
-  FGMGroundOverlayController *controller = self.groundOverlayIdentifierToController[identifier];
+  FGMGroundOverlayController *controller = self.groundOverlayControllerByIdentifier[identifier];
   if (!controller) {
     return nil;
   }
