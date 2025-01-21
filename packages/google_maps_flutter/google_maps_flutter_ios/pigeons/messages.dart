@@ -357,14 +357,6 @@ class PlatformCameraTargetBounds {
   final PlatformLatLngBounds? bounds;
 }
 
-/// Pair of double values, such as for an offset or size.
-class PlatformDoublePair {
-  PlatformDoublePair(this.x, this.y);
-
-  final double x;
-  final double y;
-}
-
 /// Pigeon equivalent of the GroundOverlay class.
 class PlatformGroundOverlay {
   PlatformGroundOverlay({
@@ -385,7 +377,7 @@ class PlatformGroundOverlay {
   final PlatformBitmap image;
   final PlatformLatLng? position;
   final PlatformLatLngBounds? bounds;
-  final PlatformDoublePair? anchor;
+  final PlatformPoint? anchor;
   final double transparency;
   final double bearing;
   final double zIndex;
