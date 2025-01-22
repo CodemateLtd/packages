@@ -149,14 +149,16 @@
                           coordinate:CLLocationCoordinate2DMake(
                                          groundOverlay.bounds.southwest.latitude,
                                          groundOverlay.bounds.southwest.longitude)]
-                             icon:FGMIconFromBitmap(groundOverlay.image, self.registrar, [self getScreenScale])];
+                             icon:FGMIconFromBitmap(groundOverlay.image, self.registrar,
+                                                    [self getScreenScale])];
     } else {
       NSAssert(groundOverlay.zoomLevel != nil,
                @"If ground overlay is initialized with position, zoomLevel is required");
       gmsOverlay = [GMSGroundOverlay
           groundOverlayWithPosition:CLLocationCoordinate2DMake(groundOverlay.position.latitude,
                                                                groundOverlay.position.longitude)
-                               icon:FGMIconFromBitmap(groundOverlay.image, self.registrar, [self getScreenScale])
+                               icon:FGMIconFromBitmap(groundOverlay.image, self.registrar,
+                                                      [self getScreenScale])
                           zoomLevel:[groundOverlay.zoomLevel doubleValue]];
     }
     FGMGroundOverlayController *controller =

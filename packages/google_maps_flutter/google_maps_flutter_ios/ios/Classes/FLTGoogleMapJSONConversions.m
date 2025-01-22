@@ -138,7 +138,7 @@ FGMPlatformGroundOverlay *FGMGetPigeonGroundOverlay(GMSGroundOverlay *groundOver
                                                                                .southWest
                                                                                .longitude]]
                          anchor:[FGMPlatformPoint makeWithX:groundOverlay.anchor.x
-                                                               y:groundOverlay.anchor.y]
+                                                          y:groundOverlay.anchor.y]
                    transparency:1.0f - groundOverlay.opacity
                         bearing:groundOverlay.bearing
                          zIndex:groundOverlay.zIndex
@@ -154,7 +154,7 @@ FGMPlatformGroundOverlay *FGMGetPigeonGroundOverlay(GMSGroundOverlay *groundOver
                                            longitude:groundOverlay.position.longitude]
                          bounds:nil
                          anchor:[FGMPlatformPoint makeWithX:groundOverlay.anchor.x
-                                                               y:groundOverlay.anchor.y]
+                                                          y:groundOverlay.anchor.y]
                    transparency:1.0f - groundOverlay.opacity
                         bearing:groundOverlay.bearing
                          zIndex:groundOverlay.zIndex

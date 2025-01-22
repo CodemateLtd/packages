@@ -31,7 +31,8 @@
 
   CGFloat screenScale = 3.0;
 
-  UIImage *resultImage = FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
+  UIImage *resultImage =
+      FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
 
   XCTAssertNotNil(resultImage);
   XCTAssertEqual(resultImage.scale, 1.0);
@@ -57,7 +58,8 @@
 
   CGFloat screenScale = 3.0;
 
-  UIImage *resultImage = FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
+  UIImage *resultImage =
+      FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
 
   XCTAssertNotNil(resultImage);
   XCTAssertEqual(resultImage.scale, 10);
@@ -85,7 +87,8 @@
 
   CGFloat screenScale = 3.0;
 
-  UIImage *resultImage = FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
+  UIImage *resultImage =
+      FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
   XCTAssertNotNil(resultImage);
   XCTAssertEqual(testImage.scale, 1.0);
 
@@ -118,7 +121,8 @@
 
   CGFloat screenScale = 3.0;
 
-  UIImage *resultImage = FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
+  UIImage *resultImage =
+      FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
   XCTAssertNotNil(resultImage);
   XCTAssertEqual(resultImage.scale, screenScale);
   XCTAssertEqual(resultImage.size.width, width);
@@ -143,7 +147,8 @@
 
   CGFloat screenScale = 3.0;
 
-  UIImage *resultImage = FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
+  UIImage *resultImage =
+      FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
 
   XCTAssertNotNil(resultImage);
   XCTAssertEqual(resultImage.scale, 1.0);
@@ -168,7 +173,8 @@
 
   CGFloat screenScale = 3.0;
 
-  UIImage *resultImage = FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
+  UIImage *resultImage =
+      FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
 
   XCTAssertNotNil(resultImage);
   XCTAssertEqual(resultImage.scale, 1.0);
@@ -193,7 +199,8 @@
 
   CGFloat screenScale = 3.0;
 
-  UIImage *resultImage = FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
+  UIImage *resultImage =
+      FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
   XCTAssertNotNil(resultImage);
   XCTAssertEqual(resultImage.scale, 10);
   XCTAssertEqual(resultImage.size.width, 0.1);
@@ -219,7 +226,8 @@
 
   CGFloat screenScale = 3.0;
 
-  UIImage *resultImage = FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
+  UIImage *resultImage =
+      FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
 
   XCTAssertNotNil(resultImage);
   XCTAssertEqual(testImage.scale, 1.0);
@@ -252,7 +260,8 @@
 
   CGFloat screenScale = 3.0;
 
-  UIImage *resultImage = FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
+  UIImage *resultImage =
+      FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
   XCTAssertNotNil(resultImage);
   XCTAssertEqual(resultImage.scale, screenScale);
   XCTAssertEqual(resultImage.size.width, width);
@@ -276,7 +285,8 @@
 
   CGFloat screenScale = 3.0;
 
-  UIImage *resultImage = FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
+  UIImage *resultImage =
+      FGMIconFromBitmap([FGMPlatformBitmap makeWithBitmap:bitmap], mockRegistrar, screenScale);
   XCTAssertNotNil(resultImage);
   XCTAssertEqual(resultImage.scale, 1.0);
   XCTAssertEqual(resultImage.size.width, 1.0);
