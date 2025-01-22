@@ -2,18 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "FGMUtils.h"
+#import "FGMImageUtils.h"
+#import "Foundation/Foundation.h"
 
-@interface FGMUtils ()
+static UIImage *scaleImage(UIImage *image, double scale);
+static UIImage *scaledImageWithScale(UIImage *image, CGFloat scale);
+static UIImage *scaledImageWithSize(UIImage *image, CGSize size);
+static UIImage *scaledImage(UIImage *image, NSNumber *width, NSNumber *height, CGFloat screenScale);
 
-@end
-
-@implementation FGMUtils
-
-+ (UIImage *)iconFromBitmap:(FGMPlatformBitmap *)platformBitmap
-                  registrar:(NSObject<FlutterPluginRegistrar> *)registrar
-                screenScale:(CGFloat)screenScale {
-  NSAssert(screenScale > 0, @"Screen scale must be greater than 0");
+UIImage *FGMIconFromBitmap(FGMPlatformBitmap *platformBitmap,
+                           NSObject<FlutterPluginRegistrar> *registrar, CGFloat screenScale) {
+  assert(screenScale > 0 && "Screen scale must be greater than 0");
   // See comment in messages.dart for why this is so loosely typed. See also
   // https://github.com/flutter/flutter/issues/117819.
   id bitmap = platformBitmap.bitmap;
@@ -40,7 +39,7 @@
     // Refer to the flutter google_maps_flutter_platform_interface package for details.
     FGMPlatformBitmapAssetImage *bitmapAssetImage = bitmap;
     image = [UIImage imageNamed:[registrar lookupKeyForAsset:bitmapAssetImage.name]];
-    image = [self scaleImage:image by:bitmapAssetImage.scale];
+    image = scaleImage(image, bitmapAssetImage.scale);
   } else if ([bitmap isKindOfClass:[FGMPlatformBitmapBytes class]]) {
     // Deprecated: This message handling for 'fromBytes' has been replaced by 'bytes'.
     // Refer to the flutter google_maps_flutter_platform_interface package for details.
@@ -62,10 +61,10 @@
       NSNumber *width = bitmapAssetMap.width;
       NSNumber *height = bitmapAssetMap.height;
       if (width || height) {
-        image = [FGMUtils scaledImage:image withScale:screenScale];
-        image = [FGMUtils scaledImage:image withWidth:width height:height screenScale:screenScale];
+        image = scaledImageWithScale(image, screenScale);
+        image = scaledImage(image, width, height, screenScale);
       } else {
-        image = [FGMUtils scaledImage:image withScale:bitmapAssetMap.imagePixelRatio];
+        image = scaledImageWithScale(image, bitmapAssetMap.imagePixelRatio);
       }
     }
   } else if ([bitmap isKindOfClass:[FGMPlatformBitmapBytesMap class]]) {
@@ -80,13 +79,10 @@
 
         if (width || height) {
           // Before scaling the image, image must be in screenScale.
-          image = [FGMUtils scaledImage:image withScale:screenScale];
-          image = [FGMUtils scaledImage:image
-                              withWidth:width
-                                 height:height
-                            screenScale:screenScale];
+          image = scaledImageWithScale(image, screenScale);
+          image = scaledImage(image, width, height, screenScale);
         } else {
-          image = [FGMUtils scaledImage:image withScale:bitmapBytesMap.imagePixelRatio];
+          image = scaledImageWithScale(image, bitmapBytesMap.imagePixelRatio);
         }
       } else {
         // No scaling, load image from bytes without scale parameter.
@@ -106,7 +102,7 @@
 /// flutter google_maps_flutter_platform_interface package which has been replaced by 'bytes'
 /// message handling. It will be removed when the deprecated image bitmap description type
 /// 'fromBytes' is removed from the platform interface.
-+ (UIImage *)scaleImage:(UIImage *)image by:(double)scale {
+UIImage *scaleImage(UIImage *image, double scale) {
   if (fabs(scale - 1) > 1e-3) {
     return [UIImage imageWithCGImage:[image CGImage]
                                scale:(image.scale * scale)
@@ -123,7 +119,7 @@
 /// @param image The UIImage to scale.
 /// @param scale The factor by which to scale the image.
 /// @return UIImage Returns the scaled UIImage.
-+ (UIImage *)scaledImage:(UIImage *)image withScale:(CGFloat)scale {
+UIImage *scaledImageWithScale(UIImage *image, CGFloat scale) {
   if (fabs(scale - image.scale) > DBL_EPSILON) {
     return [UIImage imageWithCGImage:[image CGImage]
                                scale:scale
@@ -140,7 +136,7 @@
 /// @param image The UIImage to scale.
 /// @param size The target CGSize to scale the image to.
 /// @return UIImage Returns the scaled UIImage.
-+ (UIImage *)scaledImage:(UIImage *)image withSize:(CGSize)size {
+UIImage *scaledImageWithSize(UIImage *image, CGSize size) {
   CGFloat originalPixelWidth = image.size.width * image.scale;
   CGFloat originalPixelHeight = image.size.height * image.scale;
 
@@ -159,11 +155,11 @@
 
   // Check if the aspect ratios are approximately equal.
   CGSize originalPixelSize = CGSizeMake(originalPixelWidth, originalPixelHeight);
-  if ([FGMUtils isScalableWithScaleFactorFromSize:originalPixelSize toSize:size]) {
+  if (FGMIsScalableWithScaleFactorFromSize(originalPixelSize, size)) {
     // Scaled image has close to same aspect ratio,
     // updating image scale instead of resizing image.
     CGFloat factor = originalPixelWidth / size.width;
-    return [FGMUtils scaledImage:image withScale:(image.scale * factor)];
+    return scaledImageWithScale(image, image.scale * factor);
   } else {
     // Aspect ratios differ significantly, resize the image.
     UIGraphicsImageRendererFormat *format = [UIGraphicsImageRendererFormat defaultFormat];
@@ -177,7 +173,7 @@
         }];
 
     // Return image with proper scaling.
-    return [FGMUtils scaledImage:newImage withScale:image.scale];
+    return scaledImageWithScale(newImage, image.scale);
   }
 }
 
@@ -189,10 +185,7 @@
 /// @param height The target height to scale the image to.
 /// @param screenScale The current screen scale.
 /// @return UIImage Returns the scaled UIImage.
-+ (UIImage *)scaledImage:(UIImage *)image
-               withWidth:(NSNumber *)width
-                  height:(NSNumber *)height
-             screenScale:(CGFloat)screenScale {
+UIImage *scaledImage(UIImage *image, NSNumber *width, NSNumber *height, CGFloat screenScale) {
   if (!width && !height) {
     return image;
   }
@@ -212,10 +205,10 @@
 
   CGSize targetSize =
       CGSizeMake(round(targetWidth * screenScale), round(targetHeight * screenScale));
-  return [FGMUtils scaledImage:image withSize:targetSize];
+  return scaledImageWithSize(image, targetSize);
 }
 
-+ (BOOL)isScalableWithScaleFactorFromSize:(CGSize)originalSize toSize:(CGSize)targetSize {
+BOOL FGMIsScalableWithScaleFactorFromSize(CGSize originalSize, CGSize targetSize) {
   // Select the scaling factor based on the longer side to have good precision.
   CGFloat scaleFactor = (originalSize.width > originalSize.height)
                             ? (targetSize.width / originalSize.width)
@@ -234,4 +227,3 @@
   // if both dimensions are within the threshold.
   return widthWithinThreshold && heightWithinThreshold;
 }
-@end
