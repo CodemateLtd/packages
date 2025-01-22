@@ -628,10 +628,6 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
     return PlatformSize(width: size.width, height: size.height);
   }
 
-  static PlatformDoublePair _platformPairFromOffset(Offset offset) {
-    return PlatformDoublePair(x: offset.dx, y: offset.dy);
-  }
-
   static PlatformCircle _platformCircleFromCircle(Circle circle) {
     return PlatformCircle(
       consumeTapEvents: circle.consumeTapEvents,
@@ -681,7 +677,7 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
     return PlatformGroundOverlay(
       groundOverlayId: groundOverlay.groundOverlayId.value,
       anchor: groundOverlay.anchor != null
-          ? _platformPairFromOffset(groundOverlay.anchor!)
+          ? _platformPointFromOffset(groundOverlay.anchor!)
           : null,
       image: platformBitmapFromBitmapDescriptor(groundOverlay.image),
       position: groundOverlay.position != null
