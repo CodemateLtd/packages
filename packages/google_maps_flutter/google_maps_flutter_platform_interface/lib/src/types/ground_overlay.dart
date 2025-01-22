@@ -79,7 +79,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     this.anchor = const Offset(0.5, 0.5),
     this.transparency = 0.0,
     this.bearing = 0.0,
-    this.zIndex = 0.0,
+    this.zIndex = 0,
     this.visible = true,
     this.clickable = true,
     this.onTap,
@@ -120,7 +120,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     Offset anchor = const Offset(0.5, 0.5),
     double bearing = 0.0,
     double transparency = 0.0,
-    double zIndex = 0.0,
+    int zIndex = 0,
     bool visible = true,
     bool clickable = true,
     VoidCallback? onTap,
@@ -166,7 +166,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
     Offset anchor = const Offset(0.5, 0.5),
     double bearing = 0.0,
     double transparency = 0.0,
-    double zIndex = 0.0,
+    int zIndex = 0,
     bool visible = true,
     bool clickable = true,
     VoidCallback? onTap,
@@ -242,8 +242,8 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
 
   /// The tile overlay's zIndex, i.e., the order in which it will be drawn where
   /// overlays with larger values are drawn above those with lower values.
-  /// The default is 0.0.
-  final double zIndex;
+  /// The default is 0.
+  final int zIndex;
 
   /// The visibility for the tile overlay. The default is true.
   final bool visible;
@@ -297,7 +297,7 @@ class GroundOverlay implements MapsObject<GroundOverlay> {
   GroundOverlay copyWith({
     double? bearingParam,
     double? transparencyParam,
-    double? zIndexParam,
+    int? zIndexParam,
     bool? visibleParam,
     bool? clickableParam,
     VoidCallback? onTapParam,

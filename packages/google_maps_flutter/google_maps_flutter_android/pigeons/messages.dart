@@ -411,7 +411,7 @@ class PlatformGroundOverlay {
   final PlatformDoublePair? anchor;
   final double transparency;
   final double bearing;
-  final double zIndex;
+  final int zIndex;
   final bool visible;
   final bool clickable;
 }

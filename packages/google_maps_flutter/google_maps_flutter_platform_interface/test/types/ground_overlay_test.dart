@@ -23,7 +23,7 @@ void main() {
     const Offset kAnchor = Offset(0.3, 0.7);
     const double kBearing = 45.0;
     const double kTransparency = 0.5;
-    const double kZIndex = 1.0;
+    const int kZIndex = 1;
     const bool kVisible = false;
     const bool kClickable = false;
     const double kWidth = 200;

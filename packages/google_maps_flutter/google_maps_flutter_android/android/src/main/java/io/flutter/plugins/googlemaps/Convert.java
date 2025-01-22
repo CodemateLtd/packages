@@ -932,7 +932,7 @@ class Convert {
             .setHeight((double) groundOverlay.getWidth())
             .setBearing((double) groundOverlay.getBearing())
             .setTransparency((double) groundOverlay.getTransparency())
-            .setZIndex((double) groundOverlay.getZIndex())
+            .setZIndex((long) groundOverlay.getZIndex())
             .setVisible(groundOverlay.isVisible())
             .setClickable(groundOverlay.isClickable());
 

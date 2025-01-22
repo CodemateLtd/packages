@@ -59,23 +59,14 @@ class GroundOverlaysController {
     }
   }
 
-  void removeGroundOverlays(List<String> groundOverlayIdsToRemove) {
-    if (groundOverlayIdsToRemove == null) {
-      return;
-    }
-    for (String groundOverlayId : groundOverlayIdsToRemove) {
-      if (groundOverlayId == null) {
-        continue;
-      }
+  void removeGroundOverlays(@NonNull List<String> groundOverlayIdsToRemove) {
+    for (@NonNull String groundOverlayId : groundOverlayIdsToRemove) {
       removeGroundOverlay(groundOverlayId);
     }
   }
 
   @Nullable
-  GroundOverlay getGroundOverlay(String groundOverlayId) {
-    if (groundOverlayId == null) {
-      return null;
-    }
+  GroundOverlay getGroundOverlay(@NonNull String groundOverlayId) {
     GroundOverlayController groundOverlayController =
         groundOverlayIdToController.get(groundOverlayId);
     if (groundOverlayController == null) {
@@ -117,7 +108,7 @@ class GroundOverlaysController {
     }
   }
 
-  private void removeGroundOverlay(String groundOverlayId) {
+  private void removeGroundOverlay(@NonNull String groundOverlayId) {
     GroundOverlayController groundOverlayController =
         groundOverlayIdToController.get(groundOverlayId);
     if (groundOverlayController != null) {
@@ -128,7 +119,7 @@ class GroundOverlaysController {
     }
   }
 
-  void onGroundOverlayTap(String googleGroundOverlayId) {
+  void onGroundOverlayTap(@NonNull String googleGroundOverlayId) {
     String groundOverlayId =
         googleMapsGroundOverlayIdToDartGroundOverlayId.get(googleGroundOverlayId);
     if (groundOverlayId == null) {
@@ -137,10 +128,7 @@ class GroundOverlaysController {
     flutterApi.onGroundOverlayTap(groundOverlayId, new NoOpVoidResult());
   }
 
-  boolean isCreatedWithBounds(String groundOverlayId) {
-    if (groundOverlayId == null) {
-      return false;
-    }
+  boolean isCreatedWithBounds(@NonNull String groundOverlayId) {
     GroundOverlayController groundOverlayController =
         groundOverlayIdToController.get(groundOverlayId);
     if (groundOverlayController == null) {
