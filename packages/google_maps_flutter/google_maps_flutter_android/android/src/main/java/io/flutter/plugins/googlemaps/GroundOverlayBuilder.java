@@ -4,6 +4,7 @@
 
 package io.flutter.plugins.googlemaps;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
@@ -53,30 +54,21 @@ class GroundOverlayBuilder implements GroundOverlaySink {
   }
 
   @Override
-  public void setPosition(LatLng location, Float width, @Nullable Float height) {
-    if (location != null && width != null) {
-      if (height != null) {
-        groundOverlayOptions.position(location, width, height);
-      } else {
-        groundOverlayOptions.position(location, width);
-      }
+  public void setPosition(@NonNull LatLng location, @NonNull Float width, @Nullable Float height) {
+    if (height != null) {
+      groundOverlayOptions.position(location, width, height);
     } else {
-      throw new IllegalArgumentException(
-          "Position and width must be provided, height is optional.");
+      groundOverlayOptions.position(location, width);
     }
   }
 
   @Override
-  public void setPositionFromBounds(LatLngBounds bounds) {
-    if (bounds != null) {
-      groundOverlayOptions.positionFromBounds(bounds);
-    } else {
-      throw new IllegalArgumentException("Bounds must be provided.");
-    }
+  public void setPositionFromBounds(@NonNull LatLngBounds bounds) {
+    groundOverlayOptions.positionFromBounds(bounds);
   }
 
   @Override
-  public void setImage(BitmapDescriptor image) {
+  public void setImage(@NonNull BitmapDescriptor image) {
     groundOverlayOptions.image(image);
   }
 }

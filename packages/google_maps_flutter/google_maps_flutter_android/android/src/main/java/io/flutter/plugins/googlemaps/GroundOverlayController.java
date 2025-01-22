@@ -4,6 +4,7 @@
 
 package io.flutter.plugins.googlemaps;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.GroundOverlay;
@@ -15,7 +16,7 @@ class GroundOverlayController implements GroundOverlaySink {
   private final String googleMapsGroundOverlayId;
   private final boolean isCreatedWithBounds;
 
-  GroundOverlayController(GroundOverlay groundOverlay, boolean isCreatedWithBounds) {
+  GroundOverlayController(@NonNull GroundOverlay groundOverlay, boolean isCreatedWithBounds) {
     this.groundOverlay = groundOverlay;
     this.googleMapsGroundOverlayId = groundOverlay.getId();
     this.isCreatedWithBounds = isCreatedWithBounds;
@@ -58,12 +59,12 @@ class GroundOverlayController implements GroundOverlaySink {
   }
 
   @Override
-  public void setImage(BitmapDescriptor imageDescriptor) {
+  public void setImage(@NonNull BitmapDescriptor imageDescriptor) {
     groundOverlay.setImage(imageDescriptor);
   }
 
   @Override
-  public void setPosition(LatLng location, Float width, @Nullable Float height) {
+  public void setPosition(@NonNull LatLng location, @NonNull Float width, @Nullable Float height) {
     groundOverlay.setPosition(location);
     if (height == null) {
       groundOverlay.setDimensions(width);
@@ -73,7 +74,7 @@ class GroundOverlayController implements GroundOverlaySink {
   }
 
   @Override
-  public void setPositionFromBounds(LatLngBounds bounds) {
+  public void setPositionFromBounds(@NonNull LatLngBounds bounds) {
     groundOverlay.setPositionFromBounds(bounds);
   }
 

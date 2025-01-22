@@ -200,8 +200,8 @@ class GroundOverlayBodyState extends State<GroundOverlayBody> {
 
   void _changeZIndex() {
     assert(_groundOverlay != null);
-    final double current = _groundOverlay!.zIndex;
-    final double zIndex = current == 12.0 ? 0.0 : current + 1.0;
+    final int current = _groundOverlay!.zIndex;
+    final int zIndex = current == 12 ? 0 : current + 1;
     setState(() {
       _groundOverlay = _groundOverlay!.copyWith(zIndexParam: zIndex);
     });

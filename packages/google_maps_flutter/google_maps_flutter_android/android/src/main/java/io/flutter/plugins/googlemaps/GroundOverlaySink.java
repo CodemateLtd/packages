@@ -4,6 +4,7 @@
 
 package io.flutter.plugins.googlemaps;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
@@ -23,9 +24,9 @@ interface GroundOverlaySink {
 
   void setClickable(boolean clickable);
 
-  void setImage(BitmapDescriptor imageDescriptor);
+  void setImage(@NonNull BitmapDescriptor imageDescriptor);
 
-  void setPosition(LatLng location, Float width, @Nullable Float height);
+  void setPosition(@NonNull LatLng location, @NonNull Float width, @Nullable Float height);
 
-  void setPositionFromBounds(LatLngBounds bounds);
+  void setPositionFromBounds(@NonNull LatLngBounds bounds);
 }
