@@ -68,7 +68,7 @@ public class GroundOverlaysControllerTest {
                         .build())
                 .build())
         .setBearing(1.0)
-        .setZIndex(1.0)
+        .setZIndex(1L)
         .setVisible(true)
         .setTransparency(1.0)
         .setClickable(true);
