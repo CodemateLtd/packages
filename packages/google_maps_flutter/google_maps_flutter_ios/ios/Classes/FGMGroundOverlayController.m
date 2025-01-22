@@ -78,7 +78,7 @@
   [self setVisible:groundOverlay.visible];
   [self setZIndex:(int)groundOverlay.zIndex];
   [self setAnchor:CGPointMake(groundOverlay.anchor.x, groundOverlay.anchor.y)];
-  UIImage *image = IconFromBitmap(groundOverlay.image, registrar, screenScale);
+  UIImage *image = FGMIconFromBitmap(groundOverlay.image, registrar, screenScale);
   [self setIcon:image];
   [self setBearing:groundOverlay.bearing];
   [self setTransparency:groundOverlay.transparency];
@@ -149,14 +149,14 @@
                           coordinate:CLLocationCoordinate2DMake(
                                          groundOverlay.bounds.southwest.latitude,
                                          groundOverlay.bounds.southwest.longitude)]
-                             icon:IconFromBitmap(groundOverlay.image, self.registrar, [self getScreenScale])];
+                             icon:FGMIconFromBitmap(groundOverlay.image, self.registrar, [self getScreenScale])];
     } else {
       NSAssert(groundOverlay.zoomLevel != nil,
                @"If ground overlay is initialized with position, zoomLevel is required");
       gmsOverlay = [GMSGroundOverlay
           groundOverlayWithPosition:CLLocationCoordinate2DMake(groundOverlay.position.latitude,
                                                                groundOverlay.position.longitude)
-                               icon:IconFromBitmap(groundOverlay.image, self.registrar, [self getScreenScale])
+                               icon:FGMIconFromBitmap(groundOverlay.image, self.registrar, [self getScreenScale])
                           zoomLevel:[groundOverlay.zoomLevel doubleValue]];
     }
     FGMGroundOverlayController *controller =

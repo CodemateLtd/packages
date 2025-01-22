@@ -9,10 +9,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Creates a UIImage from Pigeon bitmap.
-UIImage *IconFromBitmap(FGMPlatformBitmap *platformBitmap,
+UIImage *FGMIconFromBitmap(FGMPlatformBitmap *platformBitmap,
                            NSObject<FlutterPluginRegistrar> *registrar,
                            CGFloat screenScale);
 /// Returns a BOOL indicating whether image is considered scalable with the given scale factor from size.
-BOOL IsScalableWithScaleFactorFromSize(CGSize originalSize, CGSize targetSize);
+BOOL FGMIsScalableWithScaleFactorFromSize(CGSize originalSize, CGSize targetSize);
 
 NS_ASSUME_NONNULL_END

@@ -113,7 +113,7 @@
   [self setAlpha:platformMarker.alpha];
   [self setAnchor:FGMGetCGPointForPigeonPoint(platformMarker.anchor)];
   [self setDraggable:platformMarker.draggable];
-  UIImage *image = IconFromBitmap(platformMarker.icon, registrar, screenScale);
+  UIImage *image = FGMIconFromBitmap(platformMarker.icon, registrar, screenScale);
   [self setIcon:image];
   [self setFlat:platformMarker.flat];
   [self setConsumeTapEvents:platformMarker.consumeTapEvents];
