@@ -521,7 +521,7 @@ void runTests() {
         moreOrLessEquals(source.transparency, epsilon: floatTolerance),
       );
 
-      // Web does not support bearing
+      // Web does not support bearing.
       if (!isWeb) {
         expect(
           response.bearing,
@@ -529,35 +529,35 @@ void runTests() {
         );
       }
 
-      // Only test bounds if it was given in the original object
+      // Only test bounds if it was given in the original object.
       if (source.bounds != null) {
         expect(response.bounds, source.bounds);
       }
 
-      // Only test position if it was given in the original object
+      // Only test position if it was given in the original object.
       if (source.position != null) {
         expect(response.position, source.position);
       }
 
       expect(response.clickable, source.clickable);
 
-      // Web does not support bearing
+      // Web does not support zIndex.
       if (!isWeb) {
         expect(response.zIndex, source.zIndex);
       }
 
-      // Only Android supports width and height
+      // Only Android supports width and height.
       if (isAndroid) {
         expect(response.width, source.width);
         expect(response.height, source.height);
       }
 
-      // Only iOS supports zoomLevel
+      // Only iOS supports zoomLevel.
       if (isIOS) {
         expect(response.zoomLevel, source.zoomLevel);
       }
 
-      // Only Android (using position) and iOS supports `anchor`
+      // Only Android (using position) and iOS supports `anchor`.
       if ((isAndroid && source.position != null) || isIOS) {
         expect(
           response.anchor?.dx,
@@ -586,7 +586,7 @@ void runTests() {
             groundOverlays: <GroundOverlay>{
               groundOverlayBounds1,
               groundOverlayBounds2,
-              // Web does not support position-based ground overlays
+              // Web does not support position-based ground overlays.
               if (!isWeb) groundOverlayPosition1,
             },
             onMapCreated: (GoogleMapController controller) {
@@ -616,7 +616,7 @@ void runTests() {
           groundOverlayBoundsInfo2,
         );
 
-        // Web does not support position-based ground overlays
+        // Web does not support position-based ground overlays.
         if (!isWeb) {
           final GroundOverlay groundOverlayPositionInfo1 = (await inspector
               .getGroundOverlayInfo(groundOverlayPosition1.mapsId,
@@ -642,7 +642,7 @@ void runTests() {
             initialCameraPosition: kInitialCameraPosition,
             groundOverlays: <GroundOverlay>{
               groundOverlayBounds1,
-              // Web does not support position-based ground overlays
+              // Web does not support position-based ground overlays.
               if (!isWeb) groundOverlayPosition1
             },
             onMapCreated: (GoogleMapController controller) {
@@ -683,7 +683,7 @@ void runTests() {
             initialCameraPosition: kInitialCameraPosition,
             groundOverlays: <GroundOverlay>{
               groundOverlayBounds1New,
-              // Web does not support position-based ground overlays
+              // Web does not support position-based ground overlays.
               if (!isWeb) groundOverlayPosition1New
             },
             onMapCreated: (GoogleMapController controller) {
@@ -704,7 +704,7 @@ void runTests() {
           groundOverlayBounds1Info,
         );
 
-        // Web does not support position-based ground overlays
+        // Web does not support position-based ground overlays.
         if (!isWeb) {
           final GroundOverlay groundOverlayPosition1Info = (await inspector
               .getGroundOverlayInfo(groundOverlayPosition1.mapsId,
@@ -731,7 +731,7 @@ void runTests() {
             initialCameraPosition: kInitialCameraPosition,
             groundOverlays: <GroundOverlay>{
               groundOverlayBounds1,
-              // Web does not support position-based ground overlays
+              // Web does not support position-based ground overlays.
               if (!isWeb) groundOverlayPosition1
             },
             onMapCreated: (GoogleMapController controller) {
@@ -766,7 +766,7 @@ void runTests() {
             .getGroundOverlayInfo(groundOverlayBounds1.mapsId, mapId: mapId);
         expect(groundOverlayBounds1Info, isNull);
 
-        // Web does not support position-based ground overlays
+        // Web does not support position-based ground overlays.
         if (!isWeb) {
           final GroundOverlay? groundOverlayPositionInfo = await inspector
               .getGroundOverlayInfo(groundOverlayPosition1.mapsId,
