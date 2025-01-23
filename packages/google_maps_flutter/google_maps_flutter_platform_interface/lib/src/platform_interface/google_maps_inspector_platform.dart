@@ -148,6 +148,9 @@ abstract class GoogleMapsInspectorPlatform extends PlatformInterface {
     throw UnimplementedError('getClusters() has not been implemented.');
   }
 
+  /// If the platform supports getting camera position
+  bool supportsGettingGameraPosition() => false;
+
   /// Returns current camera position.
   ///
   /// The returned object will be synthesized from platform data, so will not
