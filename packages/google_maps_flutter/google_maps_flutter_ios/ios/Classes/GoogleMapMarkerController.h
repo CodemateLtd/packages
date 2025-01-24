@@ -8,6 +8,7 @@
 #import "FGMClusterManagersController.h"
 #import "GoogleMapController.h"
 #import "messages.g.h"
+#import "ImageRegistry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,13 +23,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hideInfoWindow;
 - (BOOL)isInfoWindowShown;
 - (void)removeMarker;
++ (UIImage *)iconFromBitmap:(FGMPlatformBitmap *)platformBitmap
+                  registrar:(NSObject<FlutterPluginRegistrar> *)registrar
+                screenScale:(CGFloat)screenScale
+             imageRegistry:(ImageRegistry *)imageRegistry;
 @end
 
 @interface FLTMarkersController : NSObject
 - (instancetype)initWithMapView:(GMSMapView *)mapView
                 callbackHandler:(FGMMapsCallbackApi *)callbackHandler
       clusterManagersController:(nullable FGMClusterManagersController *)clusterManagersController
-                      registrar:(NSObject<FlutterPluginRegistrar> *)registrar;
+                      registrar:(NSObject<FlutterPluginRegistrar> *)registrar
+                  imageRegistry:(ImageRegistry *)imageRegistry;
 - (void)addMarkers:(NSArray<FGMPlatformMarker *> *)markersToAdd;
 - (void)changeMarkers:(NSArray<FGMPlatformMarker *> *)markersToChange;
 - (void)removeMarkersWithIdentifiers:(NSArray<NSString *> *)identifiers;

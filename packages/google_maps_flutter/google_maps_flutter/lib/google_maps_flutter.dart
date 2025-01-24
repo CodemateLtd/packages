@@ -59,3 +59,4 @@ export 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 
 part 'src/controller.dart';
 part 'src/google_map.dart';
+part 'src/bitmap_registry.dart';

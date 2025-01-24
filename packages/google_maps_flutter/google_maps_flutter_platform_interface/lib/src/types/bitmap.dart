@@ -496,6 +496,26 @@ abstract class MapBitmap extends BitmapDescriptor {
   final double? height;
 }
 
+/// Represents a [BitmapDescriptor] that was previously registered with the
+/// bitmap registry.
+class RegisteredMapBitmap extends BitmapDescriptor {
+  /// Creates a [RegisteredMapBitmap] with the given [id].
+  const RegisteredMapBitmap({
+    required this.id,
+  }) : super._();
+
+  /// The id of the registered bitmap.
+  final int id;
+
+  @override
+  Object toJson() {
+    return <Object>[
+      'registered',
+      id,
+    ];
+  }
+}
+
 /// Represents a [BitmapDescriptor] that is created from an asset image.
 ///
 /// This class extends [BitmapDescriptor] to support loading images from assets
