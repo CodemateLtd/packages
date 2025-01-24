@@ -24,6 +24,7 @@ import 'package:web/web.dart';
 
 import 'src/dom_window_extension.dart';
 import 'src/google_maps_inspector_web.dart';
+import 'src/image_registry.dart';
 import 'src/map_styler.dart';
 import 'src/marker_clustering.dart';
 import 'src/third_party/to_screen_location/to_screen_location.dart';

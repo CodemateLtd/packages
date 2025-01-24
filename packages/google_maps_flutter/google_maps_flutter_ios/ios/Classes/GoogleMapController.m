@@ -11,6 +11,7 @@
 #import "FLTGoogleMapJSONConversions.h"
 #import "FLTGoogleMapTileOverlayController.h"
 #import "messages.g.h"
+#import "ImageRegistry.h"
 
 #pragma mark - Conversion of JSON-like values sent via platform channels. Forward declarations.
 
@@ -159,17 +160,20 @@
   }
 
   GMSMapView *mapView = [[GMSMapView alloc] initWithOptions:options];
+  ImageRegistry *imageRegistry = [[ImageRegistry alloc] initWithRegistrar:registrar];
 
   return [self initWithMapView:mapView
                 viewIdentifier:viewId
             creationParameters:creationParameters
-                     registrar:registrar];
+                     registrar:registrar
+                 imageRegistry:imageRegistry];
 }
 
 - (instancetype)initWithMapView:(GMSMapView *_Nonnull)mapView
                  viewIdentifier:(int64_t)viewId
              creationParameters:(FGMPlatformMapViewCreationParams *)creationParameters
-                      registrar:(NSObject<FlutterPluginRegistrar> *_Nonnull)registrar {
+                      registrar:(NSObject<FlutterPluginRegistrar> *_Nonnull)registrar
+                  imageRegistry:(ImageRegistry *)imageRegistry {
   if (self = [super init]) {
     _mapView = mapView;
 
@@ -189,7 +193,8 @@
     _markersController = [[FLTMarkersController alloc] initWithMapView:_mapView
                                                        callbackHandler:_dartCallbackHandler
                                              clusterManagersController:_clusterManagersController
-                                                             registrar:registrar];
+                                                             registrar:registrar
+                                                         imageRegistry:imageRegistry];
     _polygonsController = [[FLTPolygonsController alloc] initWithMapView:_mapView
                                                          callbackHandler:_dartCallbackHandler
                                                                registrar:registrar];
@@ -221,6 +226,7 @@
                                                           messenger:registrar.messenger
                                                        pigeonSuffix:pigeonSuffix];
     SetUpFGMMapsApiWithSuffix(registrar.messenger, _callHandler, pigeonSuffix);
+    SetUpFGMImageRegistryApi(registrar.messenger, imageRegistry);
     _inspector = [[FGMMapInspector alloc] initWithMapController:self
                                                       messenger:registrar.messenger
                                                    pigeonSuffix:pigeonSuffix];

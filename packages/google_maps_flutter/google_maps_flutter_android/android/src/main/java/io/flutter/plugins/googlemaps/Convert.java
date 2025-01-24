@@ -61,16 +61,54 @@ class Convert {
   public static final String HEATMAP_GRADIENT_COLOR_MAP_SIZE_KEY = "colorMapSize";
 
   private static BitmapDescriptor toBitmapDescriptor(
-      Messages.PlatformBitmap platformBitmap, AssetManager assetManager, float density) {
+      Messages.PlatformBitmap platformBitmap, AssetManager assetManager, float density,
+      ImageRegistry imageRegistry) {
     return toBitmapDescriptor(
-        platformBitmap, assetManager, density, new BitmapDescriptorFactoryWrapper());
+        platformBitmap, assetManager, density, new BitmapDescriptorFactoryWrapper(),
+        imageRegistry);
+  }
+
+  public static BitmapDescriptor createBitmapDescriptor(
+      Messages.PlatformBitmap platformBitmap,
+      AssetManager assetManager,
+      float density,
+      BitmapDescriptorFactoryWrapper wrapper) {
+    Object bitmap = platformBitmap.getBitmap();
+
+    if (bitmap instanceof Messages.PlatformBitmapAsset) {
+      Messages.PlatformBitmapAsset typedBitmap = (Messages.PlatformBitmapAsset) bitmap;
+      final String assetPath = typedBitmap.getName();
+      final String assetPackage = typedBitmap.getPkg();
+      if (assetPackage == null) {
+        return BitmapDescriptorFactory.fromAsset(
+            FlutterInjector.instance().flutterLoader().getLookupKeyForAsset(assetPath));
+      } else {
+        return BitmapDescriptorFactory.fromAsset(
+            FlutterInjector.instance()
+                .flutterLoader()
+                .getLookupKeyForAsset(assetPath, assetPackage));
+      }
+    }
+    if (bitmap instanceof Messages.PlatformBitmapAssetMap) {
+      Messages.PlatformBitmapAssetMap typedBitmap = (Messages.PlatformBitmapAssetMap) bitmap;
+      return getBitmapFromAsset(
+          typedBitmap, assetManager, density, wrapper, new FlutterInjectorWrapper());
+    }
+    if (bitmap instanceof Messages.PlatformBitmapBytesMap) {
+      Messages.PlatformBitmapBytesMap typedBitmap = (Messages.PlatformBitmapBytesMap) bitmap;
+      return getBitmapFromBytes(typedBitmap, density, wrapper);
+    }
+    // TODO support for legacy Messages.PlatformBitmapAssetImage and Messages.PlatformBitmapBytes
+
+    throw new IllegalArgumentException("PlatformBitmap did not contain a supported subtype.");
   }
 
   private static BitmapDescriptor toBitmapDescriptor(
       Messages.PlatformBitmap platformBitmap,
       AssetManager assetManager,
       float density,
-      BitmapDescriptorFactoryWrapper wrapper) {
+      BitmapDescriptorFactoryWrapper wrapper,
+      ImageRegistry imageRegistry) {
     Object bitmap = platformBitmap.getBitmap();
     if (bitmap instanceof Messages.PlatformBitmapDefaultMarker) {
       Messages.PlatformBitmapDefaultMarker typedBitmap =
@@ -114,6 +152,11 @@ class Convert {
     if (bitmap instanceof Messages.PlatformBitmapBytesMap) {
       Messages.PlatformBitmapBytesMap typedBitmap = (Messages.PlatformBitmapBytesMap) bitmap;
       return getBitmapFromBytes(typedBitmap, density, wrapper);
+    }
+    if (bitmap instanceof Messages.PlatformBitmapRegisteredMapBitmap) {
+      Messages.PlatformBitmapRegisteredMapBitmap typedBitmap =
+          (Messages.PlatformBitmapRegisteredMapBitmap) bitmap;
+      return getBitmapFromRegisteredBitmap(imageRegistry, typedBitmap);
     }
     throw new IllegalArgumentException("PlatformBitmap did not contain a supported subtype.");
   }
@@ -183,6 +226,12 @@ class Convert {
     } catch (Exception e) {
       throw new IllegalArgumentException("Unable to interpret bytes as a valid image.", e);
     }
+  }
+
+  public static BitmapDescriptor getBitmapFromRegisteredBitmap(
+      ImageRegistry imageRegistry,
+      Messages.PlatformBitmapRegisteredMapBitmap registeredBitmap) {
+    return imageRegistry.getBitmap(registeredBitmap.getId());
   }
 
   /**
@@ -588,13 +637,15 @@ class Convert {
       MarkerOptionsSink sink,
       AssetManager assetManager,
       float density,
-      BitmapDescriptorFactoryWrapper wrapper) {
+      BitmapDescriptorFactoryWrapper wrapper,
+      ImageRegistry imageRegistry) {
     sink.setAlpha(marker.getAlpha().floatValue());
     sink.setAnchor(marker.getAnchor().getX().floatValue(), marker.getAnchor().getY().floatValue());
     sink.setConsumeTapEvents(marker.getConsumeTapEvents());
     sink.setDraggable(marker.getDraggable());
     sink.setFlat(marker.getFlat());
-    sink.setIcon(toBitmapDescriptor(marker.getIcon(), assetManager, density, wrapper));
+    sink.setIcon(toBitmapDescriptor(marker.getIcon(), assetManager, density, wrapper,
+        imageRegistry));
     interpretInfoWindowOptions(sink, marker.getInfoWindow());
     sink.setPosition(toLatLng(marker.getPosition().toList()));
     sink.setRotation(marker.getRotation().floatValue());
@@ -642,11 +693,12 @@ class Convert {
       Messages.PlatformPolyline polyline,
       PolylineOptionsSink sink,
       AssetManager assetManager,
+      ImageRegistry imageRegistry,
       float density) {
     sink.setConsumeTapEvents(polyline.getConsumesTapEvents());
     sink.setColor(polyline.getColor().intValue());
-    sink.setEndCap(capFromPigeon(polyline.getEndCap(), assetManager, density));
-    sink.setStartCap(capFromPigeon(polyline.getStartCap(), assetManager, density));
+    sink.setEndCap(capFromPigeon(polyline.getEndCap(), assetManager, imageRegistry, density));
+    sink.setStartCap(capFromPigeon(polyline.getStartCap(), assetManager, imageRegistry, density));
     sink.setGeodesic(polyline.getGeodesic());
     sink.setJointType(jointTypeFromPigeon(polyline.getJointType()));
     sink.setVisible(polyline.getVisible());
@@ -817,7 +869,8 @@ class Convert {
   }
 
   private static Cap capFromPigeon(
-      Messages.PlatformCap cap, AssetManager assetManager, float density) {
+      Messages.PlatformCap cap, AssetManager assetManager, ImageRegistry imageRegistry,
+      float density) {
     switch (cap.getType()) {
       case BUTT_CAP:
         return new ButtCap();
@@ -830,7 +883,7 @@ class Convert {
           throw new IllegalArgumentException("A Custom Cap must specify a refWidth value.");
         }
         return new CustomCap(
-            toBitmapDescriptor(cap.getBitmapDescriptor(), assetManager, density),
+            toBitmapDescriptor(cap.getBitmapDescriptor(), assetManager, density, imageRegistry),
             cap.getRefWidth().floatValue());
     }
     throw new IllegalArgumentException("Unrecognized PlatformCap type: " + cap.getType());
