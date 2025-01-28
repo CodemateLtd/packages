@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Returns true if a ground overlay with the given identifier exists on the map.
 - (bool)hasGroundOverlaysWithIdentifier:(NSString *)identifier;
 
-/// Returns FGMPlatformGroundOverlay for identifier.
+/// Returns the ground overlay with the given identifier.
 - (nullable FGMPlatformGroundOverlay *)groundOverlayWithIdentifier:(NSString *)identifier;
 @end
 
