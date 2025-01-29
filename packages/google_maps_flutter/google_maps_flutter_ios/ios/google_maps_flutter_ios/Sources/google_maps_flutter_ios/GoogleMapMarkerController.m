@@ -4,8 +4,8 @@
 
 #import "GoogleMapMarkerController.h"
 
-#import "FGMMarkerUserData.h"
-#import "FLTGoogleMapJSONConversions.h"
+#import "./include/google_maps_flutter_ios/FGMMarkerUserData.h"
+#import "./include/google_maps_flutter_ios/FLTGoogleMapJSONConversions.h"
 
 @interface FLTGoogleMapMarkerController ()
 

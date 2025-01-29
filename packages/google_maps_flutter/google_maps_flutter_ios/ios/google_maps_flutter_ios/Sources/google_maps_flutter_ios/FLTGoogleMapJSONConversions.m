@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "FLTGoogleMapJSONConversions.h"
-#import "FGMMarkerUserData.h"
+#import "./include/google_maps_flutter_ios/FLTGoogleMapJSONConversions.h"
+#import "./include/google_maps_flutter_ios/FGMMarkerUserData.h"
 
 /// Returns dict[key], or nil if dict[key] is NSNull.
 id FGMGetValueOrNilFromDict(NSDictionary *dict, NSString *key) {
