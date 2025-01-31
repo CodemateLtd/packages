@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIImage *)iconFromBitmap:(FGMPlatformBitmap *)platformBitmap
                   registrar:(NSObject<FlutterPluginRegistrar> *)registrar
                 screenScale:(CGFloat)screenScale
-             imageRegistry:(ImageRegistry *)imageRegistry;
+              imageRegistry:(ImageRegistry *)imageRegistry;
 @end
 
 @interface FLTMarkersController : NSObject

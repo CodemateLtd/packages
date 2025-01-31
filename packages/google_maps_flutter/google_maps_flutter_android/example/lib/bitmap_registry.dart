@@ -8,9 +8,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
+import 'example_google_map.dart';
 import 'page.dart';
 
 class BitmapRegistryPage extends GoogleMapExampleAppPage {
@@ -46,7 +46,7 @@ class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
         children: <Widget>[
           AspectRatio(
             aspectRatio: 2 / 3,
-            child: GoogleMap(
+            child: ExampleGoogleMap(
               markers: markers,
               initialCameraPosition: const CameraPosition(
                 target: LatLng(0, 0),
@@ -103,9 +103,9 @@ class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
       width: 64,
       height: 64,
     );
-    final int registeredBitmapId =
-        await GoogleMapBitmapRegistry.instance.register(bytesBitmap);
-    final RegisteredMapBitmap registeredBitmap =
+    const int registeredBitmapId = 0;
+    await GoogleMapsFlutterPlatform.instance.registerBitmap(0, bytesBitmap);
+    const RegisteredMapBitmap registeredBitmap =
         RegisteredMapBitmap(id: registeredBitmapId);
     _updateMarkers(registeredBitmap);
   }

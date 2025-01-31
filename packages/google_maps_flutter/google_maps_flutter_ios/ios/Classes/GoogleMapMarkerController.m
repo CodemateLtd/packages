@@ -114,10 +114,10 @@
   [self setAlpha:platformMarker.alpha];
   [self setAnchor:FGMGetCGPointForPigeonPoint(platformMarker.anchor)];
   [self setDraggable:platformMarker.draggable];
-    UIImage *image = [FLTGoogleMapMarkerController iconFromBitmap:platformMarker.icon
-                              registrar:registrar
-                            screenScale:screenScale
-                          imageRegistry:imageRegistry];
+  UIImage *image = [FLTGoogleMapMarkerController iconFromBitmap:platformMarker.icon
+                                                      registrar:registrar
+                                                    screenScale:screenScale
+                                                  imageRegistry:imageRegistry];
   [self setIcon:image];
   [self setFlat:platformMarker.flat];
   [self setConsumeTapEvents:platformMarker.consumeTapEvents];
@@ -155,7 +155,7 @@
     FGMPlatformBitmapRegisteredMapBitmap *registeredBitmap = bitmap;
     NSInteger imageId = registeredBitmap.id;
     NSNumber *imageIdNumber = [NSNumber numberWithInteger:imageId];
-    return [imageRegistry getBitmap:imageIdNumber];
+    image = [imageRegistry getBitmap:imageIdNumber];
   } else if ([bitmap isKindOfClass:[FGMPlatformBitmapDefaultMarker class]]) {
     FGMPlatformBitmapDefaultMarker *bitmapDefaultMarker = bitmap;
     CGFloat hue = bitmapDefaultMarker.hue.doubleValue;
