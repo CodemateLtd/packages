@@ -22,8 +22,14 @@ class ImageRegistry implements ImageRegistryApi {
 
   @Override
   public void addBitmapToCache(Long id, PlatformBitmap bitmap) {
-    final BitmapDescriptor bitmapDescriptor = Convert.createBitmapDescriptor(bitmap, assetManager,
-        density, new Convert.BitmapDescriptorFactoryWrapper());
+    if (!(bitmap.getBitmap() instanceof Messages.PlatformBitmapAsset) &&
+        !(bitmap.getBitmap() instanceof Messages.PlatformBitmapAssetMap) &&
+        !(bitmap.getBitmap() instanceof Messages.PlatformBitmapBytesMap)) {
+      throw new IllegalArgumentException("PlatformBitmap must contain a supported subtype.");
+    }
+
+    final BitmapDescriptor bitmapDescriptor =
+        Convert.toBitmapDescriptor(bitmap, assetManager, density, this);
     registry.put(id, bitmapDescriptor);
   }
 

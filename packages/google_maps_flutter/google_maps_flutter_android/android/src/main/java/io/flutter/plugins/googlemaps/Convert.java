@@ -60,47 +60,11 @@ class Convert {
   public static final String HEATMAP_GRADIENT_START_POINTS_KEY = "startPoints";
   public static final String HEATMAP_GRADIENT_COLOR_MAP_SIZE_KEY = "colorMapSize";
 
-  private static BitmapDescriptor toBitmapDescriptor(
+  public static BitmapDescriptor toBitmapDescriptor(
       Messages.PlatformBitmap platformBitmap, AssetManager assetManager, float density,
       ImageRegistry imageRegistry) {
     return toBitmapDescriptor(
-        platformBitmap, assetManager, density, new BitmapDescriptorFactoryWrapper(),
-        imageRegistry);
-  }
-
-  public static BitmapDescriptor createBitmapDescriptor(
-      Messages.PlatformBitmap platformBitmap,
-      AssetManager assetManager,
-      float density,
-      BitmapDescriptorFactoryWrapper wrapper) {
-    Object bitmap = platformBitmap.getBitmap();
-
-    if (bitmap instanceof Messages.PlatformBitmapAsset) {
-      Messages.PlatformBitmapAsset typedBitmap = (Messages.PlatformBitmapAsset) bitmap;
-      final String assetPath = typedBitmap.getName();
-      final String assetPackage = typedBitmap.getPkg();
-      if (assetPackage == null) {
-        return BitmapDescriptorFactory.fromAsset(
-            FlutterInjector.instance().flutterLoader().getLookupKeyForAsset(assetPath));
-      } else {
-        return BitmapDescriptorFactory.fromAsset(
-            FlutterInjector.instance()
-                .flutterLoader()
-                .getLookupKeyForAsset(assetPath, assetPackage));
-      }
-    }
-    if (bitmap instanceof Messages.PlatformBitmapAssetMap) {
-      Messages.PlatformBitmapAssetMap typedBitmap = (Messages.PlatformBitmapAssetMap) bitmap;
-      return getBitmapFromAsset(
-          typedBitmap, assetManager, density, wrapper, new FlutterInjectorWrapper());
-    }
-    if (bitmap instanceof Messages.PlatformBitmapBytesMap) {
-      Messages.PlatformBitmapBytesMap typedBitmap = (Messages.PlatformBitmapBytesMap) bitmap;
-      return getBitmapFromBytes(typedBitmap, density, wrapper);
-    }
-    // TODO support for legacy Messages.PlatformBitmapAssetImage and Messages.PlatformBitmapBytes
-
-    throw new IllegalArgumentException("PlatformBitmap did not contain a supported subtype.");
+        platformBitmap, assetManager, density, new BitmapDescriptorFactoryWrapper(), imageRegistry);
   }
 
   private static BitmapDescriptor toBitmapDescriptor(
