@@ -10,10 +10,6 @@ part of '../google_maps_flutter.dart';
 ///
 /// Using bitmap registry is optional.
 ///
-/// Bitmap registry can be used after the map is initialized and displayed
-/// on the screen. On Android registry can be also used after map renderer is
-/// initialized without map being displayed on the screen.
-///
 /// Example:
 /// ```dart
 /// // Register a bitmap

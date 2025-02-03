@@ -7,7 +7,10 @@
 
 @interface FGMImageRegistry ()
 
+/// A dictionary that stores all registered image IDs and corresponding images.
 @property (nonatomic, strong) NSMutableDictionary<NSNumber *, UIImage *> *registry;
+
+/// A registration context of this plugin.
 @property(weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
 
 @end

@@ -13,6 +13,9 @@
 
 - (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar;
 
+/// Returns registered image with the given identifier or null if registered image is not found.
+///
+/// @param identifier An identifier of the registered image.
 - (UIImage *)getBitmap:(NSNumber *)identifier;
 
 @end
