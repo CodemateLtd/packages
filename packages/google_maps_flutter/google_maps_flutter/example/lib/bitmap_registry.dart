@@ -26,9 +26,6 @@ class BitmapRegistryPage extends GoogleMapExampleAppPage {
 // How many markers to place on the map.
 const int _numberOfMarkers = 500;
 
-// The name of the bitmap to use for the markers.
-const String _bitmapName = 'assets/checkers.png';
-
 class _BitmapRegistryBody extends StatefulWidget {
   const _BitmapRegistryBody();
 
@@ -37,7 +34,21 @@ class _BitmapRegistryBody extends StatefulWidget {
 }
 
 class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
-  final Set<Marker> markers = <Marker>{};
+  final Set<Marker> _markers = <Marker>{};
+  int? _registeredBitmapId;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _registerBitmap();
+  }
+
+  @override
+  void dispose() {
+    _unregisterBitmap();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +58,7 @@ class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
           AspectRatio(
             aspectRatio: 2 / 3,
             child: GoogleMap(
-              markers: markers,
+              markers: _markers,
               initialCameraPosition: const CameraPosition(
                 target: LatLng(0, 0),
                 zoom: 1.0,
@@ -55,11 +66,33 @@ class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
             ),
           ),
           MaterialButton(
-            onPressed: _addMarkersWithoutRegistry,
+            onPressed: () async {
+              // Add markers to the map with a custom bitmap as the icon.
+              //
+              // To show potential performance issues:
+              // * large original image is used (800x600px, ~330KB)
+              // * bitmap is scaled down to 64x64px
+              // * bitmap is created once and reused for all markers. This
+              // doesn't help much because the bitmap is still sent to the
+              // platform side for each marker.
+              //
+              // Adding many markers may result in a performance hit,
+              // out of memory errors or even app crashes.
+              final BytesMapBitmap bitmap = await _getAssetBitmapDescriptor();
+              _updateMarkers(bitmap);
+            },
             child: const Text('Add $_numberOfMarkers markers, no registry'),
           ),
           MaterialButton(
-            onPressed: _addMarkersWithRegistry,
+            onPressed: _registeredBitmapId == null
+                ? null
+                : () {
+                    // Add markers to the map with a custom bitmap as the icon
+                    // placed in the bitmap registry beforehand.
+                    final RegisteredMapBitmap registeredBitmap =
+                        RegisteredMapBitmap(id: _registeredBitmapId!);
+                    _updateMarkers(registeredBitmap);
+                  },
             child: const Text('Add $_numberOfMarkers markers using registry'),
           ),
         ],
@@ -67,47 +100,36 @@ class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
     );
   }
 
-  /// Add markers to the map with a custom bitmap as the icon.
-  ///
-  /// To show potential performance issues:
-  /// * large original image is used (800x600px, ~330KB)
-  /// * bitmap is scaled down to 64x64px
-  /// * bitmap is created once and reused for all markers. This doesn't help
-  /// much because the bitmap is still sent to the platform side for each
-  /// marker.
-  ///
-  /// Adding many markers may result in a performance hit, out of memory errors
-  /// or even app crashes.
-  Future<void> _addMarkersWithoutRegistry() async {
-    final ByteData byteData = await rootBundle.load(_bitmapName);
-    final Uint8List bytes = byteData.buffer.asUint8List();
-    final BytesMapBitmap bitmap = BitmapDescriptor.bytes(
-      bytes,
-      width: 64,
-      height: 64,
-    );
-    _updateMarkers(bitmap);
+  /// Register a bitmap in the bitmap registry.
+  Future<void> _registerBitmap() async {
+    if (_registeredBitmapId != null) {
+      return;
+    }
+
+    final BytesMapBitmap bitmap = await _getAssetBitmapDescriptor();
+    final int registeredBitmapId =
+        await GoogleMapBitmapRegistry.instance.register(bitmap);
+
+    // If the widget was disposed before the bitmap was registered, unregister
+    // the bitmap.
+    if (!mounted) {
+      _unregisterBitmap();
+      return;
+    }
+
+    setState(() {
+      _registeredBitmapId = registeredBitmapId;
+    });
   }
 
-  /// Add markers to the map with a custom bitmap as the icon placed in the
-  /// bitmap registry beforehand.
-  ///
-  /// Similarly to [_addMarkersWithoutRegistry], this method uses the same
-  /// technique to show potential performance issues, however the bitmap is
-  /// registered in the bitmap registry before creating the markers.
-  Future<void> _addMarkersWithRegistry() async {
-    final ByteData byteData = await rootBundle.load(_bitmapName);
-    final Uint8List bytes = byteData.buffer.asUint8List();
-    final BytesMapBitmap bytesBitmap = BitmapDescriptor.bytes(
-      bytes,
-      width: 64,
-      height: 64,
-    );
-    final int registeredBitmapId =
-        await GoogleMapBitmapRegistry.instance.register(bytesBitmap);
-    final RegisteredMapBitmap registeredBitmap =
-        RegisteredMapBitmap(id: registeredBitmapId);
-    _updateMarkers(registeredBitmap);
+  /// Unregister the bitmap from the bitmap registry.
+  void _unregisterBitmap() {
+    if (_registeredBitmapId == null) {
+      return;
+    }
+
+    GoogleMapBitmapRegistry.instance.unregister(_registeredBitmapId!);
+    _registeredBitmapId = null;
   }
 
   // Create a set of markers with the given bitmap and update the state with new
@@ -128,9 +150,20 @@ class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
     );
 
     setState(() {
-      markers
+      _markers
         ..clear()
         ..addAll(newMarkers);
     });
+  }
+
+  /// Load a bitmap from an asset and create a scaled [BytesMapBitmap] from it.
+  Future<BytesMapBitmap> _getAssetBitmapDescriptor() async {
+    final ByteData byteData = await rootBundle.load('assets/checkers.png');
+    final Uint8List bytes = byteData.buffer.asUint8List();
+    return BitmapDescriptor.bytes(
+      bytes,
+      width: 64,
+      height: 64,
+    );
   }
 }
