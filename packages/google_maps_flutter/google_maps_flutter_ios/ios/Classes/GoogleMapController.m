@@ -18,6 +18,7 @@
 @interface FLTGoogleMapFactory ()
 
 @property(weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
+@property(weak, nonatomic) ImageRegistry *imageRegistry;
 @property(strong, nonatomic, readonly) id<NSObject> sharedMapServices;
 
 @end
@@ -26,10 +27,12 @@
 
 @synthesize sharedMapServices = _sharedMapServices;
 
-- (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+- (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar
+                    imageRegistry:(ImageRegistry *)imageRegistry {
   self = [super init];
   if (self) {
     _registrar = registrar;
+    _imageRegistry = imageRegistry;
   }
   return self;
 }
@@ -48,7 +51,8 @@
   return [[FLTGoogleMapController alloc] initWithFrame:frame
                                         viewIdentifier:viewId
                                     creationParameters:args
-                                             registrar:self.registrar];
+                                             registrar:self.registrar
+                                         imageRegistry:self.imageRegistry];
 }
 
 - (id<NSObject>)sharedMapServices {
@@ -147,7 +151,8 @@
 - (instancetype)initWithFrame:(CGRect)frame
                viewIdentifier:(int64_t)viewId
            creationParameters:(FGMPlatformMapViewCreationParams *)creationParameters
-                    registrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+                    registrar:(NSObject<FlutterPluginRegistrar> *)registrar
+                imageRegistry:(ImageRegistry *)imageRegistry {
   GMSCameraPosition *camera =
       FGMGetCameraPositionForPigeonCameraPosition(creationParameters.initialCameraPosition);
 
@@ -160,7 +165,6 @@
   }
 
   GMSMapView *mapView = [[GMSMapView alloc] initWithOptions:options];
-  ImageRegistry *imageRegistry = [[ImageRegistry alloc] initWithRegistrar:registrar];
 
   return [self initWithMapView:mapView
                 viewIdentifier:viewId
@@ -226,7 +230,6 @@
                                                           messenger:registrar.messenger
                                                        pigeonSuffix:pigeonSuffix];
     SetUpFGMMapsApiWithSuffix(registrar.messenger, _callHandler, pigeonSuffix);
-    SetUpFGMImageRegistryApi(registrar.messenger, imageRegistry);
     _inspector = [[FGMMapInspector alloc] initWithMapController:self
                                                       messenger:registrar.messenger
                                                    pigeonSuffix:pigeonSuffix];
