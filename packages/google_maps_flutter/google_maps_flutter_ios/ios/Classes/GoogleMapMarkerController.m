@@ -6,7 +6,7 @@
 
 #import "FGMMarkerUserData.h"
 #import "FLTGoogleMapJSONConversions.h"
-#import "ImageRegistry.h"
+#import "FGMImageRegistry.h"
 
 @interface FLTGoogleMapMarkerController ()
 
@@ -110,7 +110,7 @@
 - (void)updateFromPlatformMarker:(FGMPlatformMarker *)platformMarker
                        registrar:(NSObject<FlutterPluginRegistrar> *)registrar
                      screenScale:(CGFloat)screenScale
-                   imageRegistry:(ImageRegistry *)imageRegistry {
+                   imageRegistry:(FGMImageRegistry *)imageRegistry {
   [self setAlpha:platformMarker.alpha];
   [self setAnchor:FGMGetCGPointForPigeonPoint(platformMarker.anchor)];
   [self setDraggable:platformMarker.draggable];
@@ -145,7 +145,7 @@
 + (UIImage *)iconFromBitmap:(FGMPlatformBitmap *)platformBitmap
                   registrar:(NSObject<FlutterPluginRegistrar> *)registrar
                 screenScale:(CGFloat)screenScale
-              imageRegistry:(ImageRegistry *)imageRegistry {
+              imageRegistry:(FGMImageRegistry *)imageRegistry {
   NSAssert(screenScale > 0, @"Screen scale must be greater than 0");
   // See comment in messages.dart for why this is so loosely typed. See also
   // https://github.com/flutter/flutter/issues/117819.
@@ -388,7 +388,7 @@
 /// Controller for adding/removing/fetching cluster managers
 @property(weak, nonatomic, nullable) FGMClusterManagersController *clusterManagersController;
 @property(weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
-@property(copy, nonatomic) ImageRegistry *imageRegistry;
+@property(copy, nonatomic) FGMImageRegistry *imageRegistry;
 @property(weak, nonatomic) GMSMapView *mapView;
 
 @end
@@ -399,7 +399,7 @@
                 callbackHandler:(FGMMapsCallbackApi *)callbackHandler
       clusterManagersController:(nullable FGMClusterManagersController *)clusterManagersController
                       registrar:(NSObject<FlutterPluginRegistrar> *)registrar
-                  imageRegistry:(ImageRegistry *)imageRegistry {
+                  imageRegistry:(FGMImageRegistry *)imageRegistry {
   self = [super init];
   if (self) {
     _callbackHandler = callbackHandler;

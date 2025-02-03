@@ -7,7 +7,7 @@
 
 #import "messages.g.h"
 
-@interface ImageRegistry : NSObject<FGMImageRegistryApi>
+@interface FGMImageRegistry : NSObject<FGMImageRegistryApi>
 
 - (instancetype)init;
 

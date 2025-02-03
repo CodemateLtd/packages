@@ -11,14 +11,14 @@
 #import "FLTGoogleMapJSONConversions.h"
 #import "FLTGoogleMapTileOverlayController.h"
 #import "messages.g.h"
-#import "ImageRegistry.h"
+#import "FGMImageRegistry.h"
 
 #pragma mark - Conversion of JSON-like values sent via platform channels. Forward declarations.
 
 @interface FLTGoogleMapFactory ()
 
 @property(weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
-@property(weak, nonatomic) ImageRegistry *imageRegistry;
+@property(weak, nonatomic) FGMImageRegistry *imageRegistry;
 @property(strong, nonatomic, readonly) id<NSObject> sharedMapServices;
 
 @end
@@ -28,7 +28,7 @@
 @synthesize sharedMapServices = _sharedMapServices;
 
 - (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar
-                    imageRegistry:(ImageRegistry *)imageRegistry {
+                    imageRegistry:(FGMImageRegistry *)imageRegistry {
   self = [super init];
   if (self) {
     _registrar = registrar;
@@ -152,7 +152,7 @@
                viewIdentifier:(int64_t)viewId
            creationParameters:(FGMPlatformMapViewCreationParams *)creationParameters
                     registrar:(NSObject<FlutterPluginRegistrar> *)registrar
-                imageRegistry:(ImageRegistry *)imageRegistry {
+                imageRegistry:(FGMImageRegistry *)imageRegistry {
   GMSCameraPosition *camera =
       FGMGetCameraPositionForPigeonCameraPosition(creationParameters.initialCameraPosition);
 
@@ -177,7 +177,7 @@
                  viewIdentifier:(int64_t)viewId
              creationParameters:(FGMPlatformMapViewCreationParams *)creationParameters
                       registrar:(NSObject<FlutterPluginRegistrar> *_Nonnull)registrar
-                  imageRegistry:(ImageRegistry *)imageRegistry {
+                  imageRegistry:(FGMImageRegistry *)imageRegistry {
   if (self = [super init]) {
     _mapView = mapView;
 

@@ -9,7 +9,7 @@
 @implementation FLTGoogleMapsPlugin
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
-  ImageRegistry *imageRegistry = [[ImageRegistry alloc] initWithRegistrar:registrar];
+    FGMImageRegistry *imageRegistry = [[FGMImageRegistry alloc] initWithRegistrar:registrar];
   SetUpFGMImageRegistryApi(registrar.messenger, imageRegistry);
   FLTGoogleMapFactory *googleMapFactory = [[FLTGoogleMapFactory alloc] initWithRegistrar:registrar
                                                                            imageRegistry:imageRegistry];

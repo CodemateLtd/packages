@@ -8,7 +8,7 @@
 #import "FGMClusterManagersController.h"
 #import "GoogleMapController.h"
 #import "messages.g.h"
-#import "ImageRegistry.h"
+#import "FGMImageRegistry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIImage *)iconFromBitmap:(FGMPlatformBitmap *)platformBitmap
                   registrar:(NSObject<FlutterPluginRegistrar> *)registrar
                 screenScale:(CGFloat)screenScale
-              imageRegistry:(ImageRegistry *)imageRegistry;
+              imageRegistry:(FGMImageRegistry *)imageRegistry;
 @end
 
 @interface FLTMarkersController : NSObject
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
                 callbackHandler:(FGMMapsCallbackApi *)callbackHandler
       clusterManagersController:(nullable FGMClusterManagersController *)clusterManagersController
                       registrar:(NSObject<FlutterPluginRegistrar> *)registrar
-                  imageRegistry:(ImageRegistry *)imageRegistry;
+                  imageRegistry:(FGMImageRegistry *)imageRegistry;
 - (void)addMarkers:(NSArray<FGMPlatformMarker *> *)markersToAdd;
 - (void)changeMarkers:(NSArray<FGMPlatformMarker *> *)markersToChange;
 - (void)removeMarkersWithIdentifiers:(NSArray<NSString *> *)identifiers;
