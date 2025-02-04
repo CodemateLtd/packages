@@ -51,6 +51,7 @@ public class MarkersControllerTest {
   private AssetManager assetManager;
   private final float density = 1;
   private AutoCloseable mocksClosable;
+  private ImageRegistry imageRegistry;
 
   @Mock private Convert.BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper;
 
@@ -94,13 +95,15 @@ public class MarkersControllerTest {
     context = ApplicationProvider.getApplicationContext();
     flutterApi = spy(new MapsCallbackApi(mock(BinaryMessenger.class)));
     clusterManagersController = spy(new ClusterManagersController(flutterApi, context));
+    imageRegistry = new ImageRegistry(context);
     controller =
         new MarkersController(
             flutterApi,
             clusterManagersController,
             assetManager,
             density,
-            bitmapDescriptorFactoryWrapper);
+            bitmapDescriptorFactoryWrapper,
+            imageRegistry);
     googleMap = mock(GoogleMap.class);
     markerManager = new MarkerManager(googleMap);
     markerCollection = markerManager.newCollection();
