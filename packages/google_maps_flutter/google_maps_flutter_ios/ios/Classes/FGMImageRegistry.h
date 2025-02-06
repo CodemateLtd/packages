@@ -11,8 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FGMImageRegistry : NSObject<FGMImageRegistryApi>
 
-- (instancetype)init;
-
 - (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar;
 
 /// Returns registered image with the given identifier or null if registered image is not found.

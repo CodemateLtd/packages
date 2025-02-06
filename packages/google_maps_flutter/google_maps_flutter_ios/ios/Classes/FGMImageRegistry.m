@@ -26,10 +26,6 @@
     return self;
 }
 
-- (instancetype)init {
-    return [self initWithRegistrar:nil];
-}
-
 - (void)addBitmapToCacheId:(NSInteger)id bitmap:(nonnull FGMPlatformBitmap *)bitmap error:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
     CGFloat screenScale = [[UIScreen mainScreen] scale];
     UIImage *image = [FLTGoogleMapMarkerController iconFromBitmap:bitmap

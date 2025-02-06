@@ -1,9 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
-import 'package:integration_test/integration_test.dart';
 
-void main() {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+void bitmapRegistryTests() {
   GoogleMapsFlutterPlatform.instance.enableDebugInspection();
 
   testWidgets('Add bitmap to cache', (WidgetTester tester) async {
