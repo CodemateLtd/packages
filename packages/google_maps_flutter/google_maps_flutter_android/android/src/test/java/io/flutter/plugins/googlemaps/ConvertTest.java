@@ -16,15 +16,12 @@ import static io.flutter.plugins.googlemaps.Convert.HEATMAP_OPACITY_KEY;
 import static io.flutter.plugins.googlemaps.Convert.HEATMAP_RADIUS_KEY;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-import android.appwidget.AppWidgetProvider;
-import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -32,7 +29,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.Base64;
-import androidx.test.core.app.ApplicationProvider;
 import androidx.annotation.NonNull;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
@@ -346,9 +342,7 @@ public class ConvertTest {
         new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
 
     Messages.PlatformBitmapRegisteredMapBitmap bitmap =
-        new Messages.PlatformBitmapRegisteredMapBitmap.Builder()
-            .setId(0L)
-            .build();
+        new Messages.PlatformBitmapRegisteredMapBitmap.Builder().setId(0L).build();
 
     BitmapDescriptor result = Convert.getBitmapFromRegisteredBitmap(imageRegistry, bitmap);
     Assert.assertEquals(result, null);
@@ -366,19 +360,15 @@ public class ConvertTest {
             .setImagePixelRatio(2.0)
             .setByteData(bmpData)
             .build();
-    PlatformBitmap platformBitmap = new PlatformBitmap.Builder()
-        .setBitmap(bitmap)
-        .build();
+    PlatformBitmap platformBitmap = new PlatformBitmap.Builder().setBitmap(bitmap).build();
     when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
     imageRegistry.addBitmapToCache(0L, platformBitmap);
 
     Messages.PlatformBitmapRegisteredMapBitmap registeredBitmap =
-        new Messages.PlatformBitmapRegisteredMapBitmap.Builder()
-            .setId(0L)
-            .build();
+        new Messages.PlatformBitmapRegisteredMapBitmap.Builder().setId(0L).build();
     when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
-    BitmapDescriptor result = Convert.getBitmapFromRegisteredBitmap(imageRegistry,
-        registeredBitmap);
+    BitmapDescriptor result =
+        Convert.getBitmapFromRegisteredBitmap(imageRegistry, registeredBitmap);
     BitmapDescriptor registryBitmapDescriptor = imageRegistry.getBitmap(0L);
     Assert.assertEquals(result, registryBitmapDescriptor);
   }

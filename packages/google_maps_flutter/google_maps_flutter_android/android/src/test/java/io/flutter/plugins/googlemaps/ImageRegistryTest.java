@@ -2,7 +2,6 @@ package io.flutter.plugins.googlemaps;
 
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.Mockito.when;
 
 import android.content.res.AssetManager;
@@ -30,20 +29,15 @@ import org.robolectric.annotation.Config;
 @Config(minSdk = Build.VERSION_CODES.LOLLIPOP)
 public class ImageRegistryTest {
 
-  @Mock
-  private AssetManager assetManager;
+  @Mock private AssetManager assetManager;
 
-  @Mock
-  private BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper;
+  @Mock private BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper;
 
-  @Mock
-  private BitmapDescriptor mockBitmapDescriptor;
+  @Mock private BitmapDescriptor mockBitmapDescriptor;
 
-  @Mock
-  private BitmapDescriptor mockBitmapDescriptor2;
+  @Mock private BitmapDescriptor mockBitmapDescriptor2;
 
-  @Mock
-  private FlutterInjectorWrapper flutterInjectorWrapper;
+  @Mock private FlutterInjectorWrapper flutterInjectorWrapper;
 
   AutoCloseable mockCloseable;
 
@@ -59,8 +53,8 @@ public class ImageRegistryTest {
 
   @Test
   public void AddBitmapToCacheRegistersABitmap() {
-    final ImageRegistry imageRegistry = new ImageRegistry(assetManager,
-        bitmapDescriptorFactoryWrapper, 1L);
+    final ImageRegistry imageRegistry =
+        new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
     Assert.assertNull(imageRegistry.getBitmap(1L));
 
     byte[] bmpData = Base64.decode(generateBase64Image(Color.BLACK), Base64.DEFAULT);
@@ -70,9 +64,8 @@ public class ImageRegistryTest {
             .setImagePixelRatio(2.0)
             .setByteData(bmpData)
             .build();
-    Messages.PlatformBitmap platformBitmap = new Messages.PlatformBitmap.Builder()
-        .setBitmap(bitmap)
-        .build();
+    Messages.PlatformBitmap platformBitmap =
+        new Messages.PlatformBitmap.Builder().setBitmap(bitmap).build();
 
     when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
     imageRegistry.addBitmapToCache(1L, platformBitmap);
@@ -82,8 +75,8 @@ public class ImageRegistryTest {
 
   @Test
   public void AddBitmapToCacheReplacesExistingBitmap() {
-    final ImageRegistry imageRegistry = new ImageRegistry(assetManager,
-        bitmapDescriptorFactoryWrapper, 1L);
+    final ImageRegistry imageRegistry =
+        new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
 
     // Add bitmap 1
     byte[] bmpData = Base64.decode(generateBase64Image(Color.BLACK), Base64.DEFAULT);
@@ -93,9 +86,8 @@ public class ImageRegistryTest {
             .setImagePixelRatio(2.0)
             .setByteData(bmpData)
             .build();
-    Messages.PlatformBitmap platformBitmap = new Messages.PlatformBitmap.Builder()
-        .setBitmap(bitmap)
-        .build();
+    Messages.PlatformBitmap platformBitmap =
+        new Messages.PlatformBitmap.Builder().setBitmap(bitmap).build();
     when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
     imageRegistry.addBitmapToCache(1L, platformBitmap);
     Assert.assertEquals(imageRegistry.getBitmap(1L), mockBitmapDescriptor);
@@ -108,9 +100,7 @@ public class ImageRegistryTest {
             .setImagePixelRatio(2.0)
             .setByteData(bmpData)
             .build();
-    platformBitmap = new Messages.PlatformBitmap.Builder()
-        .setBitmap(bitmap)
-        .build();
+    platformBitmap = new Messages.PlatformBitmap.Builder().setBitmap(bitmap).build();
     when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor2);
     imageRegistry.addBitmapToCache(1L, platformBitmap);
     Assert.assertNotEquals(imageRegistry.getBitmap(1L), mockBitmapDescriptor);
@@ -119,8 +109,8 @@ public class ImageRegistryTest {
 
   @Test
   public void RemoveBitmapFromCacheRemovesBitmap() {
-    final ImageRegistry imageRegistry = new ImageRegistry(assetManager,
-        bitmapDescriptorFactoryWrapper, 1L);
+    final ImageRegistry imageRegistry =
+        new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
     byte[] bmpData = Base64.decode(generateBase64Image(Color.BLACK), Base64.DEFAULT);
     Messages.PlatformBitmapBytesMap bitmap =
         new Messages.PlatformBitmapBytesMap.Builder()
@@ -128,9 +118,8 @@ public class ImageRegistryTest {
             .setImagePixelRatio(2.0)
             .setByteData(bmpData)
             .build();
-    Messages.PlatformBitmap platformBitmap = new Messages.PlatformBitmap.Builder()
-        .setBitmap(bitmap)
-        .build();
+    Messages.PlatformBitmap platformBitmap =
+        new Messages.PlatformBitmap.Builder().setBitmap(bitmap).build();
     when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
     imageRegistry.addBitmapToCache(1L, platformBitmap);
     Assert.assertEquals(imageRegistry.getBitmap(1L), mockBitmapDescriptor);
@@ -141,8 +130,8 @@ public class ImageRegistryTest {
 
   @Test
   public void ClearBitmapCacheRemovesAllSavedBitmaps() {
-    final ImageRegistry imageRegistry = new ImageRegistry(assetManager,
-        bitmapDescriptorFactoryWrapper, 1L);
+    final ImageRegistry imageRegistry =
+        new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
     byte[] bmpData = Base64.decode(generateBase64Image(Color.BLACK), Base64.DEFAULT);
     Messages.PlatformBitmapBytesMap bitmap =
         new Messages.PlatformBitmapBytesMap.Builder()
@@ -150,9 +139,8 @@ public class ImageRegistryTest {
             .setImagePixelRatio(2.0)
             .setByteData(bmpData)
             .build();
-    Messages.PlatformBitmap platformBitmap = new Messages.PlatformBitmap.Builder()
-        .setBitmap(bitmap)
-        .build();
+    Messages.PlatformBitmap platformBitmap =
+        new Messages.PlatformBitmap.Builder().setBitmap(bitmap).build();
     when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
 
     imageRegistry.addBitmapToCache(1L, platformBitmap);
@@ -170,15 +158,15 @@ public class ImageRegistryTest {
 
   @Test
   public void GetBitmapReturnsNullIfBitmapIsNotAvailable() {
-    final ImageRegistry imageRegistry = new ImageRegistry(assetManager,
-        bitmapDescriptorFactoryWrapper, 1L);
+    final ImageRegistry imageRegistry =
+        new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
     Assert.assertNull(imageRegistry.getBitmap(0L));
   }
 
   @Test
   public void GetBitmapReturnsRegisteredBitmap() {
-    final ImageRegistry imageRegistry = new ImageRegistry(assetManager,
-        bitmapDescriptorFactoryWrapper, 1L);
+    final ImageRegistry imageRegistry =
+        new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
     byte[] bmpData = Base64.decode(generateBase64Image(Color.BLACK), Base64.DEFAULT);
     Messages.PlatformBitmapBytesMap bitmap =
         new Messages.PlatformBitmapBytesMap.Builder()
@@ -186,9 +174,8 @@ public class ImageRegistryTest {
             .setImagePixelRatio(2.0)
             .setByteData(bmpData)
             .build();
-    Messages.PlatformBitmap platformBitmap = new Messages.PlatformBitmap.Builder()
-        .setBitmap(bitmap)
-        .build();
+    Messages.PlatformBitmap platformBitmap =
+        new Messages.PlatformBitmap.Builder().setBitmap(bitmap).build();
     when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
 
     Assert.assertNull(imageRegistry.getBitmap(1L));
@@ -201,12 +188,9 @@ public class ImageRegistryTest {
     ImageRegistry imageRegistry =
         new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
     Messages.PlatformBitmapRegisteredMapBitmap registeredMapBitmap =
-        new Messages.PlatformBitmapRegisteredMapBitmap.Builder()
-            .setId(0L)
-            .build();
-    Messages.PlatformBitmap platformBitmap = new Messages.PlatformBitmap.Builder()
-        .setBitmap(registeredMapBitmap)
-        .build();
+        new Messages.PlatformBitmapRegisteredMapBitmap.Builder().setId(0L).build();
+    Messages.PlatformBitmap platformBitmap =
+        new Messages.PlatformBitmap.Builder().setBitmap(registeredMapBitmap).build();
     try {
       imageRegistry.addBitmapToCache(0L, platformBitmap);
     } catch (IllegalArgumentException e) {

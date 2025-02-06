@@ -179,7 +179,11 @@ class MarkersController {
     String clusterManagerId = marker.getClusterManagerId();
     MarkerBuilder markerBuilder = new MarkerBuilder(markerId, clusterManagerId);
     Convert.interpretMarkerOptions(
-        marker, markerBuilder, assetManager, density, bitmapDescriptorFactoryWrapper,
+        marker,
+        markerBuilder,
+        assetManager,
+        density,
+        bitmapDescriptorFactoryWrapper,
         imageRegistry);
     addMarker(markerBuilder);
   }
@@ -237,14 +241,22 @@ class MarkersController {
 
     // Update marker builder.
     Convert.interpretMarkerOptions(
-        marker, markerBuilder, assetManager, density, bitmapDescriptorFactoryWrapper,
+        marker,
+        markerBuilder,
+        assetManager,
+        density,
+        bitmapDescriptorFactoryWrapper,
         imageRegistry);
 
     // Update existing marker on map.
     MarkerController markerController = markerIdToController.get(markerId);
     if (markerController != null) {
       Convert.interpretMarkerOptions(
-          marker, markerController, assetManager, density, bitmapDescriptorFactoryWrapper,
+          marker,
+          markerController,
+          assetManager,
+          density,
+          bitmapDescriptorFactoryWrapper,
           imageRegistry);
     }
   }

@@ -6,9 +6,9 @@
 #import <GoogleMaps/GoogleMaps.h>
 
 #import "FGMClusterManagersController.h"
+#import "FGMImageRegistry.h"
 #import "GoogleMapController.h"
 #import "messages.g.h"
-#import "FGMImageRegistry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

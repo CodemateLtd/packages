@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FGMImageRegistry : NSObject<FGMImageRegistryApi>
+@interface FGMImageRegistry : NSObject <FGMImageRegistryApi>
 
 - (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar;
 

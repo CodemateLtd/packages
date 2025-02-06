@@ -61,7 +61,9 @@ class Convert {
   public static final String HEATMAP_GRADIENT_COLOR_MAP_SIZE_KEY = "colorMapSize";
 
   public static BitmapDescriptor toBitmapDescriptor(
-      Messages.PlatformBitmap platformBitmap, AssetManager assetManager, float density,
+      Messages.PlatformBitmap platformBitmap,
+      AssetManager assetManager,
+      float density,
       ImageRegistry imageRegistry) {
     return toBitmapDescriptor(
         platformBitmap, assetManager, density, new BitmapDescriptorFactoryWrapper(), imageRegistry);
@@ -193,8 +195,7 @@ class Convert {
   }
 
   public static BitmapDescriptor getBitmapFromRegisteredBitmap(
-      ImageRegistry imageRegistry,
-      Messages.PlatformBitmapRegisteredMapBitmap registeredBitmap) {
+      ImageRegistry imageRegistry, Messages.PlatformBitmapRegisteredMapBitmap registeredBitmap) {
     return imageRegistry.getBitmap(registeredBitmap.getId());
   }
 
@@ -608,8 +609,8 @@ class Convert {
     sink.setConsumeTapEvents(marker.getConsumeTapEvents());
     sink.setDraggable(marker.getDraggable());
     sink.setFlat(marker.getFlat());
-    sink.setIcon(toBitmapDescriptor(marker.getIcon(), assetManager, density, wrapper,
-        imageRegistry));
+    sink.setIcon(
+        toBitmapDescriptor(marker.getIcon(), assetManager, density, wrapper, imageRegistry));
     interpretInfoWindowOptions(sink, marker.getInfoWindow());
     sink.setPosition(toLatLng(marker.getPosition().toList()));
     sink.setRotation(marker.getRotation().floatValue());
@@ -833,7 +834,9 @@ class Convert {
   }
 
   private static Cap capFromPigeon(
-      Messages.PlatformCap cap, AssetManager assetManager, ImageRegistry imageRegistry,
+      Messages.PlatformCap cap,
+      AssetManager assetManager,
+      ImageRegistry imageRegistry,
       float density) {
     switch (cap.getType()) {
       case BUTT_CAP:

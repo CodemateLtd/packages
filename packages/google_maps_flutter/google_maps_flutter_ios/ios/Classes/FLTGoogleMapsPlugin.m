@@ -9,10 +9,10 @@
 @implementation FLTGoogleMapsPlugin
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
-    FGMImageRegistry *imageRegistry = [[FGMImageRegistry alloc] initWithRegistrar:registrar];
+  FGMImageRegistry *imageRegistry = [[FGMImageRegistry alloc] initWithRegistrar:registrar];
   SetUpFGMImageRegistryApi(registrar.messenger, imageRegistry);
-  FLTGoogleMapFactory *googleMapFactory = [[FLTGoogleMapFactory alloc] initWithRegistrar:registrar
-                                                                           imageRegistry:imageRegistry];
+  FLTGoogleMapFactory *googleMapFactory =
+      [[FLTGoogleMapFactory alloc] initWithRegistrar:registrar imageRegistry:imageRegistry];
   [registrar registerViewFactory:googleMapFactory
                                 withId:@"plugins.flutter.dev/google_maps_ios"
       gestureRecognizersBlockingPolicy:

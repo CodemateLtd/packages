@@ -6,12 +6,12 @@
 
 #import "GoogleMapController.h"
 
+#import "FGMImageRegistry.h"
 #import "FGMMarkerUserData.h"
 #import "FLTGoogleMapHeatmapController.h"
 #import "FLTGoogleMapJSONConversions.h"
 #import "FLTGoogleMapTileOverlayController.h"
 #import "messages.g.h"
-#import "FGMImageRegistry.h"
 
 #pragma mark - Conversion of JSON-like values sent via platform channels. Forward declarations.
 

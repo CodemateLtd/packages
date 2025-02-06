@@ -21,7 +21,9 @@ public class GoogleMapFactory extends PlatformViewFactory {
   private final ImageRegistry imageRegistry;
 
   GoogleMapFactory(
-      BinaryMessenger binaryMessenger, Context context, LifecycleProvider lifecycleProvider,
+      BinaryMessenger binaryMessenger,
+      Context context,
+      LifecycleProvider lifecycleProvider,
       ImageRegistry imageRegistry) {
     super(Messages.MapsApi.getCodec());
 

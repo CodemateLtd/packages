@@ -2,10 +2,10 @@ package io.flutter.plugins.googlemaps;
 
 import android.content.res.AssetManager;
 import androidx.annotation.NonNull;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import io.flutter.plugins.googlemaps.Convert.BitmapDescriptorFactoryWrapper;
 import io.flutter.plugins.googlemaps.Messages.ImageRegistryApi;
 import io.flutter.plugins.googlemaps.Messages.PlatformBitmap;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import java.util.HashMap;
 
 class ImageRegistry implements ImageRegistryApi {
@@ -18,8 +18,7 @@ class ImageRegistry implements ImageRegistryApi {
   ImageRegistry(
       AssetManager assetManager,
       BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper,
-      float density
-  ) {
+      float density) {
     this.assetManager = assetManager;
     this.bitmapDescriptorFactoryWrapper = bitmapDescriptorFactoryWrapper;
     this.density = density;
@@ -27,14 +26,15 @@ class ImageRegistry implements ImageRegistryApi {
 
   @Override
   public void addBitmapToCache(@NonNull Long id, PlatformBitmap bitmap) {
-    if (!(bitmap.getBitmap() instanceof Messages.PlatformBitmapAsset) &&
-        !(bitmap.getBitmap() instanceof Messages.PlatformBitmapAssetMap) &&
-        !(bitmap.getBitmap() instanceof Messages.PlatformBitmapBytesMap)) {
+    if (!(bitmap.getBitmap() instanceof Messages.PlatformBitmapAsset)
+        && !(bitmap.getBitmap() instanceof Messages.PlatformBitmapAssetMap)
+        && !(bitmap.getBitmap() instanceof Messages.PlatformBitmapBytesMap)) {
       throw new IllegalArgumentException("PlatformBitmap must contain a supported subtype.");
     }
 
     final BitmapDescriptor bitmapDescriptor =
-        Convert.toBitmapDescriptor(bitmap, assetManager, density, bitmapDescriptorFactoryWrapper, this);
+        Convert.toBitmapDescriptor(
+            bitmap, assetManager, density, bitmapDescriptorFactoryWrapper, this);
     registry.put(id, bitmapDescriptor);
   }
 

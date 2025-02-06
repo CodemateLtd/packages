@@ -106,7 +106,7 @@ class GoogleMapController
   private @Nullable String initialMapStyle;
   private boolean lastSetStyleSucceeded;
   @VisibleForTesting List<Float> initialPadding;
-  private final  ImageRegistry imageRegistry;
+  private final ImageRegistry imageRegistry;
 
   GoogleMapController(
       int id,
@@ -136,8 +136,8 @@ class GoogleMapController
             new Convert.BitmapDescriptorFactoryWrapper(),
             imageRegistry);
     this.polygonsController = new PolygonsController(flutterApi, density);
-    this.polylinesController = new PolylinesController(flutterApi, assetManager, imageRegistry,
-        density);
+    this.polylinesController =
+        new PolylinesController(flutterApi, assetManager, imageRegistry, density);
     this.circlesController = new CirclesController(flutterApi, density);
     this.heatmapsController = new HeatmapsController();
     this.tileOverlaysController = new TileOverlaysController(flutterApi);

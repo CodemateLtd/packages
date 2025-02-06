@@ -38,11 +38,11 @@ public class GoogleMapsPlugin implements FlutterPlugin, ActivityAware {
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
-    final ImageRegistry imageRegistry = new ImageRegistry(
-        binding.getApplicationContext().getAssets(),
-        new BitmapDescriptorFactoryWrapper(),
-        binding.getApplicationContext().getResources().getDisplayMetrics().density
-    );
+    final ImageRegistry imageRegistry =
+        new ImageRegistry(
+            binding.getApplicationContext().getAssets(),
+            new BitmapDescriptorFactoryWrapper(),
+            binding.getApplicationContext().getResources().getDisplayMetrics().density);
     ImageRegistryApi.setUp(binding.getBinaryMessenger(), imageRegistry);
 
     binding
@@ -59,8 +59,7 @@ public class GoogleMapsPlugin implements FlutterPlugin, ActivityAware {
                     return lifecycle;
                   }
                 },
-                imageRegistry
-                ));
+                imageRegistry));
   }
 
   @Override

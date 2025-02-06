@@ -25,7 +25,9 @@ class PolylinesController {
   private final ImageRegistry imageRegistry;
 
   PolylinesController(
-      @NonNull MapsCallbackApi flutterApi, AssetManager assetManager, ImageRegistry imageRegistry,
+      @NonNull MapsCallbackApi flutterApi,
+      AssetManager assetManager,
+      ImageRegistry imageRegistry,
       float density) {
     this.assetManager = assetManager;
     this.polylineIdToController = new HashMap<>();
@@ -77,8 +79,8 @@ class PolylinesController {
   private void addPolyline(@NonNull Messages.PlatformPolyline polyline) {
     PolylineBuilder polylineBuilder = new PolylineBuilder(density);
     String polylineId =
-        Convert.interpretPolylineOptions(polyline, polylineBuilder, assetManager, imageRegistry,
-            density);
+        Convert.interpretPolylineOptions(
+            polyline, polylineBuilder, assetManager, imageRegistry, density);
     PolylineOptions options = polylineBuilder.build();
     addPolyline(polylineId, options, polylineBuilder.consumeTapEvents());
   }
@@ -95,8 +97,8 @@ class PolylinesController {
     String polylineId = polyline.getPolylineId();
     PolylineController polylineController = polylineIdToController.get(polylineId);
     if (polylineController != null) {
-      Convert.interpretPolylineOptions(polyline, polylineController, assetManager, imageRegistry,
-          density);
+      Convert.interpretPolylineOptions(
+          polyline, polylineController, assetManager, imageRegistry, density);
     }
   }
 

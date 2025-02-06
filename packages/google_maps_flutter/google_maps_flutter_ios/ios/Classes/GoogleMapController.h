@@ -6,12 +6,12 @@
 #import <GoogleMaps/GoogleMaps.h>
 
 #import "FGMClusterManagersController.h"
+#import "FGMImageRegistry.h"
 #import "GoogleMapCircleController.h"
 #import "GoogleMapMarkerController.h"
 #import "GoogleMapPolygonController.h"
 #import "GoogleMapPolylineController.h"
 #import "messages.g.h"
-#import "FGMImageRegistry.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

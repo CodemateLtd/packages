@@ -4,9 +4,9 @@
 
 #import "GoogleMapMarkerController.h"
 
+#import "FGMImageRegistry.h"
 #import "FGMMarkerUserData.h"
 #import "FLTGoogleMapJSONConversions.h"
-#import "FGMImageRegistry.h"
 
 @interface FLTGoogleMapMarkerController ()
 
@@ -407,7 +407,7 @@
     _clusterManagersController = clusterManagersController;
     _markerIdentifierToController = [[NSMutableDictionary alloc] init];
     _registrar = registrar;
-   _imageRegistry = imageRegistry;
+    _imageRegistry = imageRegistry;
   }
   return self;
 }
