@@ -20,6 +20,10 @@ class FakeGoogleMapsFlutterPlatform extends GoogleMapsFlutterPlatform {
   Map<int, PlatformMapStateRecorder> mapInstances =
       <int, PlatformMapStateRecorder>{};
 
+  /// A recorder for the bitmap registry calls.
+  PlatformBitmapRegistryRecorder bitmapRegistryRecorder =
+      PlatformBitmapRegistryRecorder();
+
   PlatformMapStateRecorder get lastCreatedMap => mapInstances[createdIds.last]!;
 
   /// Whether to add a small delay to async calls to simulate more realistic
@@ -265,6 +269,21 @@ class FakeGoogleMapsFlutterPlatform extends GoogleMapsFlutterPlatform {
   }
 
   @override
+  Future<void> registerBitmap(int id, MapBitmap bitmap) async {
+    bitmapRegistryRecorder.bitmaps.add('REGISTER $id $bitmap');
+  }
+
+  @override
+  Future<void> unregisterBitmap(int id) async {
+    bitmapRegistryRecorder.bitmaps.add('UNREGISTER $id');
+  }
+
+  @override
+  Future<void> clearBitmapCache() async {
+    bitmapRegistryRecorder.bitmaps.add('CLEAR CACHE');
+  }
+
+  @override
   void dispose({required int mapId}) {
     disposed = true;
   }
@@ -330,4 +349,12 @@ class PlatformMapStateRecorder {
   final List<Set<TileOverlay>> tileOverlaySets = <Set<TileOverlay>>[];
   final List<ClusterManagerUpdates> clusterManagerUpdates =
       <ClusterManagerUpdates>[];
+}
+
+/// A fake implementation of native bitmap registry, which stores all the
+/// updates for inspection in tests.
+class PlatformBitmapRegistryRecorder {
+  PlatformBitmapRegistryRecorder();
+
+  final List<String> bitmaps = <String>[];
 }

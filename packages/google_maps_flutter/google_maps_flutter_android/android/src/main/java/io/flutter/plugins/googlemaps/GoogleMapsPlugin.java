@@ -17,6 +17,7 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter;
+import io.flutter.plugins.googlemaps.Convert.BitmapDescriptorFactoryWrapper;
 import io.flutter.plugins.googlemaps.Messages.ImageRegistryApi;
 
 /**
@@ -37,7 +38,11 @@ public class GoogleMapsPlugin implements FlutterPlugin, ActivityAware {
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
-    final ImageRegistry imageRegistry = new ImageRegistry(binding.getApplicationContext());
+    final ImageRegistry imageRegistry = new ImageRegistry(
+        binding.getApplicationContext().getAssets(),
+        new BitmapDescriptorFactoryWrapper(),
+        binding.getApplicationContext().getResources().getDisplayMetrics().density
+    );
     ImageRegistryApi.setUp(binding.getBinaryMessenger(), imageRegistry);
 
     binding

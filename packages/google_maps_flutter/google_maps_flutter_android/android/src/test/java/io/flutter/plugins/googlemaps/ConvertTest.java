@@ -16,12 +16,15 @@ import static io.flutter.plugins.googlemaps.Convert.HEATMAP_OPACITY_KEY;
 import static io.flutter.plugins.googlemaps.Convert.HEATMAP_RADIUS_KEY;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import android.appwidget.AppWidgetProvider;
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -29,6 +32,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.Base64;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.annotation.NonNull;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
@@ -40,6 +44,7 @@ import com.google.maps.android.heatmaps.WeightedLatLng;
 import com.google.maps.android.projection.SphericalMercatorProjection;
 import io.flutter.plugins.googlemaps.Convert.BitmapDescriptorFactoryWrapper;
 import io.flutter.plugins.googlemaps.Convert.FlutterInjectorWrapper;
+import io.flutter.plugins.googlemaps.Messages.PlatformBitmap;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -333,6 +338,49 @@ public class ConvertTest {
     }
 
     fail("Expected an IllegalArgumentException to be thrown");
+  }
+
+  @Test
+  public void GetBitmapFromNotRegisteredBitmap() {
+    ImageRegistry imageRegistry =
+        new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
+
+    Messages.PlatformBitmapRegisteredMapBitmap bitmap =
+        new Messages.PlatformBitmapRegisteredMapBitmap.Builder()
+            .setId(0L)
+            .build();
+
+    BitmapDescriptor result = Convert.getBitmapFromRegisteredBitmap(imageRegistry, bitmap);
+    Assert.assertEquals(result, null);
+  }
+
+  @Test
+  public void GetPreviouslyRegisteredBitmap() {
+    ImageRegistry imageRegistry =
+        new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
+
+    byte[] bmpData = Base64.decode(base64Image, Base64.DEFAULT);
+    Messages.PlatformBitmapBytesMap bitmap =
+        new Messages.PlatformBitmapBytesMap.Builder()
+            .setBitmapScaling(Messages.PlatformMapBitmapScaling.NONE)
+            .setImagePixelRatio(2.0)
+            .setByteData(bmpData)
+            .build();
+    PlatformBitmap platformBitmap = new PlatformBitmap.Builder()
+        .setBitmap(bitmap)
+        .build();
+    when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
+    imageRegistry.addBitmapToCache(0L, platformBitmap);
+
+    Messages.PlatformBitmapRegisteredMapBitmap registeredBitmap =
+        new Messages.PlatformBitmapRegisteredMapBitmap.Builder()
+            .setId(0L)
+            .build();
+    when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
+    BitmapDescriptor result = Convert.getBitmapFromRegisteredBitmap(imageRegistry,
+        registeredBitmap);
+    BitmapDescriptor registryBitmapDescriptor = imageRegistry.getBitmap(0L);
+    Assert.assertEquals(result, registryBitmapDescriptor);
   }
 
   @Test

@@ -67,7 +67,7 @@ class Convert {
         platformBitmap, assetManager, density, new BitmapDescriptorFactoryWrapper(), imageRegistry);
   }
 
-  private static BitmapDescriptor toBitmapDescriptor(
+  public static BitmapDescriptor toBitmapDescriptor(
       Messages.PlatformBitmap platformBitmap,
       AssetManager assetManager,
       float density,
