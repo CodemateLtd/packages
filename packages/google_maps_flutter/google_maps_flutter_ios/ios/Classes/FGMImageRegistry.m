@@ -31,7 +31,6 @@
 }
 
 - (void)addBitmapToCacheId:(NSInteger)id bitmap:(nonnull FGMPlatformBitmap *)bitmap error:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
-    NSLog(@"PUT BITMAP");
     CGFloat screenScale = [[UIScreen mainScreen] scale];
     UIImage *image = [FLTGoogleMapMarkerController iconFromBitmap:bitmap
                                                         registrar:_registrar
@@ -42,18 +41,15 @@
 }
 
 - (void)removeBitmapFromCacheId:(NSInteger)id error:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
-    NSLog(@"REMOBE BITMAP");
     NSNumber *idNumber = [NSNumber numberWithInteger:id];
     [self.registry removeObjectForKey:idNumber];
 }
 
 - (void)clearBitmapCacheWithError:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
-    NSLog(@"CLEAR BITMAP");
     [self.registry removeAllObjects];
 }
 
 - (UIImage *)getBitmap:(NSNumber *)identifier {
-//    NSLog(@"get BITMAP %@", identifier);
     return self.registry[identifier];
 }
 

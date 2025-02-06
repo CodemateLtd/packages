@@ -7,6 +7,8 @@
 
 #import "messages.g.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface FGMImageRegistry : NSObject<FGMImageRegistryApi>
 
 - (instancetype)init;
@@ -16,6 +18,8 @@
 /// Returns registered image with the given identifier or null if registered image is not found.
 ///
 /// @param identifier An identifier of the registered image.
-- (UIImage *)getBitmap:(NSNumber *)identifier;
+- (nullable UIImage *)getBitmap:(NSNumber *)identifier;
 
 @end
+
+NS_ASSUME_NONNULL_END
