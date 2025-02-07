@@ -944,7 +944,7 @@ class GoogleMapsFlutterAndroid extends GoogleMapsFlutterPlatform {
                 height: bytes.height));
       case final RegisteredMapBitmap registeredBitmap:
         return PlatformBitmap(
-          bitmap: PlatformBitmapRegisteredMapBitmap(
+          bitmap: PlatformRegisteredMapBitmap(
             id: registeredBitmap.id,
           ),
         );

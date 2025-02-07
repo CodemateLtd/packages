@@ -151,8 +151,8 @@
   // https://github.com/flutter/flutter/issues/117819.
   id bitmap = platformBitmap.bitmap;
   UIImage *image;
-  if ([bitmap isKindOfClass:[FGMPlatformBitmapRegisteredMapBitmap class]]) {
-    FGMPlatformBitmapRegisteredMapBitmap *registeredBitmap = bitmap;
+  if ([bitmap isKindOfClass:[FGMPlatformRegisteredMapBitmap class]]) {
+    FGMPlatformRegisteredMapBitmap *registeredBitmap = bitmap;
     NSInteger imageId = registeredBitmap.id;
     NSNumber *imageIdNumber = [NSNumber numberWithInteger:imageId];
     image = [imageRegistry getBitmap:imageIdNumber];

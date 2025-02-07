@@ -311,9 +311,9 @@ static id GetNullableObjectAtIndex(NSArray<id> *array, NSInteger key) {
 - (NSArray<id> *)toList;
 @end
 
-@interface FGMPlatformBitmapRegisteredMapBitmap ()
-+ (FGMPlatformBitmapRegisteredMapBitmap *)fromList:(NSArray<id> *)list;
-+ (nullable FGMPlatformBitmapRegisteredMapBitmap *)nullableFromList:(NSArray<id> *)list;
+@interface FGMPlatformRegisteredMapBitmap ()
++ (FGMPlatformRegisteredMapBitmap *)fromList:(NSArray<id> *)list;
++ (nullable FGMPlatformRegisteredMapBitmap *)nullableFromList:(NSArray<id> *)list;
 - (NSArray<id> *)toList;
 @end
 
@@ -1539,21 +1539,19 @@ static id GetNullableObjectAtIndex(NSArray<id> *array, NSInteger key) {
 }
 @end
 
-@implementation FGMPlatformBitmapRegisteredMapBitmap
+@implementation FGMPlatformRegisteredMapBitmap
 + (instancetype)makeWithId:(NSInteger)id {
-  FGMPlatformBitmapRegisteredMapBitmap *pigeonResult =
-      [[FGMPlatformBitmapRegisteredMapBitmap alloc] init];
+  FGMPlatformRegisteredMapBitmap *pigeonResult = [[FGMPlatformRegisteredMapBitmap alloc] init];
   pigeonResult.id = id;
   return pigeonResult;
 }
-+ (FGMPlatformBitmapRegisteredMapBitmap *)fromList:(NSArray<id> *)list {
-  FGMPlatformBitmapRegisteredMapBitmap *pigeonResult =
-      [[FGMPlatformBitmapRegisteredMapBitmap alloc] init];
++ (FGMPlatformRegisteredMapBitmap *)fromList:(NSArray<id> *)list {
+  FGMPlatformRegisteredMapBitmap *pigeonResult = [[FGMPlatformRegisteredMapBitmap alloc] init];
   pigeonResult.id = [GetNullableObjectAtIndex(list, 0) integerValue];
   return pigeonResult;
 }
-+ (nullable FGMPlatformBitmapRegisteredMapBitmap *)nullableFromList:(NSArray<id> *)list {
-  return (list) ? [FGMPlatformBitmapRegisteredMapBitmap fromList:list] : nil;
++ (nullable FGMPlatformRegisteredMapBitmap *)nullableFromList:(NSArray<id> *)list {
+  return (list) ? [FGMPlatformRegisteredMapBitmap fromList:list] : nil;
 }
 - (NSArray<id> *)toList {
   return @[
@@ -1668,7 +1666,7 @@ static id GetNullableObjectAtIndex(NSArray<id> *array, NSInteger key) {
     case 170:
       return [FGMPlatformBitmapBytesMap fromList:[self readValue]];
     case 171:
-      return [FGMPlatformBitmapRegisteredMapBitmap fromList:[self readValue]];
+      return [FGMPlatformRegisteredMapBitmap fromList:[self readValue]];
     default:
       return [super readValueOfType:type];
   }
@@ -1809,7 +1807,7 @@ static id GetNullableObjectAtIndex(NSArray<id> *array, NSInteger key) {
   } else if ([value isKindOfClass:[FGMPlatformBitmapBytesMap class]]) {
     [self writeByte:170];
     [self writeValue:[value toList]];
-  } else if ([value isKindOfClass:[FGMPlatformBitmapRegisteredMapBitmap class]]) {
+  } else if ([value isKindOfClass:[FGMPlatformRegisteredMapBitmap class]]) {
     [self writeByte:171];
     [self writeValue:[value toList]];
   } else {

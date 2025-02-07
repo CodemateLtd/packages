@@ -104,7 +104,7 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapBitmapScaling) {
 @class FGMPlatformBitmapAssetImage;
 @class FGMPlatformBitmapAssetMap;
 @class FGMPlatformBitmapBytesMap;
-@class FGMPlatformBitmapRegisteredMapBitmap;
+@class FGMPlatformRegisteredMapBitmap;
 
 /// Pigeon representatation of a CameraPosition.
 @interface FGMPlatformCameraPosition : NSObject
@@ -622,7 +622,7 @@ typedef NS_ENUM(NSUInteger, FGMPlatformMapBitmapScaling) {
 @end
 
 /// Pigeon equivalent of a registered bitmap.
-@interface FGMPlatformBitmapRegisteredMapBitmap : NSObject
+@interface FGMPlatformRegisteredMapBitmap : NSObject
 /// `init` unavailable to enforce nonnull fields, see the `make` class method.
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)makeWithId:(NSInteger)id;

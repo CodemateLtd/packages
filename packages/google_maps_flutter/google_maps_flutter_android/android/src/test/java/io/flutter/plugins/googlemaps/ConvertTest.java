@@ -341,8 +341,8 @@ public class ConvertTest {
     ImageRegistry imageRegistry =
         new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
 
-    Messages.PlatformBitmapRegisteredMapBitmap bitmap =
-        new Messages.PlatformBitmapRegisteredMapBitmap.Builder().setId(0L).build();
+    Messages.PlatformRegisteredMapBitmap bitmap =
+        new Messages.PlatformRegisteredMapBitmap.Builder().setId(0L).build();
 
     BitmapDescriptor result = Convert.getBitmapFromRegisteredBitmap(imageRegistry, bitmap);
     Assert.assertEquals(result, null);
@@ -364,8 +364,8 @@ public class ConvertTest {
     when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
     imageRegistry.addBitmapToCache(0L, platformBitmap);
 
-    Messages.PlatformBitmapRegisteredMapBitmap registeredBitmap =
-        new Messages.PlatformBitmapRegisteredMapBitmap.Builder().setId(0L).build();
+    Messages.PlatformRegisteredMapBitmap registeredBitmap =
+        new Messages.PlatformRegisteredMapBitmap.Builder().setId(0L).build();
     when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
     BitmapDescriptor result =
         Convert.getBitmapFromRegisteredBitmap(imageRegistry, registeredBitmap);

@@ -187,8 +187,8 @@ public class ImageRegistryTest {
   public void AddBitmapToCacheThrowsOnWrongBitmapType() {
     ImageRegistry imageRegistry =
         new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1L);
-    Messages.PlatformBitmapRegisteredMapBitmap registeredMapBitmap =
-        new Messages.PlatformBitmapRegisteredMapBitmap.Builder().setId(0L).build();
+    Messages.PlatformRegisteredMapBitmap registeredMapBitmap =
+        new Messages.PlatformRegisteredMapBitmap.Builder().setId(0L).build();
     Messages.PlatformBitmap platformBitmap =
         new Messages.PlatformBitmap.Builder().setBitmap(registeredMapBitmap).build();
     try {

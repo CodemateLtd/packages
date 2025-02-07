@@ -830,7 +830,7 @@ class GoogleMapsFlutterIOS extends GoogleMapsFlutterPlatform {
                 height: bytes.height));
       case final RegisteredMapBitmap registeredBitmap:
         return PlatformBitmap(
-          bitmap: PlatformBitmapRegisteredMapBitmap(id: registeredBitmap.id),
+          bitmap: PlatformRegisteredMapBitmap(id: registeredBitmap.id),
         );
       default:
         throw ArgumentError(

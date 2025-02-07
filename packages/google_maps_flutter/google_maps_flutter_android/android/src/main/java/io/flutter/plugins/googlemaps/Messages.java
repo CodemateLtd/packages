@@ -5825,7 +5825,7 @@ public class Messages {
    *
    * <p>Generated class from Pigeon that represents data sent in messages.
    */
-  public static final class PlatformBitmapRegisteredMapBitmap {
+  public static final class PlatformRegisteredMapBitmap {
     private @NonNull Long id;
 
     public @NonNull Long getId() {
@@ -5840,7 +5840,7 @@ public class Messages {
     }
 
     /** Constructor is non-public to enforce null safety; use Builder. */
-    PlatformBitmapRegisteredMapBitmap() {}
+    PlatformRegisteredMapBitmap() {}
 
     @Override
     public boolean equals(Object o) {
@@ -5850,7 +5850,7 @@ public class Messages {
       if (o == null || getClass() != o.getClass()) {
         return false;
       }
-      PlatformBitmapRegisteredMapBitmap that = (PlatformBitmapRegisteredMapBitmap) o;
+      PlatformRegisteredMapBitmap that = (PlatformRegisteredMapBitmap) o;
       return id.equals(that.id);
     }
 
@@ -5869,8 +5869,8 @@ public class Messages {
         return this;
       }
 
-      public @NonNull PlatformBitmapRegisteredMapBitmap build() {
-        PlatformBitmapRegisteredMapBitmap pigeonReturn = new PlatformBitmapRegisteredMapBitmap();
+      public @NonNull PlatformRegisteredMapBitmap build() {
+        PlatformRegisteredMapBitmap pigeonReturn = new PlatformRegisteredMapBitmap();
         pigeonReturn.setId(id);
         return pigeonReturn;
       }
@@ -5883,9 +5883,9 @@ public class Messages {
       return toListResult;
     }
 
-    static @NonNull PlatformBitmapRegisteredMapBitmap fromList(
+    static @NonNull PlatformRegisteredMapBitmap fromList(
         @NonNull ArrayList<Object> pigeonVar_list) {
-      PlatformBitmapRegisteredMapBitmap pigeonResult = new PlatformBitmapRegisteredMapBitmap();
+      PlatformRegisteredMapBitmap pigeonResult = new PlatformRegisteredMapBitmap();
       Object id = pigeonVar_list.get(0);
       pigeonResult.setId((Long) id);
       return pigeonResult;
@@ -6015,7 +6015,7 @@ public class Messages {
         case (byte) 173:
           return PlatformBitmapBytesMap.fromList((ArrayList<Object>) readValue(buffer));
         case (byte) 174:
-          return PlatformBitmapRegisteredMapBitmap.fromList((ArrayList<Object>) readValue(buffer));
+          return PlatformRegisteredMapBitmap.fromList((ArrayList<Object>) readValue(buffer));
         default:
           return super.readValueOfType(type, buffer);
       }
@@ -6158,9 +6158,9 @@ public class Messages {
       } else if (value instanceof PlatformBitmapBytesMap) {
         stream.write(173);
         writeValue(stream, ((PlatformBitmapBytesMap) value).toList());
-      } else if (value instanceof PlatformBitmapRegisteredMapBitmap) {
+      } else if (value instanceof PlatformRegisteredMapBitmap) {
         stream.write(174);
-        writeValue(stream, ((PlatformBitmapRegisteredMapBitmap) value).toList());
+        writeValue(stream, ((PlatformRegisteredMapBitmap) value).toList());
       } else {
         super.writeValue(stream, value);
       }

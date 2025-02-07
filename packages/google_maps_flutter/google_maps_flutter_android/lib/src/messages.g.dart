@@ -1526,8 +1526,8 @@ class PlatformBitmapBytesMap {
 }
 
 /// Pigeon equivalent of a registered bitmap.
-class PlatformBitmapRegisteredMapBitmap {
-  PlatformBitmapRegisteredMapBitmap({
+class PlatformRegisteredMapBitmap {
+  PlatformRegisteredMapBitmap({
     required this.id,
   });
 
@@ -1539,9 +1539,9 @@ class PlatformBitmapRegisteredMapBitmap {
     ];
   }
 
-  static PlatformBitmapRegisteredMapBitmap decode(Object result) {
+  static PlatformRegisteredMapBitmap decode(Object result) {
     result as List<Object?>;
-    return PlatformBitmapRegisteredMapBitmap(
+    return PlatformRegisteredMapBitmap(
       id: result[0]! as int,
     );
   }
@@ -1689,7 +1689,7 @@ class _PigeonCodec extends StandardMessageCodec {
     } else if (value is PlatformBitmapBytesMap) {
       buffer.putUint8(173);
       writeValue(buffer, value.encode());
-    } else if (value is PlatformBitmapRegisteredMapBitmap) {
+    } else if (value is PlatformRegisteredMapBitmap) {
       buffer.putUint8(174);
       writeValue(buffer, value.encode());
     } else {
@@ -1797,7 +1797,7 @@ class _PigeonCodec extends StandardMessageCodec {
       case 173:
         return PlatformBitmapBytesMap.decode(readValue(buffer)!);
       case 174:
-        return PlatformBitmapRegisteredMapBitmap.decode(readValue(buffer)!);
+        return PlatformRegisteredMapBitmap.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
     }

@@ -119,9 +119,9 @@ class Convert {
       Messages.PlatformBitmapBytesMap typedBitmap = (Messages.PlatformBitmapBytesMap) bitmap;
       return getBitmapFromBytes(typedBitmap, density, wrapper);
     }
-    if (bitmap instanceof Messages.PlatformBitmapRegisteredMapBitmap) {
-      Messages.PlatformBitmapRegisteredMapBitmap typedBitmap =
-          (Messages.PlatformBitmapRegisteredMapBitmap) bitmap;
+    if (bitmap instanceof Messages.PlatformRegisteredMapBitmap) {
+      Messages.PlatformRegisteredMapBitmap typedBitmap =
+          (Messages.PlatformRegisteredMapBitmap) bitmap;
       return getBitmapFromRegisteredBitmap(imageRegistry, typedBitmap);
     }
     throw new IllegalArgumentException("PlatformBitmap did not contain a supported subtype.");
@@ -195,7 +195,7 @@ class Convert {
   }
 
   public static BitmapDescriptor getBitmapFromRegisteredBitmap(
-      ImageRegistry imageRegistry, Messages.PlatformBitmapRegisteredMapBitmap registeredBitmap) {
+      ImageRegistry imageRegistry, Messages.PlatformRegisteredMapBitmap registeredBitmap) {
     return imageRegistry.getBitmap(registeredBitmap.getId());
   }
 

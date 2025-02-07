@@ -541,8 +541,8 @@ class PlatformBitmapBytesMap {
 }
 
 /// Pigeon equivalent of a registered bitmap.
-class PlatformBitmapRegisteredMapBitmap {
-  PlatformBitmapRegisteredMapBitmap({
+class PlatformRegisteredMapBitmap {
+  PlatformRegisteredMapBitmap({
     required this.id,
   });
 
