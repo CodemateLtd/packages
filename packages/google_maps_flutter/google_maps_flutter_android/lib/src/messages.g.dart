@@ -3483,7 +3483,7 @@ class ImageRegistryApi {
     }
   }
 
-  /// Retrieves a bitmap from the cache.
+  /// Removes a bitmap from the cache.
   Future<void> removeBitmapFromCache(int id) async {
     final String pigeonVar_channelName =
         'dev.flutter.pigeon.google_maps_flutter_android.ImageRegistryApi.removeBitmapFromCache$pigeonVar_messageChannelSuffix';

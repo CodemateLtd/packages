@@ -60,21 +60,40 @@ class Convert {
   public static final String HEATMAP_GRADIENT_START_POINTS_KEY = "startPoints";
   public static final String HEATMAP_GRADIENT_COLOR_MAP_SIZE_KEY = "colorMapSize";
 
-  public static BitmapDescriptor toBitmapDescriptor(
+  private static BitmapDescriptor toBitmapDescriptor(
       Messages.PlatformBitmap platformBitmap,
       AssetManager assetManager,
       float density,
       ImageRegistry imageRegistry) {
     return toBitmapDescriptor(
-        platformBitmap, assetManager, density, new BitmapDescriptorFactoryWrapper(), imageRegistry);
+        platformBitmap,
+        assetManager,
+        density,
+        new BitmapDescriptorFactoryWrapper(),
+        imageRegistry,
+        null);
   }
 
+  /**
+   * Creates BitmapDescriptor object from Messages.PlatformBitmap data.
+   *
+   * @param platformBitmap a PlatformBitmap containing the bitmap data from which to construct a
+   *     BitmapDescriptor.
+   * @param assetManager An instance of Android's AssetManager which provides access to any raw
+   *     asset files stored in the application's assets directory.
+   * @param density the density of the display, used to calculate pixel dimensions.
+   * @param wrapper is an instance of the BitmapDescriptorFactoryWrapper.
+   * @param imageRegistry An instance of the ImageRegistry class.
+   * @param flutterInjectorWrapper An instance of the FlutterInjectorWrapper class.
+   * @return BitmapDescriptor object created from Messages.PlatformBitmap data.
+   */
   public static BitmapDescriptor toBitmapDescriptor(
       Messages.PlatformBitmap platformBitmap,
       AssetManager assetManager,
       float density,
       BitmapDescriptorFactoryWrapper wrapper,
-      ImageRegistry imageRegistry) {
+      ImageRegistry imageRegistry,
+      @Nullable FlutterInjectorWrapper flutterInjectorWrapper) {
     Object bitmap = platformBitmap.getBitmap();
     if (bitmap instanceof Messages.PlatformBitmapDefaultMarker) {
       Messages.PlatformBitmapDefaultMarker typedBitmap =
@@ -113,7 +132,11 @@ class Convert {
     if (bitmap instanceof Messages.PlatformBitmapAssetMap) {
       Messages.PlatformBitmapAssetMap typedBitmap = (Messages.PlatformBitmapAssetMap) bitmap;
       return getBitmapFromAsset(
-          typedBitmap, assetManager, density, wrapper, new FlutterInjectorWrapper());
+          typedBitmap,
+          assetManager,
+          density,
+          wrapper,
+          flutterInjectorWrapper != null ? flutterInjectorWrapper : new FlutterInjectorWrapper());
     }
     if (bitmap instanceof Messages.PlatformBitmapBytesMap) {
       Messages.PlatformBitmapBytesMap typedBitmap = (Messages.PlatformBitmapBytesMap) bitmap;
@@ -610,7 +633,7 @@ class Convert {
     sink.setDraggable(marker.getDraggable());
     sink.setFlat(marker.getFlat());
     sink.setIcon(
-        toBitmapDescriptor(marker.getIcon(), assetManager, density, wrapper, imageRegistry));
+        toBitmapDescriptor(marker.getIcon(), assetManager, density, wrapper, imageRegistry, null));
     interpretInfoWindowOptions(sink, marker.getInfoWindow());
     sink.setPosition(toLatLng(marker.getPosition().toList()));
     sink.setRotation(marker.getRotation().floatValue());
@@ -833,7 +856,8 @@ class Convert {
     return pattern;
   }
 
-  private static Cap capFromPigeon(
+  @VisibleForTesting
+  public static Cap capFromPigeon(
       Messages.PlatformCap cap,
       AssetManager assetManager,
       ImageRegistry imageRegistry,

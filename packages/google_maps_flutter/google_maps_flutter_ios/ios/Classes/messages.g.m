@@ -3191,7 +3191,7 @@ void SetUpFGMImageRegistryApiWithSuffix(id<FlutterBinaryMessenger> binaryMesseng
       [channel setMessageHandler:nil];
     }
   }
-  /// Retrieves a bitmap from the cache.
+  /// Removes a bitmap from the cache.
   {
     FlutterBasicMessageChannel *channel = [[FlutterBasicMessageChannel alloc]
            initWithName:[NSString stringWithFormat:@"%@%@",

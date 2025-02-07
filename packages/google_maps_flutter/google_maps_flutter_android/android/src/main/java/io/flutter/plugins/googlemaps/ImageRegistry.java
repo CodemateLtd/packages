@@ -2,16 +2,26 @@ package io.flutter.plugins.googlemaps;
 
 import android.content.res.AssetManager;
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import io.flutter.plugins.googlemaps.Convert.BitmapDescriptorFactoryWrapper;
+import io.flutter.plugins.googlemaps.Convert.FlutterInjectorWrapper;
 import io.flutter.plugins.googlemaps.Messages.ImageRegistryApi;
 import io.flutter.plugins.googlemaps.Messages.PlatformBitmap;
 import java.util.HashMap;
 
+/**
+ * A registry for BitmapDescriptors.
+ *
+ * <p>BitmapDescriptors are created from PlatformBitmaps and stored in the registry. The registry
+ * allows for the retrieval of BitmapDescriptors by their unique identifier.
+ */
 class ImageRegistry implements ImageRegistryApi {
-  final AssetManager assetManager;
-  final BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper;
-  final float density;
+  private final AssetManager assetManager;
+  private final BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper;
+  private final float density;
+
+  @VisibleForTesting private FlutterInjectorWrapper flutterInjectorWrapper;
 
   private final HashMap<Long, BitmapDescriptor> registry = new HashMap<>();
 
@@ -34,8 +44,18 @@ class ImageRegistry implements ImageRegistryApi {
 
     final BitmapDescriptor bitmapDescriptor =
         Convert.toBitmapDescriptor(
-            bitmap, assetManager, density, bitmapDescriptorFactoryWrapper, this);
+            bitmap,
+            assetManager,
+            density,
+            bitmapDescriptorFactoryWrapper,
+            this,
+            flutterInjectorWrapper);
     registry.put(id, bitmapDescriptor);
+  }
+
+  @VisibleForTesting
+  public void setFlutterInjectorWrapper(FlutterInjectorWrapper flutterInjectorWrapper) {
+    this.flutterInjectorWrapper = flutterInjectorWrapper;
   }
 
   @Override

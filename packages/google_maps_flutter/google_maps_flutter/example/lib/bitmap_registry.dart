@@ -107,7 +107,7 @@ class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
     }
 
     final BytesMapBitmap bitmap = await _getAssetBitmapDescriptor();
-    final int registeredBitmapId =
+    _registeredBitmapId =
         await GoogleMapBitmapRegistry.instance.register(bitmap);
 
     // If the widget was disposed before the bitmap was registered, unregister
@@ -117,9 +117,7 @@ class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
       return;
     }
 
-    setState(() {
-      _registeredBitmapId = registeredBitmapId;
-    });
+    setState(() {});
   }
 
   /// Unregister the bitmap from the bitmap registry.

@@ -31,6 +31,8 @@ import android.os.Build;
 import android.util.Base64;
 import androidx.annotation.NonNull;
 import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.Cap;
+import com.google.android.gms.maps.model.CustomCap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.clustering.algo.StaticCluster;
@@ -41,6 +43,8 @@ import com.google.maps.android.projection.SphericalMercatorProjection;
 import io.flutter.plugins.googlemaps.Convert.BitmapDescriptorFactoryWrapper;
 import io.flutter.plugins.googlemaps.Convert.FlutterInjectorWrapper;
 import io.flutter.plugins.googlemaps.Messages.PlatformBitmap;
+import io.flutter.plugins.googlemaps.Messages.PlatformCap;
+import io.flutter.plugins.googlemaps.Messages.PlatformCapType;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -345,7 +349,7 @@ public class ConvertTest {
         new Messages.PlatformRegisteredMapBitmap.Builder().setId(0L).build();
 
     BitmapDescriptor result = Convert.getBitmapFromRegisteredBitmap(imageRegistry, bitmap);
-    Assert.assertEquals(result, null);
+    Assert.assertNull(result);
   }
 
   @Test
@@ -701,6 +705,39 @@ public class ConvertTest {
     Assert.assertEquals(opacity, builder.getOpacity(), 0);
     Assert.assertEquals(radius, builder.getRadius());
     Assert.assertEquals(idData, id);
+  }
+
+  @Test
+  public void capFromPigeonCreatesCustomCapWithRegisteredBitmap() {
+    final ImageRegistry imageRegistry =
+        new ImageRegistry(assetManager, bitmapDescriptorFactoryWrapper, 1f);
+
+    byte[] bmpData = Base64.decode(base64Image, Base64.DEFAULT);
+    Messages.PlatformBitmapBytesMap bitmap =
+        new Messages.PlatformBitmapBytesMap.Builder()
+            .setBitmapScaling(Messages.PlatformMapBitmapScaling.NONE)
+            .setImagePixelRatio(2.0)
+            .setByteData(bmpData)
+            .build();
+    PlatformBitmap platformBitmap = new PlatformBitmap.Builder().setBitmap(bitmap).build();
+
+    when(bitmapDescriptorFactoryWrapper.fromBitmap(any())).thenReturn(mockBitmapDescriptor);
+    imageRegistry.addBitmapToCache(1L, platformBitmap);
+    Messages.PlatformRegisteredMapBitmap registeredBitmap =
+        new Messages.PlatformRegisteredMapBitmap.Builder().setId(1L).build();
+
+    PlatformBitmap platformRegisteredBitmap =
+        new PlatformBitmap.Builder().setBitmap(registeredBitmap).build();
+    final PlatformCap platformCap =
+        new PlatformCap.Builder()
+            .setRefWidth(2d)
+            .setType(PlatformCapType.CUSTOM_CAP)
+            .setBitmapDescriptor(platformRegisteredBitmap)
+            .build();
+
+    final Cap cap = Convert.capFromPigeon(platformCap, assetManager, imageRegistry, 1f);
+    Assert.assertEquals(cap.getClass(), CustomCap.class);
+    Assert.assertEquals(((CustomCap) cap).bitmapDescriptor, mockBitmapDescriptor);
   }
 
   private InputStream buildImageInputStream() {

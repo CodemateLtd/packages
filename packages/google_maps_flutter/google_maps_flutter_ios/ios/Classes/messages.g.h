@@ -858,7 +858,7 @@ extern void SetUpFGMMapsInspectorApiWithSuffix(id<FlutterBinaryMessenger> binary
 - (void)addBitmapToCacheId:(NSInteger)id
                     bitmap:(FGMPlatformBitmap *)bitmap
                      error:(FlutterError *_Nullable *_Nonnull)error;
-/// Retrieves a bitmap from the cache.
+/// Removes a bitmap from the cache.
 - (void)removeBitmapFromCacheId:(NSInteger)id error:(FlutterError *_Nullable *_Nonnull)error;
 /// Clears the bitmap cache.
 - (void)clearBitmapCacheWithError:(FlutterError *_Nullable *_Nonnull)error;

@@ -108,7 +108,9 @@ class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
 
     final BytesMapBitmap bitmap = await _getAssetBitmapDescriptor();
     const int registeredBitmapId = 1;
-    await GoogleMapsFlutterPlatform.instance.registerBitmap(1, bitmap);
+    await GoogleMapsFlutterPlatform.instance
+        .registerBitmap(registeredBitmapId, bitmap);
+    _registeredBitmapId = registeredBitmapId;
 
     // If the widget was disposed before the bitmap was registered, unregister
     // the bitmap.
@@ -117,9 +119,7 @@ class _BitmapRegistryBodyState extends State<_BitmapRegistryBody> {
       return;
     }
 
-    setState(() {
-      _registeredBitmapId = registeredBitmapId;
-    });
+    setState(() {});
   }
 
   /// Unregister the bitmap from the bitmap registry.

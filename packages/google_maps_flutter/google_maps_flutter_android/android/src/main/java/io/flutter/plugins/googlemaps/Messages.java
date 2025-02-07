@@ -7792,7 +7792,7 @@ public class Messages {
   public interface ImageRegistryApi {
     /** Adds a bitmap to the cache. */
     void addBitmapToCache(@NonNull Long id, @NonNull PlatformBitmap bitmap);
-    /** Retrieves a bitmap from the cache. */
+    /** Removes a bitmap from the cache. */
     void removeBitmapFromCache(@NonNull Long id);
     /** Clears the bitmap cache. */
     void clearBitmapCache();

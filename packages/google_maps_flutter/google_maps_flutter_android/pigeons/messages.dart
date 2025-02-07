@@ -789,7 +789,7 @@ abstract class ImageRegistryApi {
   /// Adds a bitmap to the cache.
   void addBitmapToCache(int id, PlatformBitmap bitmap);
 
-  /// Retrieves a bitmap from the cache.
+  /// Removes a bitmap from the cache.
   void removeBitmapFromCache(int id);
 
   /// Clears the bitmap cache.
