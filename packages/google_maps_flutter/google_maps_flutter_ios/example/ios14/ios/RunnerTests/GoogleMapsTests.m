@@ -57,9 +57,12 @@
 
 - (void)testMapsServiceSync {
   id registrar = OCMProtocolMock(@protocol(FlutterPluginRegistrar));
-  FLTGoogleMapFactory *factory1 = [[FLTGoogleMapFactory alloc] initWithRegistrar:registrar];
+  FGMImageRegistry *imageRegistry = [[FGMImageRegistry alloc] initWithRegistrar:registrar];
+  FLTGoogleMapFactory *factory1 = [[FLTGoogleMapFactory alloc] initWithRegistrar:registrar
+                                                                   imageRegistry:imageRegistry];
   XCTAssertNotNil(factory1.sharedMapServices);
-  FLTGoogleMapFactory *factory2 = [[FLTGoogleMapFactory alloc] initWithRegistrar:registrar];
+  FLTGoogleMapFactory *factory2 = [[FLTGoogleMapFactory alloc] initWithRegistrar:registrar
+                                                                   imageRegistry:imageRegistry];
   // Test pointer equality, should be same retained singleton +[GMSServices sharedServices] object.
   // Retaining the opaque object should be enough to avoid multiple internal initializations,
   // but don't test the internals of the GoogleMaps API. Assume that it does what is documented.

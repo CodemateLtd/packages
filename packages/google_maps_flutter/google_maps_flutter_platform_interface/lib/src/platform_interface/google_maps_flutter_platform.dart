@@ -417,6 +417,23 @@ abstract class GoogleMapsFlutterPlatform extends PlatformInterface {
     return null;
   }
 
+  /// Registers [bitmap] with the bitmap registry.
+  Future<void> registerBitmap(int id, MapBitmap bitmap) {
+    throw UnimplementedError('addBitmapToCache() has not been implemented.');
+  }
+
+  /// Unregisters the bitmap with the given [id].
+  Future<void> unregisterBitmap(int id) {
+    throw UnimplementedError(
+      'removeBitmapFromCache() has not been implemented.',
+    );
+  }
+
+  /// Clears the bitmap cache.
+  Future<void> clearBitmapCache() {
+    throw UnimplementedError('clearBitmapCache() has not been implemented.');
+  }
+
   /// Returns a widget displaying the map view.
   @Deprecated('Use buildViewWithConfiguration instead.')
   Widget buildView(

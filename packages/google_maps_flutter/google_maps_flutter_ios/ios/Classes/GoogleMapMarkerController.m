@@ -4,6 +4,7 @@
 
 #import "GoogleMapMarkerController.h"
 
+#import "FGMImageRegistry.h"
 #import "FGMMarkerUserData.h"
 #import "FLTGoogleMapJSONConversions.h"
 
@@ -108,13 +109,15 @@
 
 - (void)updateFromPlatformMarker:(FGMPlatformMarker *)platformMarker
                        registrar:(NSObject<FlutterPluginRegistrar> *)registrar
-                     screenScale:(CGFloat)screenScale {
+                     screenScale:(CGFloat)screenScale
+                   imageRegistry:(FGMImageRegistry *)imageRegistry {
   [self setAlpha:platformMarker.alpha];
   [self setAnchor:FGMGetCGPointForPigeonPoint(platformMarker.anchor)];
   [self setDraggable:platformMarker.draggable];
-  UIImage *image = [self iconFromBitmap:platformMarker.icon
-                              registrar:registrar
-                            screenScale:screenScale];
+  UIImage *image = [FLTGoogleMapMarkerController iconFromBitmap:platformMarker.icon
+                                                      registrar:registrar
+                                                    screenScale:screenScale
+                                                  imageRegistry:imageRegistry];
   [self setIcon:image];
   [self setFlat:platformMarker.flat];
   [self setConsumeTapEvents:platformMarker.consumeTapEvents];
@@ -139,15 +142,21 @@
   }
 }
 
-- (UIImage *)iconFromBitmap:(FGMPlatformBitmap *)platformBitmap
++ (UIImage *)iconFromBitmap:(FGMPlatformBitmap *)platformBitmap
                   registrar:(NSObject<FlutterPluginRegistrar> *)registrar
-                screenScale:(CGFloat)screenScale {
+                screenScale:(CGFloat)screenScale
+              imageRegistry:(FGMImageRegistry *)imageRegistry {
   NSAssert(screenScale > 0, @"Screen scale must be greater than 0");
   // See comment in messages.dart for why this is so loosely typed. See also
   // https://github.com/flutter/flutter/issues/117819.
   id bitmap = platformBitmap.bitmap;
   UIImage *image;
-  if ([bitmap isKindOfClass:[FGMPlatformBitmapDefaultMarker class]]) {
+  if ([bitmap isKindOfClass:[FGMPlatformRegisteredMapBitmap class]]) {
+    FGMPlatformRegisteredMapBitmap *registeredBitmap = bitmap;
+    NSInteger imageId = registeredBitmap.id;
+    NSNumber *imageIdNumber = [NSNumber numberWithInteger:imageId];
+    image = [imageRegistry getBitmap:imageIdNumber];
+  } else if ([bitmap isKindOfClass:[FGMPlatformBitmapDefaultMarker class]]) {
     FGMPlatformBitmapDefaultMarker *bitmapDefaultMarker = bitmap;
     CGFloat hue = bitmapDefaultMarker.hue.doubleValue;
     image = [GMSMarker markerImageWithColor:[UIColor colorWithHue:hue / 360.0
@@ -240,7 +249,7 @@
 /// flutter google_maps_flutter_platform_interface package which has been replaced by 'bytes'
 /// message handling. It will be removed when the deprecated image bitmap description type
 /// 'fromBytes' is removed from the platform interface.
-- (UIImage *)scaleImage:(UIImage *)image by:(double)scale {
++ (UIImage *)scaleImage:(UIImage *)image by:(double)scale {
   if (fabs(scale - 1) > 1e-3) {
     return [UIImage imageWithCGImage:[image CGImage]
                                scale:(image.scale * scale)
@@ -379,6 +388,7 @@
 /// Controller for adding/removing/fetching cluster managers
 @property(weak, nonatomic, nullable) FGMClusterManagersController *clusterManagersController;
 @property(weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
+@property(copy, nonatomic) FGMImageRegistry *imageRegistry;
 @property(weak, nonatomic) GMSMapView *mapView;
 
 @end
@@ -388,7 +398,8 @@
 - (instancetype)initWithMapView:(GMSMapView *)mapView
                 callbackHandler:(FGMMapsCallbackApi *)callbackHandler
       clusterManagersController:(nullable FGMClusterManagersController *)clusterManagersController
-                      registrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+                      registrar:(NSObject<FlutterPluginRegistrar> *)registrar
+                  imageRegistry:(FGMImageRegistry *)imageRegistry {
   self = [super init];
   if (self) {
     _callbackHandler = callbackHandler;
@@ -396,6 +407,7 @@
     _clusterManagersController = clusterManagersController;
     _markerIdentifierToController = [[NSMutableDictionary alloc] init];
     _registrar = registrar;
+    _imageRegistry = imageRegistry;
   }
   return self;
 }
@@ -418,7 +430,8 @@
                                                    mapView:self.mapView];
   [controller updateFromPlatformMarker:markerToAdd
                              registrar:self.registrar
-                           screenScale:[self getScreenScale]];
+                           screenScale:[self getScreenScale]
+                         imageRegistry:self.imageRegistry];
   if (clusterManagerIdentifier) {
     GMUClusterManager *clusterManager =
         [_clusterManagersController clusterManagerWithIdentifier:clusterManagerIdentifier];
@@ -450,7 +463,8 @@
   } else {
     [controller updateFromPlatformMarker:markerToChange
                                registrar:self.registrar
-                             screenScale:[self getScreenScale]];
+                             screenScale:[self getScreenScale]
+                           imageRegistry:self.imageRegistry];
   }
 }
 

@@ -51,6 +51,7 @@ public class GoogleMapControllerTest {
   @Mock CirclesController mockCirclesController;
   @Mock HeatmapsController mockHeatmapsController;
   @Mock TileOverlaysController mockTileOverlaysController;
+  @Mock ImageRegistry imageRegistry;
 
   @Before
   public void before() {
@@ -63,7 +64,8 @@ public class GoogleMapControllerTest {
   // See getGoogleMapControllerWithMockedDependencies for version with dependency injections.
   public GoogleMapController getGoogleMapController() {
     GoogleMapController googleMapController =
-        new GoogleMapController(0, context, mockMessenger, activity::getLifecycle, null);
+        new GoogleMapController(
+            0, context, mockMessenger, activity::getLifecycle, null, imageRegistry);
     googleMapController.init();
     return googleMapController;
   }
@@ -84,7 +86,8 @@ public class GoogleMapControllerTest {
             mockPolylinesController,
             mockCirclesController,
             mockHeatmapsController,
-            mockTileOverlaysController);
+            mockTileOverlaysController,
+            imageRegistry);
     googleMapController.init();
     return googleMapController;
   }

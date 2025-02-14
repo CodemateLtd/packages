@@ -121,6 +121,32 @@ void main() {
         expect(await platform.getStyleError(mapId: 0), null);
       },
     );
+
+    test('default implementation of `registerBitmap` throws UnimplementedError',
+        () {
+      expect(
+        () => BuildViewGoogleMapsFlutterPlatform().clearBitmapCache(),
+        throwsUnimplementedError,
+      );
+    });
+
+    test(
+        'default implementation of `unregisterBitmap` throws UnimplementedError',
+        () {
+      expect(
+        () => BuildViewGoogleMapsFlutterPlatform().clearBitmapCache(),
+        throwsUnimplementedError,
+      );
+    });
+
+    test(
+        'default implementation of `clearBitmapCache` throws UnimplementedError',
+        () {
+      expect(
+        () => BuildViewGoogleMapsFlutterPlatform().clearBitmapCache(),
+        throwsUnimplementedError,
+      );
+    });
   });
 }
 

@@ -8,6 +8,7 @@ import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:integration_test/integration_test.dart';
 
+import 'bitmap_registry_tests.dart';
 import 'google_maps_tests.dart' show googleMapsTests;
 
 void main() {
@@ -37,4 +38,5 @@ void main() {
 
   // Run tests.
   googleMapsTests();
+  bitmapRegistryTests();
 }

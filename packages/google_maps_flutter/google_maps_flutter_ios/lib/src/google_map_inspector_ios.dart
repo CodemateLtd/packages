@@ -141,4 +141,12 @@ class GoogleMapsInspectorIOS extends GoogleMapsInspectorPlatform {
             GoogleMapsFlutterIOS.clusterFromPlatformCluster(cluster))
         .toList();
   }
+
+  @override
+  Future<bool> hasRegisteredMapBitmap({
+    required int mapId,
+    required int bitmapId,
+  }) {
+    return _inspectorProvider(mapId)!.hasRegisteredMapBitmap(bitmapId);
+  }
 }

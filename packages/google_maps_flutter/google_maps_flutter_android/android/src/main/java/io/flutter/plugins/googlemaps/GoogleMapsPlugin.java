@@ -17,6 +17,8 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter;
+import io.flutter.plugins.googlemaps.Convert.BitmapDescriptorFactoryWrapper;
+import io.flutter.plugins.googlemaps.Messages.ImageRegistryApi;
 
 /**
  * Plugin for controlling a set of GoogleMap views to be shown as overlays on top of the Flutter
@@ -36,6 +38,13 @@ public class GoogleMapsPlugin implements FlutterPlugin, ActivityAware {
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+    final ImageRegistry imageRegistry =
+        new ImageRegistry(
+            binding.getApplicationContext().getAssets(),
+            new BitmapDescriptorFactoryWrapper(),
+            binding.getApplicationContext().getResources().getDisplayMetrics().density);
+    ImageRegistryApi.setUp(binding.getBinaryMessenger(), imageRegistry);
+
     binding
         .getPlatformViewRegistry()
         .registerViewFactory(
@@ -49,11 +58,14 @@ public class GoogleMapsPlugin implements FlutterPlugin, ActivityAware {
                   public Lifecycle getLifecycle() {
                     return lifecycle;
                   }
-                }));
+                },
+                imageRegistry));
   }
 
   @Override
-  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {}
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    ImageRegistryApi.setUp(binding.getBinaryMessenger(), null);
+  }
 
   // ActivityAware
 

@@ -6,6 +6,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 
 #import "FGMClusterManagersController.h"
+#import "FGMImageRegistry.h"
 #import "GoogleMapCircleController.h"
 #import "GoogleMapMarkerController.h"
 #import "GoogleMapPolygonController.h"
@@ -19,7 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFrame:(CGRect)frame
                viewIdentifier:(int64_t)viewId
            creationParameters:(FGMPlatformMapViewCreationParams *)creationParameters
-                    registrar:(NSObject<FlutterPluginRegistrar> *)registrar;
+                    registrar:(NSObject<FlutterPluginRegistrar> *)registrar
+                imageRegistry:(FGMImageRegistry *)imageRegistry;
 - (void)showAtOrigin:(CGPoint)origin;
 - (void)hide;
 - (nullable GMSCameraPosition *)cameraPosition;
@@ -27,7 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Allows the engine to create new Google Map instances.
 @interface FLTGoogleMapFactory : NSObject <FlutterPlatformViewFactory>
-- (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar;
+- (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar
+                    imageRegistry:(FGMImageRegistry *)imageRegistry;
 @end
 
 NS_ASSUME_NONNULL_END

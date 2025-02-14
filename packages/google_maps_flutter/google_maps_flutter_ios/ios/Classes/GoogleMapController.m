@@ -6,6 +6,7 @@
 
 #import "GoogleMapController.h"
 
+#import "FGMImageRegistry.h"
 #import "FGMMarkerUserData.h"
 #import "FLTGoogleMapHeatmapController.h"
 #import "FLTGoogleMapJSONConversions.h"
@@ -17,6 +18,7 @@
 @interface FLTGoogleMapFactory ()
 
 @property(weak, nonatomic) NSObject<FlutterPluginRegistrar> *registrar;
+@property(weak, nonatomic) FGMImageRegistry *imageRegistry;
 @property(strong, nonatomic, readonly) id<NSObject> sharedMapServices;
 
 @end
@@ -25,10 +27,12 @@
 
 @synthesize sharedMapServices = _sharedMapServices;
 
-- (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+- (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar
+                    imageRegistry:(FGMImageRegistry *)imageRegistry {
   self = [super init];
   if (self) {
     _registrar = registrar;
+    _imageRegistry = imageRegistry;
   }
   return self;
 }
@@ -47,7 +51,8 @@
   return [[FLTGoogleMapController alloc] initWithFrame:frame
                                         viewIdentifier:viewId
                                     creationParameters:args
-                                             registrar:self.registrar];
+                                             registrar:self.registrar
+                                         imageRegistry:self.imageRegistry];
 }
 
 - (id<NSObject>)sharedMapServices {
@@ -98,6 +103,7 @@
 @interface FGMMapInspector : NSObject <FGMMapsInspectorApi>
 - (instancetype)initWithMapController:(nonnull FLTGoogleMapController *)controller
                             messenger:(NSObject<FlutterBinaryMessenger> *)messenger
+                        imageRegistry:(nonnull FGMImageRegistry *)imageRegistry
                          pigeonSuffix:(NSString *)suffix;
 @end
 
@@ -108,6 +114,8 @@
 @property(nonatomic, weak) FLTGoogleMapController *controller;
 /// The messenger this instance was registered with by Pigeon.
 @property(nonatomic, copy) NSObject<FlutterBinaryMessenger> *messenger;
+/// ImageRegistry for registering bitmaps.
+@property(nonatomic, weak) FGMImageRegistry *imageRegistry;
 /// The suffix this instance was registered under with Pigeon.
 @property(nonatomic, copy) NSString *pigeonSuffix;
 @end
@@ -146,7 +154,8 @@
 - (instancetype)initWithFrame:(CGRect)frame
                viewIdentifier:(int64_t)viewId
            creationParameters:(FGMPlatformMapViewCreationParams *)creationParameters
-                    registrar:(NSObject<FlutterPluginRegistrar> *)registrar {
+                    registrar:(NSObject<FlutterPluginRegistrar> *)registrar
+                imageRegistry:(FGMImageRegistry *)imageRegistry {
   GMSCameraPosition *camera =
       FGMGetCameraPositionForPigeonCameraPosition(creationParameters.initialCameraPosition);
 
@@ -163,13 +172,15 @@
   return [self initWithMapView:mapView
                 viewIdentifier:viewId
             creationParameters:creationParameters
-                     registrar:registrar];
+                     registrar:registrar
+                 imageRegistry:imageRegistry];
 }
 
 - (instancetype)initWithMapView:(GMSMapView *_Nonnull)mapView
                  viewIdentifier:(int64_t)viewId
              creationParameters:(FGMPlatformMapViewCreationParams *)creationParameters
-                      registrar:(NSObject<FlutterPluginRegistrar> *_Nonnull)registrar {
+                      registrar:(NSObject<FlutterPluginRegistrar> *_Nonnull)registrar
+                  imageRegistry:(FGMImageRegistry *)imageRegistry {
   if (self = [super init]) {
     _mapView = mapView;
 
@@ -189,7 +200,8 @@
     _markersController = [[FLTMarkersController alloc] initWithMapView:_mapView
                                                        callbackHandler:_dartCallbackHandler
                                              clusterManagersController:_clusterManagersController
-                                                             registrar:registrar];
+                                                             registrar:registrar
+                                                         imageRegistry:imageRegistry];
     _polygonsController = [[FLTPolygonsController alloc] initWithMapView:_mapView
                                                          callbackHandler:_dartCallbackHandler
                                                                registrar:registrar];
@@ -223,6 +235,7 @@
     SetUpFGMMapsApiWithSuffix(registrar.messenger, _callHandler, pigeonSuffix);
     _inspector = [[FGMMapInspector alloc] initWithMapController:self
                                                       messenger:registrar.messenger
+                                                  imageRegistry:imageRegistry
                                                    pigeonSuffix:pigeonSuffix];
     SetUpFGMMapsInspectorApiWithSuffix(registrar.messenger, _inspector, pigeonSuffix);
   }
@@ -734,12 +747,14 @@
 
 - (instancetype)initWithMapController:(nonnull FLTGoogleMapController *)controller
                             messenger:(NSObject<FlutterBinaryMessenger> *)messenger
+                        imageRegistry:(nonnull FGMImageRegistry *)imageRegistry
                          pigeonSuffix:(NSString *)suffix {
   self = [super init];
   if (self) {
     _controller = controller;
     _messenger = messenger;
     _pigeonSuffix = suffix;
+    _imageRegistry = imageRegistry;
   }
   return self;
 }
@@ -820,6 +835,12 @@
     (FlutterError *_Nullable __autoreleasing *_Nonnull)error {
   return [FGMPlatformZoomRange makeWithMin:@(self.controller.mapView.minZoom)
                                        max:@(self.controller.mapView.maxZoom)];
+}
+
+- (nullable NSNumber *)hasRegisteredMapBitmapId:(NSInteger)id
+                                          error:(FlutterError *_Nullable __autoreleasing *_Nonnull)
+                                                    error {
+  return [self.imageRegistry getBitmap:@(id)] ? @(YES) : @(NO);
 }
 
 @end

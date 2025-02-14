@@ -106,13 +106,15 @@ class GoogleMapController
   private @Nullable String initialMapStyle;
   private boolean lastSetStyleSucceeded;
   @VisibleForTesting List<Float> initialPadding;
+  private final ImageRegistry imageRegistry;
 
   GoogleMapController(
       int id,
       Context context,
       BinaryMessenger binaryMessenger,
       LifecycleProvider lifecycleProvider,
-      GoogleMapOptions options) {
+      GoogleMapOptions options,
+      ImageRegistry imageRegistry) {
     this.id = id;
     this.context = context;
     this.options = options;
@@ -131,12 +133,15 @@ class GoogleMapController
             clusterManagersController,
             assetManager,
             density,
-            new Convert.BitmapDescriptorFactoryWrapper());
+            new Convert.BitmapDescriptorFactoryWrapper(),
+            imageRegistry);
     this.polygonsController = new PolygonsController(flutterApi, density);
-    this.polylinesController = new PolylinesController(flutterApi, assetManager, density);
+    this.polylinesController =
+        new PolylinesController(flutterApi, assetManager, imageRegistry, density);
     this.circlesController = new CirclesController(flutterApi, density);
     this.heatmapsController = new HeatmapsController();
     this.tileOverlaysController = new TileOverlaysController(flutterApi);
+    this.imageRegistry = imageRegistry;
   }
 
   // Constructor for testing purposes only
@@ -154,7 +159,8 @@ class GoogleMapController
       PolylinesController polylinesController,
       CirclesController circlesController,
       HeatmapsController heatmapController,
-      TileOverlaysController tileOverlaysController) {
+      TileOverlaysController tileOverlaysController,
+      ImageRegistry imageRegistry) {
     this.id = id;
     this.context = context;
     this.binaryMessenger = binaryMessenger;
@@ -170,6 +176,7 @@ class GoogleMapController
     this.circlesController = circlesController;
     this.heatmapsController = heatmapController;
     this.tileOverlaysController = tileOverlaysController;
+    this.imageRegistry = imageRegistry;
   }
 
   @Override
@@ -1092,5 +1099,11 @@ class GoogleMapController
       data.add(clusterToPigeon(clusterManagerId, cluster));
     }
     return data;
+  }
+
+  @NonNull
+  @Override
+  public Boolean hasRegisteredMapBitmap(@NonNull Long id) {
+    return imageRegistry.getBitmap(id) != null;
   }
 }

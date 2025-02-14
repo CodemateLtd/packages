@@ -18,14 +18,19 @@ public class GoogleMapFactory extends PlatformViewFactory {
   private final BinaryMessenger binaryMessenger;
   private final LifecycleProvider lifecycleProvider;
   private final GoogleMapInitializer googleMapInitializer;
+  private final ImageRegistry imageRegistry;
 
   GoogleMapFactory(
-      BinaryMessenger binaryMessenger, Context context, LifecycleProvider lifecycleProvider) {
+      BinaryMessenger binaryMessenger,
+      Context context,
+      LifecycleProvider lifecycleProvider,
+      ImageRegistry imageRegistry) {
     super(Messages.MapsApi.getCodec());
 
     this.binaryMessenger = binaryMessenger;
     this.lifecycleProvider = lifecycleProvider;
     this.googleMapInitializer = new GoogleMapInitializer(context, binaryMessenger);
+    this.imageRegistry = imageRegistry;
   }
 
   @Override
@@ -52,6 +57,6 @@ public class GoogleMapFactory extends PlatformViewFactory {
       builder.setMapId(cloudMapId);
     }
 
-    return builder.build(id, context, binaryMessenger, lifecycleProvider);
+    return builder.build(id, context, binaryMessenger, lifecycleProvider, imageRegistry);
   }
 }

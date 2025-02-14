@@ -540,6 +540,15 @@ class PlatformBitmapBytesMap {
   final double? height;
 }
 
+/// Pigeon equivalent of a registered bitmap.
+class PlatformRegisteredMapBitmap {
+  PlatformRegisteredMapBitmap({
+    required this.id,
+  });
+
+  final int id;
+}
+
 /// Pigeon equivalent of [MapBitmapScaling].
 enum PlatformMapBitmapScaling {
   auto,
@@ -752,4 +761,18 @@ abstract class MapsInspectorApi {
   PlatformZoomRange getZoomRange();
   @ObjCSelector('clustersWithIdentifier:')
   List<PlatformCluster> getClusters(String clusterManagerId);
+  bool hasRegisteredMapBitmap(int id);
+}
+
+/// API for interacting with the image registry.
+@HostApi()
+abstract class ImageRegistryApi {
+  /// Adds a bitmap to the cache.
+  void addBitmapToCache(int id, PlatformBitmap bitmap);
+
+  /// Removes a bitmap from the cache.
+  void removeBitmapFromCache(int id);
+
+  /// Clears the bitmap cache.
+  void clearBitmapCache();
 }

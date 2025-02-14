@@ -30,12 +30,14 @@
 
   FGMClusterManagersController *clusterManagersController =
       [[FGMClusterManagersController alloc] initWithMapView:mapView callbackHandler:handler];
+  FGMImageRegistry *imageRegistry = [[FGMImageRegistry alloc] initWithRegistrar:registrar];
 
   FLTMarkersController *markersController =
       [[FLTMarkersController alloc] initWithMapView:mapView
                                     callbackHandler:handler
                           clusterManagersController:clusterManagersController
-                                          registrar:registrar];
+                                          registrar:registrar
+                                      imageRegistry:imageRegistry];
 
   // Add cluster managers.
   NSString *clusterManagerId = @"cm";

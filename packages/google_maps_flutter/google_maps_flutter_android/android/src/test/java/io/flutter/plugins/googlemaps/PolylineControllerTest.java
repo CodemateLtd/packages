@@ -26,4 +26,7 @@ public class PolylineControllerTest {
 
     Mockito.verify(polyline).setWidth(density * strokeWidth);
   }
+
+  @Test
+  public void controller_addPolylineWithRegisteredBitmap() {}
 }

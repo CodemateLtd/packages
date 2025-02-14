@@ -456,6 +456,23 @@ class GoogleMapsFlutterAndroid extends GoogleMapsFlutterPlatform {
         : _setStyleFailureMessage;
   }
 
+  @override
+  Future<void> registerBitmap(int id, MapBitmap bitmap) {
+    final PlatformBitmap platformBitmap =
+        platformBitmapFromBitmapDescriptor(bitmap);
+    return ImageRegistryApi().addBitmapToCache(id, platformBitmap);
+  }
+
+  @override
+  Future<void> unregisterBitmap(int id) {
+    return ImageRegistryApi().removeBitmapFromCache(id);
+  }
+
+  @override
+  Future<void> clearBitmapCache() {
+    return ImageRegistryApi().clearBitmapCache();
+  }
+
   /// Set [GoogleMapsFlutterPlatform] to use [AndroidViewSurface] to build the
   /// Google Maps widget.
   ///
@@ -925,6 +942,13 @@ class GoogleMapsFlutterAndroid extends GoogleMapsFlutterPlatform {
                 imagePixelRatio: bytes.imagePixelRatio,
                 width: bytes.width,
                 height: bytes.height));
+      case final RegisteredMapBitmap registeredBitmap:
+        return PlatformBitmap(
+          bitmap: PlatformRegisteredMapBitmap(
+            id: registeredBitmap.id,
+          ),
+        );
+
       default:
         throw ArgumentError(
             'Unrecognized type of bitmap ${bitmap.runtimeType}', 'bitmap');

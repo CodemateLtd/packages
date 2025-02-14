@@ -306,6 +306,21 @@ class GoogleMapsPlugin extends GoogleMapsFlutterPlatform {
     return _map(mapId).lastStyleError;
   }
 
+  @override
+  Future<void> registerBitmap(int id, MapBitmap bitmap) async {
+    return ImageRegistry.instance.addBitmapToCache(id, bitmap);
+  }
+
+  @override
+  Future<void> unregisterBitmap(int id) async {
+    return ImageRegistry.instance.removeBitmapFromCache(id);
+  }
+
+  @override
+  Future<void> clearBitmapCache() async {
+    return ImageRegistry.instance.clearBitmapCache();
+  }
+
   /// Disposes of the current map. It can't be used afterwards!
   @override
   void dispose({required int mapId}) {

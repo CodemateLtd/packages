@@ -55,6 +55,7 @@ public class ClusterManagersControllerTest {
   private final float density = 1;
 
   @Mock Convert.BitmapDescriptorFactoryWrapper bitmapFactory;
+  @Mock ImageRegistry imageRegistry;
 
   private AutoCloseable mocksClosable;
 
@@ -109,9 +110,9 @@ public class ClusterManagersControllerTest {
         createPlatformMarker(markerId2, location2, clusterManagerId);
 
     Convert.interpretMarkerOptions(
-        markerData1, markerBuilder1, assetManager, density, bitmapFactory);
+        markerData1, markerBuilder1, assetManager, density, bitmapFactory, imageRegistry);
     Convert.interpretMarkerOptions(
-        markerData2, markerBuilder2, assetManager, density, bitmapFactory);
+        markerData2, markerBuilder2, assetManager, density, bitmapFactory, imageRegistry);
 
     controller.addItem(markerBuilder1);
     controller.addItem(markerBuilder2);

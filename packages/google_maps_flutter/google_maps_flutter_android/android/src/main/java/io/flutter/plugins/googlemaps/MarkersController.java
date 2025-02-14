@@ -25,13 +25,15 @@ class MarkersController {
   private final AssetManager assetManager;
   private final float density;
   private final Convert.BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper;
+  private final ImageRegistry imageRegistry;
 
   MarkersController(
       @NonNull MapsCallbackApi flutterApi,
       ClusterManagersController clusterManagersController,
       AssetManager assetManager,
       float density,
-      Convert.BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper) {
+      Convert.BitmapDescriptorFactoryWrapper bitmapDescriptorFactoryWrapper,
+      ImageRegistry imageRegistry) {
     this.markerIdToMarkerBuilder = new HashMap<>();
     this.markerIdToController = new HashMap<>();
     this.googleMapsMarkerIdToDartMarkerId = new HashMap<>();
@@ -40,6 +42,7 @@ class MarkersController {
     this.assetManager = assetManager;
     this.density = density;
     this.bitmapDescriptorFactoryWrapper = bitmapDescriptorFactoryWrapper;
+    this.imageRegistry = imageRegistry;
   }
 
   void setCollection(MarkerManager.Collection markerCollection) {
@@ -176,7 +179,12 @@ class MarkersController {
     String clusterManagerId = marker.getClusterManagerId();
     MarkerBuilder markerBuilder = new MarkerBuilder(markerId, clusterManagerId);
     Convert.interpretMarkerOptions(
-        marker, markerBuilder, assetManager, density, bitmapDescriptorFactoryWrapper);
+        marker,
+        markerBuilder,
+        assetManager,
+        density,
+        bitmapDescriptorFactoryWrapper,
+        imageRegistry);
     addMarker(markerBuilder);
   }
 
@@ -233,13 +241,23 @@ class MarkersController {
 
     // Update marker builder.
     Convert.interpretMarkerOptions(
-        marker, markerBuilder, assetManager, density, bitmapDescriptorFactoryWrapper);
+        marker,
+        markerBuilder,
+        assetManager,
+        density,
+        bitmapDescriptorFactoryWrapper,
+        imageRegistry);
 
     // Update existing marker on map.
     MarkerController markerController = markerIdToController.get(markerId);
     if (markerController != null) {
       Convert.interpretMarkerOptions(
-          marker, markerController, assetManager, density, bitmapDescriptorFactoryWrapper);
+          marker,
+          markerController,
+          assetManager,
+          density,
+          bitmapDescriptorFactoryWrapper,
+          imageRegistry);
     }
   }
 }

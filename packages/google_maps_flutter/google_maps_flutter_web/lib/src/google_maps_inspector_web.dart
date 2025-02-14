@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+import 'image_registry.dart';
 import 'marker_clustering.dart';
 
 /// Function that gets the [MapConfiguration] for a given `mapId`.
@@ -102,5 +103,13 @@ class GoogleMapsInspectorWeb extends GoogleMapsInspectorPlatform {
     return _clusterManagersControllerProvider(mapId)
             ?.getClusters(clusterManagerId) ??
         <Cluster>[];
+  }
+
+  @override
+  Future<bool> hasRegisteredMapBitmap({
+    required int mapId,
+    required int bitmapId,
+  }) async {
+    return ImageRegistry.instance.getBitmap(bitmapId) != null;
   }
 }

@@ -496,6 +496,43 @@ abstract class MapBitmap extends BitmapDescriptor {
   final double? height;
 }
 
+/// Represents a [BitmapDescriptor] that was previously registered with the
+/// bitmap registry.
+///
+/// The [id] is the unique ID of the registered bitmap. The bitmap itself is
+/// registered using the bitmap registry and the ID is returned when the bitmap
+/// is registered.
+///
+/// Following example demonstrates how to register a bitmap using the bitmap
+/// registry and create a [RegisteredMapBitmap] instance:
+///
+/// ```dart
+/// final AssetMapBitmap bitmap = AssetMapBitmap(
+///   'assets/images/map_icon.png',
+///   imagePixelRatio: MediaQuery.maybeDevicePixelRatioOf(context),
+/// );
+/// final int registeredBitmapId =
+///   await GoogleMapBitmapRegistry.instance.register(bitmap);
+/// final registeredMapBitmap = RegisteredMapBitmap(id: registeredBitmapId);
+/// ```
+class RegisteredMapBitmap extends BitmapDescriptor {
+  /// Creates a [RegisteredMapBitmap] with the given [id].
+  const RegisteredMapBitmap({
+    required this.id,
+  }) : super._();
+
+  /// The id of the registered bitmap.
+  final int id;
+
+  @override
+  Object toJson() {
+    return <Object>[
+      'registered',
+      id,
+    ];
+  }
+}
+
 /// Represents a [BitmapDescriptor] that is created from an asset image.
 ///
 /// This class extends [BitmapDescriptor] to support loading images from assets

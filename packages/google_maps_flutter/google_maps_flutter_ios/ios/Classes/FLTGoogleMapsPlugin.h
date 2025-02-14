@@ -6,6 +6,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 
 #import "FGMClusterManagersController.h"
+#import "FGMImageRegistry.h"
 #import "GoogleMapCircleController.h"
 #import "GoogleMapController.h"
 #import "GoogleMapMarkerController.h"
