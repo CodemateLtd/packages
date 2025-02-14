@@ -68,7 +68,6 @@ class ImageRegistry implements ImageRegistryApi {
     registry.clear();
   }
 
-  
   /**
    * Retrieves a BitmapDescriptor from the registry using the provided ID.
    *

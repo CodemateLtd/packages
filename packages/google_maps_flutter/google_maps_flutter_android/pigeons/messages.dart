@@ -781,6 +781,7 @@ abstract class MapsInspectorApi {
   PlatformTileLayer? getTileOverlayInfo(String tileOverlayId);
   PlatformZoomRange getZoomRange();
   List<PlatformCluster> getClusters(String clusterManagerId);
+  bool hasRegisteredMapBitmap(int id);
 }
 
 /// API for interacting with the image registry.

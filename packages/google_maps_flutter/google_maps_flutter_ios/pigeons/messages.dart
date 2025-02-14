@@ -761,6 +761,7 @@ abstract class MapsInspectorApi {
   PlatformZoomRange getZoomRange();
   @ObjCSelector('clustersWithIdentifier:')
   List<PlatformCluster> getClusters(String clusterManagerId);
+  bool hasRegisteredMapBitmap(int id);
 }
 
 /// API for interacting with the image registry.

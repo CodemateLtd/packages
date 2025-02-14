@@ -3,7 +3,7 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 
 import '../google_maps_flutter_web.dart';
 
-/// Manages mapping between registered bitmap Ids and [gmaps.Icon] objects.
+/// Manages mapping between registered bitmap IDs and [gmaps.Icon] objects.
 class ImageRegistry {
   /// Default constructor.
   ImageRegistry._();

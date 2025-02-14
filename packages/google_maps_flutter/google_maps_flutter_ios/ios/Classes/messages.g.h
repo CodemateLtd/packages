@@ -843,6 +843,9 @@ extern void SetUpFGMMapsPlatformViewApiWithSuffix(id<FlutterBinaryMessenger> bin
 - (nullable NSArray<FGMPlatformCluster *> *)
     clustersWithIdentifier:(NSString *)clusterManagerId
                      error:(FlutterError *_Nullable *_Nonnull)error;
+/// @return `nil` only when `error != nil`.
+- (nullable NSNumber *)hasRegisteredMapBitmapId:(NSInteger)id
+                                          error:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void SetUpFGMMapsInspectorApi(id<FlutterBinaryMessenger> binaryMessenger,

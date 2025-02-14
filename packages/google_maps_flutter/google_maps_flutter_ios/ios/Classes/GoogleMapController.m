@@ -103,6 +103,7 @@
 @interface FGMMapInspector : NSObject <FGMMapsInspectorApi>
 - (instancetype)initWithMapController:(nonnull FLTGoogleMapController *)controller
                             messenger:(NSObject<FlutterBinaryMessenger> *)messenger
+                        imageRegistry:(nonnull FGMImageRegistry *)imageRegistry
                          pigeonSuffix:(NSString *)suffix;
 @end
 
@@ -113,6 +114,8 @@
 @property(nonatomic, weak) FLTGoogleMapController *controller;
 /// The messenger this instance was registered with by Pigeon.
 @property(nonatomic, copy) NSObject<FlutterBinaryMessenger> *messenger;
+/// ImageRegistry for registering bitmaps.
+@property(nonatomic, weak) FGMImageRegistry *imageRegistry;
 /// The suffix this instance was registered under with Pigeon.
 @property(nonatomic, copy) NSString *pigeonSuffix;
 @end
@@ -232,6 +235,7 @@
     SetUpFGMMapsApiWithSuffix(registrar.messenger, _callHandler, pigeonSuffix);
     _inspector = [[FGMMapInspector alloc] initWithMapController:self
                                                       messenger:registrar.messenger
+                                                  imageRegistry:imageRegistry
                                                    pigeonSuffix:pigeonSuffix];
     SetUpFGMMapsInspectorApiWithSuffix(registrar.messenger, _inspector, pigeonSuffix);
   }
@@ -743,12 +747,14 @@
 
 - (instancetype)initWithMapController:(nonnull FLTGoogleMapController *)controller
                             messenger:(NSObject<FlutterBinaryMessenger> *)messenger
+                        imageRegistry:(nonnull FGMImageRegistry *)imageRegistry
                          pigeonSuffix:(NSString *)suffix {
   self = [super init];
   if (self) {
     _controller = controller;
     _messenger = messenger;
     _pigeonSuffix = suffix;
+    _imageRegistry = imageRegistry;
   }
   return self;
 }
@@ -829,6 +835,12 @@
     (FlutterError *_Nullable __autoreleasing *_Nonnull)error {
   return [FGMPlatformZoomRange makeWithMin:@(self.controller.mapView.minZoom)
                                        max:@(self.controller.mapView.maxZoom)];
+}
+
+- (nullable NSNumber *)hasRegisteredMapBitmapId:(NSInteger)id
+                                          error:(FlutterError *_Nullable __autoreleasing *_Nonnull)
+                                                    error {
+  return [self.imageRegistry getBitmap:@(id)] ? @(YES) : @(NO);
 }
 
 @end

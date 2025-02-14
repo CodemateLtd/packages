@@ -1100,4 +1100,10 @@ class GoogleMapController
     }
     return data;
   }
+
+  @NonNull
+  @Override
+  public Boolean hasRegisteredMapBitmap(@NonNull Long id) {
+    return imageRegistry.getBitmap(id) != null;
+  }
 }

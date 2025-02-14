@@ -3153,6 +3153,30 @@ void SetUpFGMMapsInspectorApiWithSuffix(id<FlutterBinaryMessenger> binaryMesseng
       [channel setMessageHandler:nil];
     }
   }
+  {
+    FlutterBasicMessageChannel *channel = [[FlutterBasicMessageChannel alloc]
+           initWithName:[NSString stringWithFormat:@"%@%@",
+                                                   @"dev.flutter.pigeon.google_maps_flutter_ios."
+                                                   @"MapsInspectorApi.hasRegisteredMapBitmap",
+                                                   messageChannelSuffix]
+        binaryMessenger:binaryMessenger
+                  codec:FGMGetMessagesCodec()];
+    if (api) {
+      NSCAssert([api respondsToSelector:@selector(hasRegisteredMapBitmapId:error:)],
+                @"FGMMapsInspectorApi api (%@) doesn't respond to "
+                @"@selector(hasRegisteredMapBitmapId:error:)",
+                api);
+      [channel setMessageHandler:^(id _Nullable message, FlutterReply callback) {
+        NSArray<id> *args = message;
+        NSInteger arg_id = [GetNullableObjectAtIndex(args, 0) integerValue];
+        FlutterError *error;
+        NSNumber *output = [api hasRegisteredMapBitmapId:arg_id error:&error];
+        callback(wrapResult(output, error));
+      }];
+    } else {
+      [channel setMessageHandler:nil];
+    }
+  }
 }
 void SetUpFGMImageRegistryApi(id<FlutterBinaryMessenger> binaryMessenger,
                               NSObject<FGMImageRegistryApi> *api) {

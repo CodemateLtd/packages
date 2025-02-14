@@ -137,4 +137,15 @@ abstract class GoogleMapsInspectorPlatform extends PlatformInterface {
       {required int mapId, required ClusterManagerId clusterManagerId}) {
     throw UnimplementedError('getClusters() has not been implemented.');
   }
+
+  /// Returns true if the bitmap with the given [id] is registered in the
+  /// bitmap registry.
+  Future<bool> hasRegisteredMapBitmap({
+    required int mapId,
+    required int bitmapId,
+  }) {
+    throw UnimplementedError(
+      'hasRegisteredMapBitmap() has not been implemented.',
+    );
+  }
 }
