@@ -11,13 +11,12 @@
 @import GoogleMapsUtilsObjC;
 #endif
 
-#import "GoogleMapController.h"
-
-#import "FGMMarkerUserData.h"
-#import "FLTGoogleMapHeatmapController.h"
-#import "FLTGoogleMapJSONConversions.h"
-#import "FLTGoogleMapTileOverlayController.h"
-#import "messages.g.h"
+#import "./include/google_maps_flutter_ios/GoogleMapController.h"
+#import "./include/google_maps_flutter_ios/FGMMarkerUserData.h"
+#import "./include/google_maps_flutter_ios/FLTGoogleMapHeatmapController.h"
+#import "./include/google_maps_flutter_ios/FLTGoogleMapJSONConversions.h"
+#import "./include/google_maps_flutter_ios/FLTGoogleMapTileOverlayController.h"
+#import "./include/google_maps_flutter_ios/messages.g.h"
 
 #pragma mark - Conversion of JSON-like values sent via platform channels. Forward declarations.
 

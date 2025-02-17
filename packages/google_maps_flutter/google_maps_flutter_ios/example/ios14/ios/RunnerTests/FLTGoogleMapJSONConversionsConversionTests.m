@@ -3,7 +3,9 @@
 // found in the LICENSE file.
 
 @import google_maps_flutter_ios;
+#if __has_include(<google_maps_flutter_ios/google_maps_flutter_ios-umbrella.h>)
 @import google_maps_flutter_ios.Test;
+#endif
 @import XCTest;
 @import GoogleMaps;
 

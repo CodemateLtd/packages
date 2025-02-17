@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#import "FLTGoogleMapHeatmapController.h"
-#import "FLTGoogleMapJSONConversions.h"
+#import "./include/google_maps_flutter_ios/FLTGoogleMapHeatmapController.h"
+#import "./include/google_maps_flutter_ios/FLTGoogleMapJSONConversions.h"
 
 /// If Swift Package Manager is in use, Objective-C headers are available under the
 /// GoogleMapsUtilsObjC package. When using CocoaPods, the headers are provided by the
