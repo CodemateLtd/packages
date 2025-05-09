@@ -8,13 +8,16 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import com.google.android.gms.maps.MapsApiSettings;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.MapsInitializer.Renderer;
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
 import io.flutter.plugin.common.BinaryMessenger;
 
 /** GoogleMaps initializer used to initialize the Google Maps SDK with preferred settings. */
 final class GoogleMapInitializer
     implements OnMapsSdkInitializedCallback, Messages.MapsInitializerApi {
+
   private final Context context;
   private static Messages.Result<Messages.PlatformRendererType> initializationResult;
   private boolean rendererInitialized = false;
@@ -59,6 +62,11 @@ final class GoogleMapInitializer
     if (initializationResult != null) {
       switch (renderer) {
         case LATEST:
+          MapsApiSettings.addInternalUsageAttributionId(
+              context,
+              "gmp_flutter_googlemapsflutter_v" + Constants.PREFIX_PLUGIN_VERSION + "_android"
+          );
+
           initializationResult.success(Messages.PlatformRendererType.LATEST);
           break;
         case LEGACY:

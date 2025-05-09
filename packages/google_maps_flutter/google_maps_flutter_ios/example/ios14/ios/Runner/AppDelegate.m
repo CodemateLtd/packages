@@ -4,6 +4,7 @@
 
 #import "AppDelegate.h"
 #import "GeneratedPluginRegistrant.h"
+#import "FGMConstants.h"
 
 @import GoogleMaps;
 
@@ -17,6 +18,9 @@
     mapsApiKey = @"YOUR KEY HERE";
   }
   [GMSServices provideAPIKey:mapsApiKey];
+  
+  NSString *attributionId = [NSString stringWithFormat:@"gmp_flutter_googlemapsflutter_v%sandroid", PREFIX_PLUGIN_VERSION];
+  [GMSServices addInternalUsageAttributionID:attributionId];
 
   // Register Flutter plugins.
   [GeneratedPluginRegistrant registerWithRegistry:self];

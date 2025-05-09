@@ -74,6 +74,10 @@ class RepositoryPackage {
   File get prePublishScript =>
       directory.childDirectory('tool').childFile('pre_publish.dart');
 
+  /// The verion_check.yaml file that is used to check the version of
+  /// the package present in the platform implementation.
+  File get versionCheckFile => directory.childFile('version_check.yaml');
+
   /// Returns the directory containing support for [platform].
   Directory platformDirectory(FlutterPlatform platform) {
     late final String directoryName;

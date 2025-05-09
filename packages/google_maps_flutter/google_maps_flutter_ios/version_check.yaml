@@ -1,0 +1,5 @@
+# This file is used to check that the version string in the FGMConstants.h file is up to date and matches 
+# the version in pubspec.yaml.
+filepath: ios/Classes/FGMConstants.h
+regexp: define PREFIX_PLUGIN_VERSION "([\.0-9]+)"
+errorMessage: "Version string in FGMConstants.h is not up to date. Please update it to the latest version."
