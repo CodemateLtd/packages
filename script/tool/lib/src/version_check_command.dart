@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:pub_semver/pub_semver.dart';
+import 'package:yaml/yaml.dart';
 
 import 'common/git_version_finder.dart';
 import 'common/output_utils.dart';
@@ -221,6 +222,15 @@ class VersionCheckCommand extends PackageLoopingCommand {
     if (!(await _validateChangelogVersion(package,
         pubspec: pubspec, pubspecVersionState: versionState))) {
       errors.add('CHANGELOG.md failed validation.');
+    }
+
+    final YamlMap? versionCheckYaml = tryParseVersionCheckYaml(package);
+    if (!validateVersionCheckYamlVersion(
+      versionCheckYaml: versionCheckYaml,
+      pubspec: pubspec,
+      package: package,
+    )) {
+      errors.add('Invalid version_check.yaml.');
     }
 
     // If there are no other issues, make sure that there isn't a missing
@@ -582,5 +592,103 @@ ${indentation}The first version listed in CHANGELOG.md is $fromChangeLog.
     }
 
     return null;
+  }
+
+  @visibleForTesting
+  YamlMap? tryParseVersionCheckYaml(RepositoryPackage package) {
+    final File versionCheckFile =
+        package.directory.childFile('version_check.yaml');
+    if (!versionCheckFile.existsSync()) {
+      return null;
+    }
+
+    try {
+      final String content = versionCheckFile.readAsStringSync();
+      return loadYaml(content) as YamlMap;
+    } catch (e) {
+      printError('Invalid version_check.yaml format: $e');
+      return null;
+    }
+  }
+
+  /// Validates versions using the version_check.yaml file.
+  ///
+  /// This checks that the version in the specified file matches the version
+  /// in the pubspec.yaml file.
+  ///
+  /// version_check.yaml should contain:
+  /// - filepath: The path to the file to check (could be platform-specific,
+  /// e.g. .java on Android, .h on iOS etc).
+  /// - regexp: The regex pattern to match the version string. Group 1 of the
+  /// regex should contain the version string (e.g. 1.0.4).
+  /// - errorMessage: The error message to display if the version does
+  /// not match.
+  ///
+  /// No validation is performed if the version_check.yaml file does not exist.
+  ///
+  /// Returns true if the validation passes, false otherwise.
+  @visibleForTesting
+  bool validateVersionCheckYamlVersion({
+    required YamlMap? versionCheckYaml,
+    required Pubspec pubspec,
+    required RepositoryPackage package,
+  }) {
+    // Skip validation if the yaml file doesn't exist.
+    if (versionCheckYaml == null) {
+      return true;
+    }
+
+    final String? filepath = versionCheckYaml['filepath'] as String?;
+    final String? regex = versionCheckYaml['regexp'] as String?;
+    final String? errorMessage = versionCheckYaml['errorMessage'] as String?;
+
+    if (filepath == null || filepath.isEmpty) {
+      printError('Invalid version_check.yaml: Missing filepath.');
+      return false;
+    }
+
+    if (regex == null || regex.isEmpty) {
+      printError('Invalid version_check.yaml: Missing regexp.');
+      return false;
+    }
+
+    if (errorMessage == null || filepath.isEmpty) {
+      printError('Invalid version_check.yaml: Missing errorMessage.');
+      return false;
+    }
+
+    final File targetFile = package.directory.childFile(filepath);
+    if (!targetFile.existsSync()) {
+      printError(
+        'File "$filepath" specified in version_check.yaml does not exist.',
+      );
+      return false;
+    }
+
+    if (!targetFile.absolute.path.startsWith(package.directory.path)) {
+      printError(
+        'File path "$filepath" in version_check.yaml targets outside the package directory.',
+      );
+      return false;
+    }
+
+    final RegExp versionRegex = RegExp(regex);
+    final String fileContent = targetFile.readAsStringSync();
+    final Match? match = versionRegex.firstMatch(fileContent);
+
+    if (match == null || match.groupCount < 1) {
+      printError(
+        'No version string found in "$filepath" using the provided regex.',
+      );
+      return false;
+    }
+
+    final String foundVersion = match.group(1)!;
+    if (foundVersion != pubspec.version.toString()) {
+      printError(errorMessage);
+      return false;
+    }
+
+    return true;
   }
 }
