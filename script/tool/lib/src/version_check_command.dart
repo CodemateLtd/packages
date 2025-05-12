@@ -227,7 +227,7 @@ class VersionCheckCommand extends PackageLoopingCommand {
     final YamlMap? versionCheckYaml = tryParseVersionCheckYaml(package);
     if (!validateVersionCheckYamlVersion(
       versionCheckYaml: versionCheckYaml,
-      pubspec: pubspec,
+      version: pubspec.version,
       package: package,
     )) {
       errors.add('Invalid version_check.yaml.');
@@ -632,11 +632,11 @@ ${indentation}The first version listed in CHANGELOG.md is $fromChangeLog.
   @visibleForTesting
   bool validateVersionCheckYamlVersion({
     required YamlMap? versionCheckYaml,
-    required Pubspec pubspec,
+    required Version? version,
     required RepositoryPackage package,
   }) {
     // Skip validation if the yaml file doesn't exist.
-    if (versionCheckYaml == null) {
+    if (versionCheckYaml == null || version == null) {
       return true;
     }
 
@@ -701,9 +701,9 @@ ${indentation}The first version listed in CHANGELOG.md is $fromChangeLog.
       }
 
       final String foundVersion = match.group(1)!;
-      if (foundVersion != pubspec.version.toString()) {
+      if (foundVersion != version.toString()) {
         printError('Version mismatch in "$filepath":\n'
-            'Expected: ${pubspec.version}\n'
+            'Expected: $version\n'
             'Found: $foundVersion\n'
             'Error message: $errorMessage');
         result = false;

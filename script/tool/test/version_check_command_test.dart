@@ -1563,7 +1563,7 @@ ${indentation}HTTP response: null
 
         final bool result = command.validateVersionCheckYamlVersion(
           versionCheckYaml: null,
-          pubspec: Pubspec('name'),
+          version: Version.parse('1.0.0'),
           package: plugin,
         );
         expect(result, isTrue);
