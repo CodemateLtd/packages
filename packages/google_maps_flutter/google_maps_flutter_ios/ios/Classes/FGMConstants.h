@@ -6,6 +6,6 @@
 #define FGMCONSTANTS_H
 
 // Google Maps Flutter Plugin version
-#define PREFIX_PLUGIN_VERSION "2.15.2"
+#define FGM_PLUGIN_VERSION "2.15.2"
 
 #endif

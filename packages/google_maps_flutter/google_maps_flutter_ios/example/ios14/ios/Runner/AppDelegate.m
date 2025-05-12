@@ -19,7 +19,7 @@
   }
   [GMSServices provideAPIKey:mapsApiKey];
   
-  NSString *attributionId = [NSString stringWithFormat:@"gmp_flutter_googlemapsflutter_v%sandroid", PREFIX_PLUGIN_VERSION];
+  NSString *attributionId = [NSString stringWithFormat:@"gmp_flutter_googlemapsflutter_v%sandroid", FGM_PLUGIN_VERSION];
   [GMSServices addInternalUsageAttributionID:attributionId];
 
   // Register Flutter plugins.

@@ -64,7 +64,7 @@ final class GoogleMapInitializer
         case LATEST:
           MapsApiSettings.addInternalUsageAttributionId(
               context,
-              "gmp_flutter_googlemapsflutter_v" + Constants.PREFIX_PLUGIN_VERSION + "_android"
+              "gmp_flutter_googlemapsflutter_v" + Constants.FGM_PLUGIN_VERSION + "_android"
           );
 
           initializationResult.success(Messages.PlatformRendererType.LATEST);

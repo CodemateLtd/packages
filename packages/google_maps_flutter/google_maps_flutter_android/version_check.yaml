@@ -1,5 +1,9 @@
+# Copyright 2013 The Flutter Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
 # This file is used to check that the version string in the Constants.java file is up to date and matches 
 # the version in pubspec.yaml.
 filepath: android/src/main/java/io/flutter/plugins/googlemaps/Constants.java
-regexp: public static final String PREFIX_PLUGIN_VERSION = "([\.0-9]+)";
+regexp: public static final String FGM_PLUGIN_VERSION = "([\.0-9]+)";
 errorMessage: "Version string in Constants.java is not up to date. Please update it to the latest version."

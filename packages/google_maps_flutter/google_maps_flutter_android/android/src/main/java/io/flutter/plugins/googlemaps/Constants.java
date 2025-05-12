@@ -7,5 +7,5 @@ package io.flutter.plugins.googlemaps;
 abstract class Constants {
 
   // Current package version.
-  public static final String PREFIX_PLUGIN_VERSION = "2.16.1";
+  public static final String FGM_PLUGIN_VERSION = "2.16.1";
 }
