@@ -596,8 +596,9 @@ ${indentation}The first version listed in CHANGELOG.md is $fromChangeLog.
 
   @visibleForTesting
   YamlMap? tryParseVersionCheckYaml(RepositoryPackage package) {
-    final File versionCheckFile =
-        package.directory.childFile('version_check.yaml');
+    final File versionCheckFile = package.directory.childFile(
+      'version_check.yaml',
+    );
     if (!versionCheckFile.existsSync()) {
       return null;
     }
@@ -616,7 +617,8 @@ ${indentation}The first version listed in CHANGELOG.md is $fromChangeLog.
   /// This checks that the version in the specified file matches the version
   /// in the pubspec.yaml file.
   ///
-  /// version_check.yaml should contain:
+  /// version_check.yaml should contain a list of checks, each with the
+  /// following fields:
   /// - filepath: The path to the file to check (could be platform-specific,
   /// e.g. .java on Android, .h on iOS etc).
   /// - regexp: The regex pattern to match the version string. Group 1 of the
@@ -638,57 +640,74 @@ ${indentation}The first version listed in CHANGELOG.md is $fromChangeLog.
       return true;
     }
 
-    final String? filepath = versionCheckYaml['filepath'] as String?;
-    final String? regex = versionCheckYaml['regexp'] as String?;
-    final String? errorMessage = versionCheckYaml['errorMessage'] as String?;
-
-    if (filepath == null || filepath.isEmpty) {
-      printError('Invalid version_check.yaml: Missing filepath.');
+    final YamlList? checks = versionCheckYaml['checks'] as YamlList?;
+    if (checks == null) {
+      printError('Invalid version_check.yaml: Missing checks.');
       return false;
     }
 
-    if (regex == null || regex.isEmpty) {
-      printError('Invalid version_check.yaml: Missing regexp.');
-      return false;
+    bool result = true;
+    for (final YamlNode entry in checks.nodes) {
+      final YamlMap node = entry as YamlMap;
+      final String? filepath = node['filepath'] as String?;
+      final String? regex = node['regexp'] as String?;
+      final String? errorMessage = node['errorMessage'] as String?;
+
+      if (filepath == null || filepath.isEmpty) {
+        printError('Invalid version_check.yaml: Missing filepath.');
+        result = false;
+        continue;
+      }
+
+      if (regex == null || regex.isEmpty) {
+        printError('Invalid version_check.yaml: Missing regexp.');
+        result = false;
+        continue;
+      }
+
+      if (errorMessage == null || filepath.isEmpty) {
+        printError('Invalid version_check.yaml: Missing errorMessage.');
+        result = false;
+        continue;
+      }
+
+      final File targetFile = package.directory.childFile(filepath);
+      if (!targetFile.existsSync()) {
+        printError(
+          'File "$filepath" specified in version_check.yaml does not exist.',
+        );
+        result = false;
+        continue;
+      }
+
+      if (!targetFile.absolute.path.startsWith(package.directory.path)) {
+        printError(
+          'File path "$filepath" in version_check.yaml targets outside the package directory.',
+        );
+        result = false;
+        continue;
+      }
+
+      final RegExp versionRegex = RegExp(regex);
+      final String fileContent = targetFile.readAsStringSync();
+      final Match? match = versionRegex.firstMatch(fileContent);
+
+      if (match == null || match.groupCount < 1) {
+        printError(
+          'No version string found in "$filepath" using the provided regex.',
+        );
+        result = false;
+        continue;
+      }
+
+      final String foundVersion = match.group(1)!;
+      if (foundVersion != pubspec.version.toString()) {
+        printError(errorMessage);
+        result = false;
+        continue;
+      }
     }
 
-    if (errorMessage == null || filepath.isEmpty) {
-      printError('Invalid version_check.yaml: Missing errorMessage.');
-      return false;
-    }
-
-    final File targetFile = package.directory.childFile(filepath);
-    if (!targetFile.existsSync()) {
-      printError(
-        'File "$filepath" specified in version_check.yaml does not exist.',
-      );
-      return false;
-    }
-
-    if (!targetFile.absolute.path.startsWith(package.directory.path)) {
-      printError(
-        'File path "$filepath" in version_check.yaml targets outside the package directory.',
-      );
-      return false;
-    }
-
-    final RegExp versionRegex = RegExp(regex);
-    final String fileContent = targetFile.readAsStringSync();
-    final Match? match = versionRegex.firstMatch(fileContent);
-
-    if (match == null || match.groupCount < 1) {
-      printError(
-        'No version string found in "$filepath" using the provided regex.',
-      );
-      return false;
-    }
-
-    final String foundVersion = match.group(1)!;
-    if (foundVersion != pubspec.version.toString()) {
-      printError(errorMessage);
-      return false;
-    }
-
-    return true;
+    return result;
   }
 }

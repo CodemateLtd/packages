@@ -2,8 +2,9 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-# This file is used to check that the version string in the FGMConstants.h file is up to date and matches 
+# This file is used to check that the version string in the FGMConstants.h file is up to date and matches
 # the version in pubspec.yaml.
-filepath: ios/Classes/FGMConstants.h
-regexp: define FGM_PLUGIN_VERSION "([\.0-9]+)"
-errorMessage: "Version string in FGMConstants.h is not up to date. Please update it to the latest version."
+checks:
+  - filepath: ios/Classes/FGMConstants.h
+    regexp: define FGM_PLUGIN_VERSION "([\.0-9]+)"
+    errorMessage: "Version string in FGMConstants.h is not up to date. Please update it to the latest version."
