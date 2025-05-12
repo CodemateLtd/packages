@@ -1814,7 +1814,16 @@ checks:
         },
       );
       expect(hasError, isTrue);
-      expect(log.contains('Version string is not up to date.'), isTrue);
+      expect(
+        log.contains(
+          '''
+Version mismatch in "lib/constants.dart":
+Expected: 1.0.0
+Found: 0.1.0
+Error message: Version string is not up to date.''',
+        ),
+        isTrue,
+      );
     });
 
     test('Validation fails when one of the checks fails', () async {
@@ -1856,7 +1865,16 @@ checks:
       );
       expect(hasError, isTrue);
       expect(log.contains('Version string is not up to date.'), isFalse);
-      expect(log.contains('Version string is not up to date 2.'), isTrue);
+      expect(
+        log.contains(
+          '''
+Version mismatch in "lib/another_constants.dart":
+Expected: 1.0.0
+Found: 0.2.0
+Error message: Version string is not up to date 2.''',
+        ),
+        isTrue,
+      );
     });
 
     test('validation passes on no version mismatch', () async {

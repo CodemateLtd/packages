@@ -702,7 +702,10 @@ ${indentation}The first version listed in CHANGELOG.md is $fromChangeLog.
 
       final String foundVersion = match.group(1)!;
       if (foundVersion != pubspec.version.toString()) {
-        printError(errorMessage);
+        printError('Version mismatch in "$filepath":\n'
+            'Expected: ${pubspec.version}\n'
+            'Found: $foundVersion\n'
+            'Error message: $errorMessage');
         result = false;
         continue;
       }
