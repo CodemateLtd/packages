@@ -6,5 +6,5 @@
 # the version in pubspec.yaml.
 checks:
   - filepath: lib/src/constants.dart
-    regexp: const String prefixPluginVersion = '([\.0-9]+)';
+    regexp: const String fgmPluginVersion = '([\.0-9]+)';
     errorMessage: "Version string in constants.dart is not up to date. Please update it to the latest version."

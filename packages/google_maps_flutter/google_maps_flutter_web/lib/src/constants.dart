@@ -3,4 +3,4 @@
 // found in the LICENSE file.
 
 /// Google Maps Flutter Web plugin version.
-const String prefixPluginVersion = '0.5.12';
+const String fgmPluginVersion = '0.5.12';
