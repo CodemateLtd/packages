@@ -29,7 +29,7 @@ Downloaded by pub (not CocoaPods).
   # Google-Maps-iOS-Utils 6.x supports GoogleMaps 9.x and iOS 15.0+
   s.dependency 'Google-Maps-iOS-Utils', '>= 5.0', '< 7.0'
   s.static_framework = true
-  s.platform = :ios, '15.0'
+  s.platform = :ios, '14.0'
   # "Google-Maps-iOS-Utils" is static and contains Swift classes.
   # Find the Swift runtime when these plugins are built as libraries without `use_frameworks!`
   s.swift_version = '5.9'
