@@ -62,11 +62,6 @@ final class GoogleMapInitializer
     if (initializationResult != null) {
       switch (renderer) {
         case LATEST:
-          MapsApiSettings.addInternalUsageAttributionId(
-              context,
-              "gmp_flutter_googlemapsflutter_v" + Constants.FGM_PLUGIN_VERSION + "_android"
-          );
-
           initializationResult.success(Messages.PlatformRendererType.LATEST);
           break;
         case LEGACY:
@@ -81,5 +76,16 @@ final class GoogleMapInitializer
       }
       initializationResult = null;
     }
+  }
+
+
+  @Nullable
+    // TODO doc
+  MapsInitializer.Renderer initializedRenderer() {
+    if (rendererInitialized) {
+      // TODO return renderer type
+    }
+
+    return null;
   }
 }
