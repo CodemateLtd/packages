@@ -7,7 +7,6 @@ package io.flutter.plugins.googlemaps;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.gms.maps.MapsApiSettings;
 import com.google.android.gms.maps.MapsInitializer.Renderer;
 import com.google.android.gms.maps.model.CameraPosition;
 import io.flutter.plugin.common.BinaryMessenger;
@@ -33,6 +32,11 @@ public class GoogleMapFactory extends PlatformViewFactory {
   @Override
   @NonNull
   public PlatformView create(@NonNull Context context, int id, @Nullable Object args) {
+    final boolean shouldInitializeRenderer = !googleMapInitializer.hasRendererInitializationStarted();
+    if (shouldInitializeRenderer) {
+      googleMapInitializer.initializeWithRendererRequest(Renderer.LATEST);
+    }
+
     final Messages.PlatformMapViewCreationParams params =
         Objects.requireNonNull((Messages.PlatformMapViewCreationParams) args);
     final GoogleMapBuilder builder = new GoogleMapBuilder();
@@ -53,18 +57,6 @@ public class GoogleMapFactory extends PlatformViewFactory {
     final String cloudMapId = mapConfig.getCloudMapId();
     if (cloudMapId != null) {
       builder.setMapId(cloudMapId);
-    }
-
-    final Renderer renderer = googleMapInitializer.initializedRenderer();
-    if (renderer == null) {
-      googleMapInitializer.initializeWithRendererRequest(Renderer.LATEST);
-    }
-
-    if (renderer == Renderer.LATEST) {
-      MapsApiSettings.addInternalUsageAttributionId(
-          context,
-          "gmp_flutter_googlemapsflutter_v" + Constants.FGM_PLUGIN_VERSION + "_android"
-      );
     }
 
     return builder.build(id, context, binaryMessenger, lifecycleProvider);
