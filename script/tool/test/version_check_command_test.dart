@@ -1552,6 +1552,360 @@ ${indentation}HTTP response: null
             ]));
       });
     });
+
+    group('validateVersionCheckYamlVersion', () {
+      test('validation passes if version_check.yaml is not present', () {
+        final RepositoryPackage plugin =
+            createFakePlugin('plugin', packagesDir, version: '1.0.0');
+        final VersionCheckCommand command =
+            runner.commands['version-check']! as VersionCheckCommand;
+        expect(plugin.versionCheckFile.existsSync(), isFalse);
+
+        final bool result = command.validateVersionCheckYamlVersion(
+          versionCheckYaml: null,
+          version: Version.parse('1.0.0'),
+          package: plugin,
+        );
+        expect(result, isTrue);
+      });
+    });
+
+    test('validation failed when filepath is not present', () async {
+      final RepositoryPackage plugin =
+          createFakePlugin('plugin', packagesDir, version: '1.0.0');
+      expect(plugin.versionCheckFile.existsSync(), isFalse);
+      plugin.versionCheckFile.createSync();
+      plugin.versionCheckFile.writeAsStringSync(r'''
+checks:
+  - regexp: const prefixPluginVersion = "([\.0-9]+)"
+    errorMessage: "Version string is not up to date."
+''');
+
+      bool hasError = false;
+      final List<String> log = await runCapturingPrint(
+        runner,
+        <String>['version-check'],
+        errorHandler: (Error e) {
+          expect(e, isA<ToolExit>());
+          hasError = true;
+        },
+      );
+      expect(hasError, isTrue);
+      expect(
+        log.contains('Invalid version_check.yaml: Missing filepath.'),
+        isTrue,
+      );
+    });
+
+    test(
+      'validation failed when regexp is not present',
+      () async {
+        final RepositoryPackage plugin =
+            createFakePlugin('plugin', packagesDir, version: '1.0.0');
+        expect(plugin.versionCheckFile.existsSync(), isFalse);
+        plugin.versionCheckFile.createSync();
+        plugin.versionCheckFile.writeAsStringSync(r'''
+checks:
+  - filepath: constants.dart
+    errorMessage: "Version string is not up to date."
+''');
+
+        bool hasError = false;
+        final List<String> log = await runCapturingPrint(
+          runner,
+          <String>['version-check'],
+          errorHandler: (Error e) {
+            expect(e, isA<ToolExit>());
+            hasError = true;
+          },
+        );
+        expect(hasError, isTrue);
+        expect(
+          log.contains('Invalid version_check.yaml: Missing regexp.'),
+          isTrue,
+        );
+      },
+    );
+
+    test('validation failed when errorMessage is not present', () async {
+      final RepositoryPackage plugin =
+          createFakePlugin('plugin', packagesDir, version: '1.0.0');
+      expect(plugin.versionCheckFile.existsSync(), isFalse);
+      plugin.versionCheckFile.createSync();
+      plugin.versionCheckFile.writeAsStringSync(r'''
+checks:
+  - filepath: constants.dart
+    regexp: const prefixPluginVersion = "([\.0-9]+)"
+''');
+
+      bool hasError = false;
+      final List<String> log = await runCapturingPrint(
+        runner,
+        <String>['version-check'],
+        errorHandler: (Error e) {
+          expect(e, isA<ToolExit>());
+          hasError = true;
+        },
+      );
+      expect(hasError, isTrue);
+      expect(
+        log.contains('Invalid version_check.yaml: Missing errorMessage.'),
+        isTrue,
+      );
+    });
+
+    test("validation fails when file doesn't exist", () async {
+      final RepositoryPackage plugin =
+          createFakePlugin('plugin', packagesDir, version: '1.0.0');
+      expect(plugin.versionCheckFile.existsSync(), isFalse);
+      plugin.versionCheckFile.createSync();
+      plugin.versionCheckFile.writeAsStringSync(r'''
+checks:
+  - filepath: constants.dart
+    regexp: const prefixPluginVersion = "([\.0-9]+)"
+    errorMessage: "Version string is not up to date."
+''');
+
+      bool hasError = false;
+      final List<String> log = await runCapturingPrint(
+        runner,
+        <String>['version-check'],
+        errorHandler: (Error e) {
+          expect(e, isA<ToolExit>());
+          hasError = true;
+        },
+      );
+      expect(hasError, isTrue);
+      expect(
+        log.contains(
+          'File "constants.dart" specified in version_check.yaml does not exist.',
+        ),
+        isTrue,
+      );
+    });
+
+    test('validation fails file is outside the package direcry', () async {
+      final RepositoryPackage plugin =
+          createFakePlugin('plugin', packagesDir, version: '1.0.0');
+      expect(plugin.versionCheckFile.existsSync(), isFalse);
+      plugin.versionCheckFile.createSync();
+      plugin.versionCheckFile.writeAsStringSync(r'''
+checks:
+  - filepath: /home/user/constants.dart
+    regexp: const prefixPluginVersion = "([\.0-9]+)"
+    errorMessage: "Version string is not up to date."
+''');
+
+      final File constantsFile =
+          plugin.directory.fileSystem.file('/home/user/constants.dart');
+      constantsFile.createSync(recursive: true);
+      expect(constantsFile.existsSync(), isTrue);
+      constantsFile.writeAsStringSync('const prefixPluginVersion = "0.1.0";');
+
+      bool hasError = false;
+      final List<String> log = await runCapturingPrint(
+        runner,
+        <String>['version-check'],
+        errorHandler: (Error e) {
+          expect(e, isA<ToolExit>());
+          hasError = true;
+        },
+      );
+      expect(hasError, isTrue);
+      expect(
+        log.contains(
+          'File path "/home/user/constants.dart" in version_check.yaml targets outside the package directory.',
+        ),
+        isTrue,
+      );
+    });
+
+    test('validation fails when no text matching regex found', () async {
+      final RepositoryPackage plugin =
+          createFakePlugin('plugin', packagesDir, version: '1.0.0');
+      expect(plugin.versionCheckFile.existsSync(), isFalse);
+      plugin.versionCheckFile.createSync();
+      plugin.versionCheckFile.writeAsStringSync(r'''
+checks:
+  - filepath: lib/constants.dart
+    regexp: const prefixPluginVersion = "([\.0-9]+)"
+    errorMessage: "Version string is not up to date."
+''');
+
+      final File constantsFile =
+          plugin.directory.childFile('lib/constants.dart');
+      constantsFile.createSync(recursive: true);
+      expect(constantsFile.existsSync(), isTrue);
+      constantsFile.writeAsStringSync('''
+const String version = "0.1.0";
+''');
+
+      bool hasError = false;
+      final List<String> log = await runCapturingPrint(
+        runner,
+        <String>['version-check'],
+        errorHandler: (Error e) {
+          expect(e, isA<ToolExit>());
+          hasError = true;
+        },
+      );
+      expect(hasError, isTrue);
+      expect(
+        log.contains(
+          'No version string found in "lib/constants.dart" using the provided regex.',
+        ),
+        isTrue,
+      );
+    });
+
+    test('Validation fails when "checks" item is not present', () async {
+      final RepositoryPackage plugin =
+          createFakePlugin('plugin', packagesDir, version: '1.0.0');
+      expect(plugin.versionCheckFile.existsSync(), isFalse);
+      plugin.versionCheckFile.createSync();
+      plugin.versionCheckFile.writeAsStringSync(r'''
+definitely_not_checks:
+  - filepath: lib/constants.dart
+    regexp: const prefixPluginVersion = "([\.0-9]+)"
+    errorMessage: "Version string is not up to date."
+''');
+
+      bool hasError = false;
+      final List<String> log = await runCapturingPrint(
+        runner,
+        <String>['version-check'],
+        errorHandler: (Error e) {
+          expect(e, isA<ToolExit>());
+          hasError = true;
+        },
+      );
+      expect(hasError, isTrue);
+      expect(
+        log.contains('Invalid version_check.yaml: Missing checks.'),
+        isTrue,
+      );
+    });
+
+    test('validation fails on versions mismatch', () async {
+      final RepositoryPackage plugin =
+          createFakePlugin('plugin', packagesDir, version: '1.0.0');
+      expect(plugin.versionCheckFile.existsSync(), isFalse);
+      plugin.versionCheckFile.createSync();
+      plugin.versionCheckFile.writeAsStringSync(r'''
+checks:
+  - filepath: lib/constants.dart
+    regexp: const prefixPluginVersion = "([\.0-9]+)"
+    errorMessage: "Version string is not up to date."
+''');
+
+      final File constantsFile =
+          plugin.directory.childFile('lib/constants.dart');
+      constantsFile.createSync(recursive: true);
+      expect(constantsFile.existsSync(), isTrue);
+      constantsFile.writeAsStringSync('const prefixPluginVersion = "0.1.0";');
+
+      bool hasError = false;
+      final List<String> log = await runCapturingPrint(
+        runner,
+        <String>['version-check'],
+        errorHandler: (Error e) {
+          expect(e, isA<ToolExit>());
+          hasError = true;
+        },
+      );
+      expect(hasError, isTrue);
+      expect(
+        log.contains(
+          '''
+Version mismatch in "lib/constants.dart":
+Expected: 1.0.0
+Found: 0.1.0
+Error message: Version string is not up to date.''',
+        ),
+        isTrue,
+      );
+    });
+
+    test('Validation fails when one of the checks fails', () async {
+      final RepositoryPackage plugin =
+          createFakePlugin('plugin', packagesDir, version: '1.0.0');
+      expect(plugin.versionCheckFile.existsSync(), isFalse);
+      plugin.versionCheckFile.createSync();
+      plugin.versionCheckFile.writeAsStringSync(r'''
+checks:
+  - filepath: lib/constants.dart
+    regexp: const prefixPluginVersion = "([\.0-9]+)"
+    errorMessage: "Version string is not up to date."
+  - filepath: lib/another_constants.dart
+    regexp: const prefixPluginVersion = "([\.0-9]+)"
+    errorMessage: "Version string is not up to date 2."
+''');
+
+      final File constantsFile =
+          plugin.directory.childFile('lib/constants.dart');
+      constantsFile.createSync(recursive: true);
+      expect(constantsFile.existsSync(), isTrue);
+      constantsFile.writeAsStringSync('const prefixPluginVersion = "1.0.0";');
+
+      final File anotherConstantsFile =
+          plugin.directory.childFile('lib/another_constants.dart');
+      anotherConstantsFile.createSync(recursive: true);
+      expect(anotherConstantsFile.existsSync(), isTrue);
+      anotherConstantsFile
+          .writeAsStringSync('const prefixPluginVersion = "0.2.0";');
+
+      bool hasError = false;
+      final List<String> log = await runCapturingPrint(
+        runner,
+        <String>['version-check'],
+        errorHandler: (Error e) {
+          expect(e, isA<ToolExit>());
+          hasError = true;
+        },
+      );
+      expect(hasError, isTrue);
+      expect(log.contains('Version string is not up to date.'), isFalse);
+      expect(
+        log.contains(
+          '''
+Version mismatch in "lib/another_constants.dart":
+Expected: 1.0.0
+Found: 0.2.0
+Error message: Version string is not up to date 2.''',
+        ),
+        isTrue,
+      );
+    });
+
+    test('validation passes on no version mismatch', () async {
+      final RepositoryPackage plugin =
+          createFakePlugin('plugin', packagesDir, version: '1.0.0');
+      expect(plugin.versionCheckFile.existsSync(), isFalse);
+      plugin.versionCheckFile.createSync();
+      plugin.versionCheckFile.writeAsStringSync(r'''
+checks:
+  - filepath: lib/constants.dart
+    regexp: const prefixPluginVersion = "([\.0-9]+)"
+    errorMessage: "Version string is not up to date."
+''');
+
+      final File constantsFile =
+          plugin.directory.childFile('lib/constants.dart');
+      constantsFile.createSync(recursive: true);
+      expect(constantsFile.existsSync(), isTrue);
+      constantsFile.writeAsStringSync('const prefixPluginVersion = "1.0.0";');
+
+      bool hasError = false;
+      await runCapturingPrint(
+        runner,
+        <String>['version-check'],
+        errorHandler: (Error e) {
+          expect(e, isA<ToolExit>());
+          hasError = true;
+        },
+      );
+      expect(hasError, isFalse);
+    });
   });
 
   group('Pre 1.0', () {
