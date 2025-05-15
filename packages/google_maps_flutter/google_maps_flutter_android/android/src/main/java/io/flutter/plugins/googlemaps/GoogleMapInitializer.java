@@ -57,7 +57,7 @@ final class GoogleMapInitializer
       switch (renderer) {
         case LATEST:
           // Set Android-specific Maps SDK attribution Id. This value should not be changed
-          // without discussing it first with the Flutter team
+          // without discussing it first with code owners.
           MapsApiSettings.addInternalUsageAttributionId(
               context,
               "gmp_flutter_googlemapsflutter_v" + Constants.FGM_PLUGIN_VERSION + "_android"
