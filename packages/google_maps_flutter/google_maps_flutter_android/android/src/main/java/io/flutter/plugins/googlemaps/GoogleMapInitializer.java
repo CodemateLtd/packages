@@ -7,7 +7,7 @@ package io.flutter.plugins.googlemaps;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
+import com.google.android.gms.maps.MapsApiSettings;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback;
 import io.flutter.plugin.common.BinaryMessenger;
@@ -15,9 +15,11 @@ import io.flutter.plugin.common.BinaryMessenger;
 /** GoogleMaps initializer used to initialize the Google Maps SDK with preferred settings. */
 final class GoogleMapInitializer
     implements OnMapsSdkInitializedCallback, Messages.MapsInitializerApi {
+
   private final Context context;
   private static Messages.Result<Messages.PlatformRendererType> initializationResult;
   private boolean rendererInitialized = false;
+  private boolean rendererInitializationRequested = false;
 
   GoogleMapInitializer(Context context, BinaryMessenger binaryMessenger) {
     this.context = context;
@@ -41,14 +43,9 @@ final class GoogleMapInitializer
     }
   }
 
-  /**
-   * Initializes map renderer to with preferred renderer type.
-   *
-   * <p>This method is visible for testing purposes only and should never be used outside this
-   * class.
-   */
-  @VisibleForTesting
+  /** Initializes map renderer with preferred renderer type. */
   public void initializeWithRendererRequest(@Nullable MapsInitializer.Renderer renderer) {
+    rendererInitializationRequested = true;
     MapsInitializer.initialize(context, renderer, this);
   }
 
@@ -59,6 +56,12 @@ final class GoogleMapInitializer
     if (initializationResult != null) {
       switch (renderer) {
         case LATEST:
+          // Set Android-specific Maps SDK attribution Id. This value should not be changed
+          // without discussing it first with code owners.
+          MapsApiSettings.addInternalUsageAttributionId(
+              context,
+              "gmp_flutter_googlemapsflutter_v" + Constants.FGM_PLUGIN_VERSION + "_android"
+          );
           initializationResult.success(Messages.PlatformRendererType.LATEST);
           break;
         case LEGACY:
@@ -73,5 +76,10 @@ final class GoogleMapInitializer
       }
       initializationResult = null;
     }
+  }
+
+  /** Returns true if renderer initialization has started or renderer has been initialized. */
+  boolean hasRendererInitializationStarted() {
+    return rendererInitialized || rendererInitializationRequested;
   }
 }

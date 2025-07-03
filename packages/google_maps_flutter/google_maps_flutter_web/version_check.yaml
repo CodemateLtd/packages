@@ -1,0 +1,10 @@
+# Copyright 2013 The Flutter Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# This file is used to check that the version string in the Constants.dart file is up to date and matches
+# the version in pubspec.yaml.
+checks:
+  - filepath: lib/src/constants.dart
+    regexp: const String fgmPluginVersion = '([\.0-9]+)';
+    errorMessage: "Version string in constants.dart is not up to date. Please update it to the latest version."
