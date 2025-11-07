@@ -601,9 +601,7 @@ void main() {
     expect(map.mapConfiguration.style, '');
   });
 
-  testWidgets('Update state from widget only when mounted', (
-    WidgetTester tester,
-  ) async {
+  testWidgets('Default markerType is "marker"', (WidgetTester tester) async {
     await tester.pumpWidget(
       const Directionality(
         textDirection: TextDirection.ltr,
@@ -613,32 +611,35 @@ void main() {
       ),
     );
 
-    final State<StatefulWidget> googleMapState = tester.state(
-      find.byType(GoogleMap),
-    );
-
-    await tester.pumpWidget(Container());
-
-    // This is done to force the update path while the widget is not mounted.
-    // ignore:invalid_use_of_protected_member
-    googleMapState.didUpdateWidget(
-      GoogleMap(
-        initialCameraPosition: const CameraPosition(target: LatLng(10.0, 15.0)),
-        circles: <Circle>{const Circle(circleId: CircleId('circle'))},
-      ),
-    );
-
-    await tester.pumpAndSettle();
-
     final PlatformMapStateRecorder map = platform.lastCreatedMap;
-
-    expect(map.circleUpdates.length, 1);
+    expect(map.mapConfiguration.markerType, MarkerType.marker);
   });
 
-  testWidgets('Update state after map is initialized only when mounted', (
-    WidgetTester tester,
-  ) async {
-    platform.initCompleter = Completer<void>();
+  testWidgets('Can update markerType', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+          // ignore: avoid_redundant_argument_values
+          markerType: GoogleMapMarkerType.marker,
+        ),
+      ),
+    );
+
+    final PlatformMapStateRecorder map = platform.lastCreatedMap;
+    expect(map.mapConfiguration.markerType, MarkerType.marker);
+
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+          markerType: GoogleMapMarkerType.advancedMarker,
+        ),
+      ),
+    );
+    expect(map.mapConfiguration.markerType, MarkerType.advancedMarker);
 
     await tester.pumpWidget(
       const Directionality(
@@ -648,15 +649,128 @@ void main() {
         ),
       ),
     );
+    expect(map.mapConfiguration.markerType, MarkerType.marker);
+  });
 
-    await tester.pumpWidget(Container());
-
-    platform.initCompleter!.complete();
-
-    await tester.pumpAndSettle();
+  testWidgets('Can update mapId', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+          mapId: 'myMapId',
+        ),
+      ),
+    );
 
     final PlatformMapStateRecorder map = platform.lastCreatedMap;
+    expect(map.mapConfiguration.mapId, 'myMapId');
+    expect(map.mapConfiguration.cloudMapId, 'myMapId');
 
-    expect(map.tileOverlaySets.length, 1);
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+          mapId: 'myNewMapId',
+        ),
+      ),
+    );
+    expect(map.mapConfiguration.mapId, 'myNewMapId');
+    expect(map.mapConfiguration.cloudMapId, 'myNewMapId');
+
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+        ),
+      ),
+    );
+    expect(map.mapConfiguration.mapId, '');
+    expect(map.mapConfiguration.cloudMapId, '');
+  });
+
+  testWidgets('Can update cloudMapId', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+          cloudMapId: 'myCloudMapId',
+        ),
+      ),
+    );
+
+    final PlatformMapStateRecorder map = platform.lastCreatedMap;
+    expect(map.mapConfiguration.cloudMapId, 'myCloudMapId');
+    expect(map.mapConfiguration.mapId, 'myCloudMapId');
+
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+          cloudMapId: 'myNewCloudMapId',
+        ),
+      ),
+    );
+    expect(map.mapConfiguration.cloudMapId, 'myNewCloudMapId');
+    expect(map.mapConfiguration.mapId, 'myNewCloudMapId');
+
+    await tester.pumpWidget(
+      const Directionality(
+        textDirection: TextDirection.ltr,
+        child: GoogleMap(
+          initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+        ),
+      ),
+    );
+    expect(map.mapConfiguration.cloudMapId, '');
+    expect(map.mapConfiguration.mapId, '');
+  });
+
+  testWidgets('Providing both mapId and cloudMapId throws an exception', (
+    WidgetTester tester,
+  ) async {
+    expect(() {
+      GoogleMap(
+        initialCameraPosition: const CameraPosition(target: LatLng(10.0, 15.0)),
+        mapId: 'mapId',
+        cloudMapId: 'cloudMapId',
+      );
+    }, throwsAssertionError);
+  });
+
+  testWidgets("Providing mapId doesn't thrown an exception", (
+    WidgetTester tester,
+  ) async {
+    expect(() {
+      const GoogleMap(
+        initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+        mapId: 'mapId',
+      );
+    }, returnsNormally);
+  });
+
+  testWidgets("Providing cloudMapid doesn't thrown an exception", (
+    WidgetTester tester,
+  ) async {
+    expect(() {
+      const GoogleMap(
+        initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+        cloudMapId: 'cloudMapId',
+      );
+    }, returnsNormally);
+  });
+
+  testWidgets("Not setting cloudMapid and mapId doesn't thrown an exception", (
+    WidgetTester tester,
+  ) async {
+    expect(() {
+      const GoogleMap(
+        initialCameraPosition: CameraPosition(target: LatLng(10.0, 15.0)),
+      );
+    }, returnsNormally);
   });
 }

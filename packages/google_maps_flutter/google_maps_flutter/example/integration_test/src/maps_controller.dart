@@ -590,7 +590,7 @@ void runTests() {
         onMapCreated: (GoogleMapController controller) {
           mapIdCompleter.complete(controller.mapId);
         },
-        cloudMapId: kCloudMapId,
+        cloudMapId: kMapId,
       ),
     );
     await tester.pumpAndSettle();
