@@ -1,10 +1,12 @@
-## NEXT
+## 0.6.0
 
+* Adds Advanced markers support.
 * Updates minimum supported SDK version to Flutter 3.32/Dart 3.8.
 
 ## 0.5.14+3
 
 * Replaces uses of deprecated `Color` properties.
+
 
 ## 0.5.14+2
 
